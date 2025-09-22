@@ -4,6 +4,9 @@ export interface Document {
   type: 'policy' | 'procedure' | 'form' | 'menu' | 'other';
   url?: string;
   content?: string;
+  fileData?: string; // Base64 encoded file data
+  mimeType?: string; // MIME type of the file
+  fileSize?: number; // File size in bytes
   uploadDate: Date;
   lastModified: Date;
 }
