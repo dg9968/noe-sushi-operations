@@ -12,6 +12,10 @@ export interface AirtableRecipeRecord {
     Ingredients?: string[]; // Array of linked ingredient record IDs
     'Total Cost'?: number;
     'Cost Per Serving'?: number;
+    'Q Factor %'?: number; // Quality Factor percentage (1-15%)
+    'Q Factor Cost'?: number; // Calculated: Total Cost * (Q Factor % / 100)
+    'Total Cost with Q Factor'?: number; // Calculated: Total Cost + Q Factor Cost
+    'Cost Per Serving with Q Factor'?: number; // Calculated: Total Cost with Q Factor / Servings
     Category?: string;
     'Prep Time'?: number;
     'Cook Time'?: number;
@@ -81,6 +85,32 @@ class AirtableService {
     return true;
   }
 
+  // Q Factor calculation helpers
+  private applyQFactor(baseCost: number, qFactor: number = 10): number {
+    return baseCost * (1 + qFactor / 100);
+  }
+
+  private calculateQFactorBreakdown(ingredients: Ingredient[], servings: number = 1, qFactor: number = 10) {
+    const baseCost = ingredients.reduce((sum, ingredient) => sum + (ingredient.totalCost || 0), 0);
+    const totalCostWithQFactor = this.applyQFactor(baseCost, qFactor);
+    const costPerServing = servings > 0 ? totalCostWithQFactor / servings : 0;
+    const qFactorAmount = totalCostWithQFactor - baseCost;
+
+    return {
+      baseCost,
+      qFactor,
+      qFactorAmount,
+      totalCost: totalCostWithQFactor,
+      costPerServing,
+      breakdown: {
+        baseCost,
+        qFactorPercentage: qFactor,
+        qFactorAmount,
+        totalWithQFactor: totalCostWithQFactor
+      }
+    };
+  }
+
   // Recipe Methods
   async getRecipes(): Promise<Recipe[]> {
     if (!this.checkInitialization()) return [];
@@ -96,16 +126,26 @@ class AirtableService {
       for (const record of records) {
         const recipeRecord = record as unknown as AirtableRecipeRecord;
         const ingredients = await this.getRecipeIngredients(recipeRecord.id);
-        
+        const servings = recipeRecord.fields.Servings || 1;
+        const qFactor = recipeRecord.fields['Q Factor %'] || 10;
+
+        // Calculate Q Factor costs
+        const costCalculation = this.calculateQFactorBreakdown(ingredients, servings, qFactor);
+
         recipes.push({
           id: recipeRecord.id,
           name: recipeRecord.fields.Name,
           description: recipeRecord.fields.Description || '',
-          servings: recipeRecord.fields.Servings || 1,
+          servings: servings,
           ingredients: ingredients,
           instructions: recipeRecord.fields.Instructions || '',
-          totalCost: recipeRecord.fields['Total Cost'] || 0,
-          costPerServing: recipeRecord.fields['Cost Per Serving'] || 0,
+          totalCost: costCalculation.totalCost,
+          costPerServing: costCalculation.costPerServing,
+          qFactorPercentage: qFactor,
+          qFactorCost: costCalculation.qFactorAmount,
+          totalCostWithQFactor: costCalculation.totalCost,
+          costPerServingWithQFactor: costCalculation.costPerServing,
+          costBreakdown: costCalculation.breakdown,
           category: recipeRecord.fields.Category || 'Uncategorized',
           prepTime: recipeRecord.fields['Prep Time'] || 0,
           cookTime: recipeRecord.fields['Cook Time'] || 0
@@ -150,7 +190,6 @@ class AirtableService {
     if (!this.checkInitialization()) return null;
 
     try {
-      console.log('🔍 Creating recipe with basic fields...');
 
       // Create minimal recipe record first to test field names
       const recipeRecord = await this.base!('Recipes').create({
@@ -160,7 +199,8 @@ class AirtableService {
         Instructions: recipe.instructions,
         Category: recipe.category,
         'Prep Time': recipe.prepTime,
-        'Cook Time': recipe.cookTime
+        'Cook Time': recipe.cookTime,
+        'Q Factor %': recipe.qFactorPercentage || 10
       });
 
       console.log('✅ Basic recipe created successfully:', recipeRecord.id);
@@ -168,7 +208,6 @@ class AirtableService {
       // If ingredients are provided, sync them to the junction table
       if (recipe.ingredients && recipe.ingredients.length > 0) {
         console.log(`🔄 Syncing ${recipe.ingredients.length} ingredients to junction table for new recipe ${recipeRecord.id}`);
-        console.log('🔍 [DEBUG] Ingredients to sync:', recipe.ingredients);
         await this.syncRecipeIngredientsToJunctionTable(recipeRecord.id, recipe.ingredients);
       } else {
         console.log('⚠️ No ingredients provided for new recipe');
@@ -222,14 +261,11 @@ class AirtableService {
       await this.base!('Recipes').update(id, updateFields);
 
       // If ingredients are being updated, sync with junction table
-      console.log('🔍 [DEBUG] Update recipe called with:', { id, hasIngredients: !!recipe.ingredients, ingredientCount: recipe.ingredients?.length });
 
       if (recipe.ingredients && recipe.ingredients.length > 0) {
         console.log(`🔄 Syncing ${recipe.ingredients.length} ingredients to junction table for recipe ${id}`);
-        console.log('🔍 [DEBUG] Ingredients to sync:', recipe.ingredients);
         await this.syncRecipeIngredientsToJunctionTable(id, recipe.ingredients);
       } else if (recipe.ingredients !== undefined) {
-        console.log('⚠️ [DEBUG] Ingredients array is empty or undefined:', recipe.ingredients);
       }
 
       // Recalculate costs if servings changed or ingredients updated
@@ -290,7 +326,6 @@ class AirtableService {
 
   // NEW: Get ingredients using Recipe Ingredients junction table (recommended)
   private async getRecipeIngredientsFromJunctionTable(recipeId: string): Promise<Ingredient[]> {
-    console.log(`🔍 [DEBUG] Querying junction table for recipe: ${recipeId}`);
 
     // Get all records from junction table and filter client-side (more reliable)
     const allJunctionRecords = await this.base!('Recipe Ingredients').select().all();
@@ -302,12 +337,7 @@ class AirtableService {
       return Array.isArray(recipes) && recipes.includes(recipeId);
     });
 
-    console.log(`🔍 [DEBUG] Junction table returned ${recipeIngredients.length} records`);
 
-    if (recipeIngredients.length > 0) {
-      console.log('🔍 [DEBUG] Sample junction record:', recipeIngredients[0].fields);
-      console.log('🔍 [DEBUG] Available fields:', Object.keys(recipeIngredients[0].fields));
-    }
 
     const ingredients: Ingredient[] = [];
 
@@ -493,11 +523,6 @@ class AirtableService {
       const totalCost = ingredientCosts.reduce((sum, item) => sum + item.totalCost, 0);
       const costPerServing = servings > 0 ? totalCost / servings : 0;
 
-      console.log(`📊 Recipe Cost Breakdown for ${recipe?.name || recipeId}:`);
-      console.log(`   Total Cost: $${totalCost.toFixed(2)}`);
-      console.log(`   Servings: ${servings}`);
-      console.log(`   Cost Per Serving: $${costPerServing.toFixed(2)}`);
-      console.log(`   Ingredients:`, ingredientCosts);
 
       return {
         totalCost,
@@ -553,7 +578,6 @@ class AirtableService {
         ? validCosts.reduce((sum, r) => sum + r.costPerServing, 0) / validCosts.length
         : 0;
 
-      console.log(`📊 Average Recipe Costs Across ${recipeCosts.length} Recipes:`);
       console.log(`   Average Total Cost: $${averageTotalCost.toFixed(2)}`);
       console.log(`   Average Cost Per Serving: $${averageCostPerServing.toFixed(2)}`);
 
@@ -576,7 +600,6 @@ class AirtableService {
       // Note: Total Cost and Cost Per Serving are computed fields in Airtable
       // They automatically update when ingredient costs change
       // So we don't need to manually update them
-      console.log(`📊 Recipe ${recipeId} costs will be automatically recalculated by Airtable`);
       console.log(`   Calculated total: $${totalCost.toFixed(2)}`);
       console.log(`   Calculated per serving: $${(servings > 0 ? totalCost / servings : 0).toFixed(2)}`);
     } catch (error) {
@@ -706,7 +729,6 @@ class AirtableService {
       const recipe = await this.getRecipeById(recipeId);
       if (recipe) {
         await this.updateRecipeCosts(recipeId, totalCost, recipe.servings);
-        console.log(`📊 Updated recipe ${recipeId} cost to $${totalCost.toFixed(2)}`);
       }
     } catch (error) {
       console.error(`Error updating recipe ${recipeId} costs:`, error);
@@ -831,7 +853,6 @@ class AirtableService {
         return recipes.includes(recipeId);
       });
 
-      console.log(`📊 Found ${existingRecords.length} existing junction records`);
 
       // Delete existing records for this recipe
       for (const record of existingRecords) {
@@ -902,7 +923,6 @@ class AirtableService {
 
       // Get all existing ingredient records
       const allIngredients = await this.base!('Ingredients').select().all();
-      console.log(`📊 Found ${allIngredients.length} ingredient records to migrate`);
 
       // Debug: Show sample ingredient structure
       if (allIngredients.length > 0) {
@@ -983,7 +1003,6 @@ class AirtableService {
       const recipes = await this.base!('Recipes').select().all();
       const ingredients = await this.base!('Ingredients').select().all();
 
-      console.log(`📊 Found ${recipes.length} recipes and ${ingredients.length} ingredients`);
 
       // Find some common ingredients by name
       const findIngredient = (name: string) => ingredients.find((ing: any) =>
@@ -1287,7 +1306,6 @@ if (typeof window !== 'undefined') {
       if (result) {
         console.log('🔍 Checking junction table...');
         const ingredients = await airtableService.getRecipeIngredients(result.id);
-        console.log('📊 Junction table ingredients:', ingredients);
 
         const costBreakdown = await airtableService.calculateRecipeCostBreakdown(result.id);
         console.log('💰 Cost breakdown:', costBreakdown);

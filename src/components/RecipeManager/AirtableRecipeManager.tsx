@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Recipe, Ingredient } from '../../types';
 import { airtableService } from '../../services/airtableService';
+import { apiService } from '../../services/apiService';
 import { productionOdooService as odooService } from '../../services/productionOdooService';
 import { initializeSampleData } from '../../data/sampleRecipes';
 import './RecipeManager.css';
@@ -17,18 +18,38 @@ const AirtableRecipeManager: React.FC = () => {
   const [isCalculatingCosts, setIsCalculatingCosts] = useState(false);
   const [recipeBreakdown, setRecipeBreakdown] = useState<any>(null);
   const [availableIngredients, setAvailableIngredients] = useState<{id: string, name: string, unitCost?: number}[]>([]);
+  const [ingredientSearchTerms, setIngredientSearchTerms] = useState<{[key: number]: string}>({});
+  const [showIngredientDropdowns, setShowIngredientDropdowns] = useState<{[key: number]: boolean}>({});
+  const [useApiService, setUseApiService] = useState<boolean>(false);
+  // Q Factor is now handled in Airtable, no local state needed
 
   const categories = ['all', 'Appetizers', 'Mains', 'Desserts', 'Beverages', 'Sauces', 'Sides'];
 
+  // Q Factor calculations are now handled by Airtable computed fields
+
   useEffect(() => {
-    setAirtableStatus(airtableService.getStatus());
-    if (airtableService.isEnabled()) {
-      loadRecipes();
-      loadAvailableIngredients();
-    } else {
-      // Fallback to localStorage if Airtable is not configured
-      loadLocalRecipes();
-    }
+    const initializeServices = async () => {
+      // Check if API service is available
+      const apiAvailable = await apiService.isAvailable();
+      setUseApiService(apiAvailable);
+
+      setAirtableStatus(airtableService.getStatus());
+
+      if (apiAvailable) {
+        console.log('✅ Using optimized API service');
+        await loadRecipes();
+        await loadAvailableIngredients();
+      } else if (airtableService.isEnabled()) {
+        console.log('⚠️ API service unavailable, falling back to direct Airtable');
+        await loadRecipes();
+        await loadAvailableIngredients();
+      } else {
+        // Fallback to localStorage if neither service is available
+        loadLocalRecipes();
+      }
+    };
+
+    initializeServices();
   }, []);
 
   // Calculate real-time costs when a recipe is selected
@@ -42,7 +63,10 @@ const AirtableRecipeManager: React.FC = () => {
     setIsLoading(true);
     setError(null);
     try {
-      if (airtableService.isEnabled()) {
+      if (useApiService) {
+        const apiRecipes = await apiService.getRecipes();
+        setRecipes(apiRecipes);
+      } else if (airtableService.isEnabled()) {
         const airtableRecipes = await airtableService.getRecipes();
         setRecipes(airtableRecipes);
       } else {
@@ -69,7 +93,10 @@ const AirtableRecipeManager: React.FC = () => {
 
   const loadAvailableIngredients = async () => {
     try {
-      if (airtableService.isEnabled()) {
+      if (useApiService) {
+        const ingredients = await apiService.getAllIngredients();
+        setAvailableIngredients(ingredients);
+      } else if (airtableService.isEnabled()) {
         const ingredients = await airtableService.getAllIngredients();
         setAvailableIngredients(ingredients);
       }
@@ -358,8 +385,10 @@ const AirtableRecipeManager: React.FC = () => {
       ...ingredient,
       totalCost: ingredient.quantity * (ingredient.cost || 0)
     };
-    
+
+    // Calculate base total cost (Q Factor will be handled by Airtable)
     const totalCost = updatedIngredients.reduce((sum, ing) => sum + (ing.totalCost || 0), 0);
+
     const updatedRecipe = {
       ...recipe,
       ingredients: updatedIngredients,
@@ -497,10 +526,8 @@ const AirtableRecipeManager: React.FC = () => {
                 >
                   <h4>{recipe.name}</h4>
                   <p className="recipe-category">{recipe.category}</p>
-                  <div className="recipe-stats">
-                    <span>Servings: {recipe.servings}</span>
-                    <span>Total Cost: ${recipe.totalCost?.toFixed(2) || '0.00'}</span>
-                    <span>Per Serving: ${recipe.costPerServing?.toFixed(2) || '0.00'}</span>
+                  <div className="recipe-cost-display">
+                    <span className="total-cost-badge">Total Cost: ${recipe.totalCost?.toFixed(2) || '0.00'}</span>
                   </div>
                   {recipe.ingredients.some(ing => ing.fromOdoo) && (
                     <div className="odoo-badge">Odoo Synced</div>
@@ -589,6 +616,7 @@ const AirtableRecipeManager: React.FC = () => {
                         min="1"
                         value={selectedRecipe.servings}
                         onChange={(e) => setSelectedRecipe({...selectedRecipe, servings: parseInt(e.target.value) || 1})}
+                        className="quantity-input"
                       />
                     </label>
 
@@ -599,6 +627,7 @@ const AirtableRecipeManager: React.FC = () => {
                         min="0"
                         value={selectedRecipe.prepTime || 0}
                         onChange={(e) => setSelectedRecipe({...selectedRecipe, prepTime: parseInt(e.target.value) || 0})}
+                        className="quantity-input"
                       />
                     </label>
 
@@ -609,6 +638,7 @@ const AirtableRecipeManager: React.FC = () => {
                         min="0"
                         value={selectedRecipe.cookTime || 0}
                         onChange={(e) => setSelectedRecipe({...selectedRecipe, cookTime: parseInt(e.target.value) || 0})}
+                        className="quantity-input"
                       />
                     </label>
                   </div>
@@ -617,9 +647,6 @@ const AirtableRecipeManager: React.FC = () => {
                 <div className="ingredients-section">
                   <div className="section-header">
                     <h4>Ingredients</h4>
-                    <button onClick={() => addIngredient(selectedRecipe)} className="add-ingredient-btn">
-                      ➕ Add Ingredient
-                    </button>
                   </div>
 
                   {selectedRecipe.ingredients.length > 0 && (
@@ -633,39 +660,88 @@ const AirtableRecipeManager: React.FC = () => {
                     </div>
                   )}
 
-                  {selectedRecipe.ingredients.map((ingredient, index) => (
+                  {selectedRecipe.ingredients.map((ingredient, index) => {
+                    const searchTerm = ingredientSearchTerms[index] || '';
+                    const showDropdown = showIngredientDropdowns[index] || false;
+                    const isSelected = ingredient.id && ingredient.name;
+                    const displayValue = isSelected ? ingredient.name : searchTerm;
+
+                    const filteredIngredients = searchTerm.length > 0 ?
+                      availableIngredients.filter(ing => {
+                        const match = ing.name && ing.name.toLowerCase().includes(searchTerm.toLowerCase());
+                        return match;
+                      }) : [];
+
+
+                    return (
                     <div key={index} className="ingredient-row">
-                      <select
-                        value={ingredient.id || ''}
-                        onChange={(e) => {
-                          if (e.target.value === 'custom') {
-                            // Allow custom ingredient entry
-                            updateIngredient(selectedRecipe, index, {...ingredient, name: '', id: undefined});
-                          } else if (e.target.value) {
-                            handleIngredientSelection(selectedRecipe, index, e.target.value);
-                          }
-                        }}
-                      >
-                        <option value="">Select ingredient...</option>
-                        {availableIngredients.map(ing => (
-                          <option key={ing.id} value={ing.id}>{ing.name}</option>
-                        ))}
-                        <option value="custom">+ Custom ingredient</option>
-                      </select>
-                      {(!ingredient.id || ingredient.id === 'custom') && (
+                      <div className="ingredient-search-container">
                         <input
                           type="text"
-                          placeholder="Custom ingredient name"
-                          value={ingredient.name}
-                          onChange={(e) => updateIngredient(selectedRecipe, index, {...ingredient, name: e.target.value})}
-                          style={{marginLeft: '5px'}}
+                          placeholder={isSelected ? ingredient.name : "Search ingredients..."}
+                          value={displayValue}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            setIngredientSearchTerms({...ingredientSearchTerms, [index]: value});
+                            setShowIngredientDropdowns({...showIngredientDropdowns, [index]: value.length > 0});
+
+                            // If ingredient is selected and user starts typing, clear selection to enable search
+                            if (isSelected && value !== ingredient.name) {
+                              updateIngredient(selectedRecipe, index, {...ingredient, name: '', id: undefined});
+                            } else if (!isSelected) {
+                              // Update name for custom ingredients
+                              updateIngredient(selectedRecipe, index, {...ingredient, name: value});
+                            }
+                          }}
+                          onFocus={() => {
+                            if (!isSelected && searchTerm.length > 0) {
+                              setShowIngredientDropdowns({...showIngredientDropdowns, [index]: true});
+                            }
+                          }}
+                          onBlur={() => {
+                            // Simple delay to allow clicks
+                            setTimeout(() => {
+                              setShowIngredientDropdowns({...showIngredientDropdowns, [index]: false});
+                            }, 150);
+                          }}
+                          className="ingredient-search-input"
                         />
-                      )}
+                        {showDropdown && (
+                            <div
+                              className="ingredient-dropdown"
+                              onMouseDown={(e) => e.preventDefault()}
+                            >
+                              {filteredIngredients.length > 0 ? (
+                                filteredIngredients.slice(0, 10).map(ing => (
+                                  <div
+                                    key={ing.id}
+                                    className="ingredient-dropdown-item"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleIngredientSelection(selectedRecipe, index, ing.id);
+                                      setIngredientSearchTerms({...ingredientSearchTerms, [index]: ''});
+                                      setShowIngredientDropdowns({...showIngredientDropdowns, [index]: false});
+                                    }}
+                                  >
+                                    <span className="ingredient-name">{ing.name}</span>
+                                  </div>
+                                ))
+                              ) : (
+                                <div className="ingredient-dropdown-item no-results">
+                                  <span className="ingredient-name">
+                                    {availableIngredients.length === 0 ? 'No ingredients loaded from Airtable' : 'No matching ingredients found'}
+                                  </span>
+                                </div>
+                              )}
+                            </div>
+                        )}
+                      </div>
                       <input
                         type="number"
                         placeholder="Quantity"
                         value={ingredient.quantity}
                         onChange={(e) => updateIngredient(selectedRecipe, index, {...ingredient, quantity: parseFloat(e.target.value) || 0})}
+                        className="quantity-input"
                       />
                       <select
                         value={ingredient.unit}
@@ -684,20 +760,32 @@ const AirtableRecipeManager: React.FC = () => {
                       <input
                         type="number"
                         step="0.01"
-                        placeholder="Unit cost"
-                        value={ingredient.cost || 0}
+                        placeholder="0.00"
+                        value={ingredient.cost ? ingredient.cost.toFixed(2) : '0.00'}
                         onChange={(e) => updateIngredient(selectedRecipe, index, {...ingredient, cost: parseFloat(e.target.value) || 0})}
+                        className="cost-input"
                       />
                       <span className="total-cost">${ingredient.totalCost?.toFixed(2) || '0.00'}</span>
-                      {ingredient.fromOdoo && <span className="odoo-indicator">Odoo</span>}
-                      <button 
+                      {ingredient.fromOdoo ? (
+                        <span className="odoo-indicator">Odoo</span>
+                      ) : (
+                        <span className="est-indicator">ESTIM</span>
+                      )}
+                      <button
                         onClick={() => removeIngredient(selectedRecipe, index)}
                         className="remove-ingredient-btn"
                       >
                         ×
                       </button>
                     </div>
-                  ))}
+                    );
+                  })}
+
+                  <div className="add-ingredient-container">
+                    <button onClick={() => addIngredient(selectedRecipe)} className="add-ingredient-btn">
+                      ➕ Add Ingredient
+                    </button>
+                  </div>
                 </div>
 
                 <div className="instructions-section">
@@ -711,12 +799,27 @@ const AirtableRecipeManager: React.FC = () => {
                   </label>
                 </div>
 
-                <div className="cost-summary">
-                  <div className="cost-item">
-                    <strong>Total Cost: ${selectedRecipe.totalCost?.toFixed(2) || '0.00'}</strong>
-                  </div>
-                  <div className="cost-item">
-                    <strong>Cost Per Serving: ${selectedRecipe.costPerServing?.toFixed(2) || '0.00'}</strong>
+                <div className="cost-breakdown-section">
+                  <h4>Cost Breakdown</h4>
+                  <div className="cost-summary">
+                    <div className="cost-breakdown">
+                      <div className="cost-item">
+                        <span>Ingredients Cost:</span>
+                        <span>${selectedRecipe.costBreakdown?.baseCost?.toFixed(2) || '0.00'}</span>
+                      </div>
+                      <div className="cost-item q-factor-item">
+                        <span>Q Factor Cost ({selectedRecipe.qFactorPercentage || 10}%):</span>
+                        <span>+${selectedRecipe.qFactorCost?.toFixed(2) || '0.00'}</span>
+                      </div>
+                      <div className="cost-item total-cost">
+                        <span><strong>Total Cost with Q Factor:</strong></span>
+                        <span><strong>${selectedRecipe.totalCostWithQFactor?.toFixed(2) || selectedRecipe.totalCost?.toFixed(2) || '0.00'}</strong></span>
+                      </div>
+                      <div className="cost-item">
+                        <span><strong>Cost Per Serving:</strong></span>
+                        <span><strong>${selectedRecipe.costPerServingWithQFactor?.toFixed(2) || selectedRecipe.costPerServing?.toFixed(2) || '0.00'}</strong></span>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -754,17 +857,23 @@ const AirtableRecipeManager: React.FC = () => {
                 </div>
 
                 <div className="cost-summary">
-                  <div className="cost-item">
-                    <strong>Total Cost: ${selectedRecipe.totalCost?.toFixed(2) || '0.00'}</strong>
-                    {recipeBreakdown && airtableService.isEnabled() && (
-                      <span className="cost-source"> (from junction table)</span>
-                    )}
-                  </div>
-                  <div className="cost-item">
-                    <strong>Cost Per Serving: ${selectedRecipe.costPerServing?.toFixed(2) || '0.00'}</strong>
-                    {recipeBreakdown && recipeBreakdown.servings && (
-                      <span className="cost-breakdown"> (${selectedRecipe.totalCost?.toFixed(2) || '0.00'} ÷ {recipeBreakdown.servings} servings)</span>
-                    )}
+                  <div className="cost-breakdown">
+                    <div className="cost-item">
+                      <span>Ingredients Cost:</span>
+                      <span>${selectedRecipe.costBreakdown?.baseCost?.toFixed(2) || '0.00'}</span>
+                    </div>
+                    <div className="cost-item q-factor-item">
+                      <span>Q Factor Cost ({selectedRecipe.qFactorPercentage || 10}%):</span>
+                      <span>+${selectedRecipe.qFactorCost?.toFixed(2) || '0.00'}</span>
+                    </div>
+                    <div className="cost-item total-cost">
+                      <span><strong>Total Cost with Q Factor:</strong></span>
+                      <span><strong>${selectedRecipe.totalCostWithQFactor?.toFixed(2) || selectedRecipe.totalCost?.toFixed(2) || '0.00'}</strong></span>
+                    </div>
+                    <div className="cost-item">
+                      <span><strong>Cost Per Serving:</strong></span>
+                      <span><strong>${selectedRecipe.costPerServingWithQFactor?.toFixed(2) || selectedRecipe.costPerServing?.toFixed(2) || '0.00'}</strong></span>
+                    </div>
                   </div>
                   {recipeBreakdown && recipeBreakdown.ingredientCosts && recipeBreakdown.ingredientCosts.length > 0 && (
                     <div className="cost-breakdown-details">
@@ -787,11 +896,15 @@ const AirtableRecipeManager: React.FC = () => {
                   <h4>Ingredients</h4>
                   {selectedRecipe.ingredients && selectedRecipe.ingredients.length > 0 ? (
                     selectedRecipe.ingredients.map((ingredient, index) => (
-                      <div key={ingredient.id || index} className="ingredient-item">
+                      <div key={`${ingredient.id}-${index}`} className="ingredient-item">
                         <span className="ingredient-name">{ingredient.name}</span>
                         <span className="ingredient-amount">{ingredient.quantity} {ingredient.unit}</span>
                         <span className="ingredient-cost">${ingredient.totalCost?.toFixed(2) || '0.00'}</span>
-                        {ingredient.fromOdoo && <span className="odoo-badge-small">Odoo</span>}
+                        {ingredient.fromOdoo ? (
+                          <span className="odoo-badge-small">Odoo</span>
+                        ) : (
+                          <span className="est-badge-small">ESTIM</span>
+                        )}
                       </div>
                     ))
                   ) : (

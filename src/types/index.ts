@@ -11,6 +11,13 @@ export interface Document {
   lastModified: Date;
 }
 
+export interface CostBreakdown {
+  baseCost: number;
+  qFactorPercentage: number;
+  qFactorAmount: number;
+  totalWithQFactor: number;
+}
+
 export interface Recipe {
   id: string;
   name: string;
@@ -25,6 +32,11 @@ export interface Recipe {
   cost?: number; // calculated from ingredients
   totalCost?: number;
   costPerServing?: number;
+  qFactorPercentage?: number; // Q Factor percentage (1-15%)
+  qFactorCost?: number; // Dollar amount added by Q Factor
+  totalCostWithQFactor?: number; // Total cost including Q Factor
+  costPerServingWithQFactor?: number; // Cost per serving including Q Factor
+  costBreakdown?: CostBreakdown; // Detailed cost breakdown
   notes?: string;
 }
 
