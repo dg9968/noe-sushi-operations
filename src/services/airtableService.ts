@@ -19,6 +19,7 @@ export interface AirtableRecipeRecord {
     Category?: string;
     'Prep Time'?: number;
     'Cook Time'?: number;
+    Image?: Airtable.Attachment[]; // Airtable attachment field for recipe images
     'Created Date'?: string;
     'Last Modified'?: string;
   };
@@ -40,9 +41,36 @@ export interface AirtableIngredientRecord {
   };
 }
 
+export interface AirtableCOGSCalculatorRecord {
+  id: string;
+  fields: {
+    'Session Name': string;
+    'Recipe Name': string;
+    'Recipe ID': string;
+    'Unit Cost': number;
+    'Quantity Sold': number;
+    'Total Cost': number;
+    'Created Date'?: string;
+    'Last Modified'?: string;
+    'Notes'?: string;
+  };
+}
+
+export interface COGSCalculatorEntry {
+  sessionName: string;
+  recipeName: string;
+  recipeId: string;
+  unitCost: number;
+  quantitySold: number;
+  totalCost: number;
+  notes?: string;
+}
+
 class AirtableService {
   private base: Airtable.Base | null = null;
   private isInitialized = false;
+  private cachedJunctionRecords: readonly any[] | null = null;
+  private cachedIngredients: readonly any[] | null = null;
 
   constructor() {
     this.initialize();
@@ -83,6 +111,13 @@ class AirtableService {
       return false;
     }
     return true;
+  }
+
+  // Clear cached data to force fresh API calls
+  public clearCache(): void {
+    console.log('🧹 Clearing Airtable cache...');
+    this.cachedJunctionRecords = null;
+    this.cachedIngredients = null;
   }
 
   // Q Factor calculation helpers
@@ -148,13 +183,68 @@ class AirtableService {
           costBreakdown: costCalculation.breakdown,
           category: recipeRecord.fields.Category || 'Uncategorized',
           prepTime: recipeRecord.fields['Prep Time'] || 0,
-          cookTime: recipeRecord.fields['Cook Time'] || 0
+          cookTime: recipeRecord.fields['Cook Time'] || 0,
+          image: recipeRecord.fields.Image && recipeRecord.fields.Image.length > 0
+            ? recipeRecord.fields.Image[0].url
+            : undefined
         });
       }
 
       return recipes;
     } catch (error) {
       console.error('Error fetching recipes from Airtable:', error);
+      return [];
+    }
+  }
+
+  // Lightweight method for Cost Management - only fetches essential fields
+  async getRecipesBasic(): Promise<Recipe[]> {
+    if (!this.checkInitialization()) return [];
+
+    try {
+      console.log('📋 Fetching basic recipe data for Cost Management...');
+
+      const records = await this.base!('Recipes').select({
+        fields: ['Name', 'Category', 'Prep Time', 'Servings', 'Q Factor %'],
+        sort: [{ field: 'Name', direction: 'asc' }]
+      }).all();
+
+      const recipes: Recipe[] = records.map(record => {
+        const recipeRecord = record as unknown as AirtableRecipeRecord;
+        const servings = recipeRecord.fields.Servings || 1;
+        // Set placeholder costs - actual costs will be calculated when ingredients are loaded
+        const totalCost = 0; // Will be calculated in full recipe load
+        const totalCostWithQFactor = 0; // Will be calculated in full recipe load
+
+        return {
+          id: recipeRecord.id,
+          name: recipeRecord.fields.Name,
+          description: '', // Not needed for Cost Management
+          category: recipeRecord.fields.Category || 'Uncategorized',
+          servings: servings,
+          ingredients: [], // Not needed for Cost Management
+          instructions: '', // Not needed for Cost Management
+          prepTime: recipeRecord.fields['Prep Time'] || 0,
+          totalCost: totalCost,
+          costPerServing: servings > 0 ? totalCost / servings : 0,
+          totalCostWithQFactor: totalCostWithQFactor,
+          costPerServingWithQFactor: servings > 0 ? totalCostWithQFactor / servings : 0,
+          qFactor: recipeRecord.fields['Q Factor %'] || 10,
+          qFactorBreakdown: {
+            laborCost: 0,
+            overheadCost: 0,
+            totalCost: totalCost,
+            totalCostWithQFactor: totalCostWithQFactor
+          },
+          image: undefined // Not needed for Cost Management
+        };
+      });
+
+      console.log(`📋 Loaded ${recipes.length} basic recipes in fast mode`);
+      return recipes;
+
+    } catch (error) {
+      console.error('Error fetching basic recipes from Airtable:', error);
       return [];
     }
   }
@@ -178,7 +268,10 @@ class AirtableService {
         costPerServing: recipeRecord.fields['Cost Per Serving'] || 0,
         category: recipeRecord.fields.Category || 'Uncategorized',
         prepTime: recipeRecord.fields['Prep Time'] || 0,
-        cookTime: recipeRecord.fields['Cook Time'] || 0
+        cookTime: recipeRecord.fields['Cook Time'] || 0,
+        image: recipeRecord.fields.Image && recipeRecord.fields.Image.length > 0
+          ? recipeRecord.fields.Image[0].url
+          : undefined
       };
     } catch (error) {
       console.error('Error fetching recipe from Airtable:', error);
@@ -327,17 +420,36 @@ class AirtableService {
   // NEW: Get ingredients using Recipe Ingredients junction table (recommended)
   private async getRecipeIngredientsFromJunctionTable(recipeId: string): Promise<Ingredient[]> {
 
-    // Get all records from junction table and filter client-side (more reliable)
-    const allJunctionRecords = await this.base!('Recipe Ingredients').select().all();
+    // Use cached junction records if available
+    if (!this.cachedJunctionRecords) {
+      console.log('📊 Loading junction records from Airtable...');
+      const junctionRecords = await this.base!('Recipe Ingredients').select().all();
+      this.cachedJunctionRecords = junctionRecords;
+      console.log(`📊 Cached ${junctionRecords.length} junction records`);
+    }
 
     // Filter client-side for the specific recipe
-    const recipeIngredients = allJunctionRecords.filter((record: any) => {
+    const recipeIngredients = this.cachedJunctionRecords.filter((record: any) => {
       const junctionRecord = record as any;
       const recipes = junctionRecord.fields['Recipe'] || [];
       return Array.isArray(recipes) && recipes.includes(recipeId);
     });
 
+    // Use cached ingredients if available
+    if (!this.cachedIngredients) {
+      console.log('🥗 Loading all ingredients from Airtable...');
+      const ingredients = await this.base!('Ingredients').select().all();
+      this.cachedIngredients = ingredients;
+      console.log(`🥗 Cached ${ingredients.length} ingredients`);
+    }
 
+    // Create a map for fast ingredient lookup
+    const ingredientMap = new Map();
+    if (this.cachedIngredients) {
+      this.cachedIngredients.forEach((record: any) => {
+        ingredientMap.set(record.id, record);
+      });
+    }
 
     const ingredients: Ingredient[] = [];
 
@@ -346,8 +458,12 @@ class AirtableService {
       const ingredientId = recipeIngredient.fields['Ingredient']?.[0];
 
       if (ingredientId) {
-        // Get the master ingredient data
-        const masterIngredient = await this.base!('Ingredients').find(ingredientId);
+        // Get the master ingredient data from cache
+        const masterIngredient = ingredientMap.get(ingredientId);
+        if (!masterIngredient) {
+          console.warn(`⚠️ Ingredient ${ingredientId} not found in cache`);
+          continue;
+        }
         const masterData = masterIngredient as any;
 
         // Calculate cost using recipe-specific quantity and master unit cost
@@ -1162,6 +1278,196 @@ class AirtableService {
       return `Debug failed: ${error}`;
     }
   }
+
+  // ==================== COGS Calculator Backup Methods ====================
+
+  /**
+   * Save current Cost Management calculator state to Airtable
+   */
+  async saveCOGSCalculatorSession(sessionName: string, recipeRows: COGSCalculatorEntry[]): Promise<boolean> {
+    if (!this.checkInitialization()) {
+      throw new Error('Airtable service not initialized');
+    }
+
+    if (!sessionName || !sessionName.trim()) {
+      throw new Error('Session name is required');
+    }
+
+    if (!Array.isArray(recipeRows) || recipeRows.length === 0) {
+      throw new Error('No recipe data to save');
+    }
+
+    try {
+      console.log(`💾 Saving COGS calculator session: "${sessionName}" with ${recipeRows.length} recipes`);
+
+      // Filter out recipes with zero quantity
+      const recipesToSave = recipeRows.filter(row => row.quantitySold > 0);
+
+      if (recipesToSave.length === 0) {
+        throw new Error('No recipes with quantities to save. Please enter some quantities before saving.');
+      }
+
+      // Prepare records for Airtable
+      const records = recipesToSave.map(row => ({
+        fields: {
+          'Session Name': sessionName.trim(),
+          'Recipe Name': row.recipeName,
+          'Recipe ID': row.recipeId,
+          'Unit Cost': row.unitCost,
+          'Quantity Sold': row.quantitySold,
+          'Total Cost': row.totalCost,
+          'Notes': row.notes || ''
+        }
+      }));
+
+      // Delete existing records with the same session name first
+      await this.deleteCOGSCalculatorSession(sessionName);
+
+      // Save new records in batches (Airtable limit is 10 records per request)
+      const batchSize = 10;
+      for (let i = 0; i < records.length; i += batchSize) {
+        const batch = records.slice(i, i + batchSize);
+        await this.base!('Customer COGS Calculator').create(batch);
+        console.log(`💾 Saved batch ${Math.floor(i / batchSize) + 1}/${Math.ceil(records.length / batchSize)}`);
+      }
+
+      console.log(`✅ COGS calculator session "${sessionName}" saved successfully with ${recipesToSave.length} recipes`);
+      return true;
+
+    } catch (error) {
+      console.error('❌ Error saving COGS calculator session:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Load a saved Cost Management calculator session from Airtable
+   */
+  async loadCOGSCalculatorSession(sessionName: string): Promise<COGSCalculatorEntry[]> {
+    if (!this.checkInitialization()) {
+      throw new Error('Airtable service not initialized');
+    }
+
+    if (!sessionName || !sessionName.trim()) {
+      throw new Error('Session name is required');
+    }
+
+    try {
+      console.log(`📂 Loading COGS calculator session: "${sessionName}"`);
+
+      const records = await this.base!('Customer COGS Calculator')
+        .select({
+          filterByFormula: `{Session Name} = "${sessionName.trim()}"`,
+          sort: [{ field: 'Recipe Name', direction: 'asc' }]
+        })
+        .all();
+
+      if (records.length === 0) {
+        throw new Error(`No saved session found with name: "${sessionName}"`);
+      }
+
+      const entries: COGSCalculatorEntry[] = records.map(record => {
+        const fields = record.fields as AirtableCOGSCalculatorRecord['fields'];
+        return {
+          sessionName: fields['Session Name'],
+          recipeName: fields['Recipe Name'],
+          recipeId: fields['Recipe ID'],
+          unitCost: fields['Unit Cost'] || 0,
+          quantitySold: fields['Quantity Sold'] || 0,
+          totalCost: fields['Total Cost'] || 0,
+          notes: fields['Notes'] || ''
+        };
+      });
+
+      console.log(`✅ Loaded COGS calculator session "${sessionName}" with ${entries.length} recipes`);
+      return entries;
+
+    } catch (error) {
+      console.error('❌ Error loading COGS calculator session:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Get list of all saved COGS calculator sessions
+   */
+  async getCOGSCalculatorSessions(): Promise<string[]> {
+    if (!this.checkInitialization()) {
+      throw new Error('Airtable service not initialized');
+    }
+
+    try {
+      console.log('📋 Getting list of COGS calculator sessions...');
+
+      const records = await this.base!('Customer COGS Calculator')
+        .select({
+          fields: ['Session Name'],
+          sort: [{ field: 'Created Date', direction: 'desc' }]
+        })
+        .all();
+
+      // Get unique session names
+      const sessionNames = new Set<string>();
+      records.forEach(record => {
+        const sessionName = record.fields['Session Name'] as string;
+        if (sessionName && sessionName.trim()) {
+          sessionNames.add(sessionName.trim());
+        }
+      });
+
+      const sessions = Array.from(sessionNames);
+      console.log(`✅ Found ${sessions.length} COGS calculator sessions`);
+      return sessions;
+
+    } catch (error) {
+      console.error('❌ Error getting COGS calculator sessions:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Delete a COGS calculator session
+   */
+  async deleteCOGSCalculatorSession(sessionName: string): Promise<boolean> {
+    if (!this.checkInitialization()) {
+      throw new Error('Airtable service not initialized');
+    }
+
+    if (!sessionName || !sessionName.trim()) {
+      throw new Error('Session name is required');
+    }
+
+    try {
+      console.log(`🗑️ Deleting COGS calculator session: "${sessionName}"`);
+
+      const records = await this.base!('Customer COGS Calculator')
+        .select({
+          filterByFormula: `{Session Name} = "${sessionName.trim()}"`
+        })
+        .all();
+
+      if (records.length === 0) {
+        console.log(`ℹ️ No records found for session "${sessionName}"`);
+        return true;
+      }
+
+      // Delete records in batches (Airtable limit is 10 records per request)
+      const batchSize = 10;
+      for (let i = 0; i < records.length; i += batchSize) {
+        const batch = records.slice(i, i + batchSize);
+        const recordIds = batch.map(record => record.id);
+        await this.base!('Customer COGS Calculator').destroy(recordIds);
+        console.log(`🗑️ Deleted batch ${Math.floor(i / batchSize) + 1}/${Math.ceil(records.length / batchSize)}`);
+      }
+
+      console.log(`✅ Deleted COGS calculator session "${sessionName}" (${records.length} records)`);
+      return true;
+
+    } catch (error) {
+      console.error('❌ Error deleting COGS calculator session:', error);
+      throw error;
+    }
+  }
 }
 
 export const airtableService = new AirtableService();
@@ -1169,182 +1475,4 @@ export const airtableService = new AirtableService();
 // Make available globally for testing
 if (typeof window !== 'undefined') {
   (window as any).airtableService = airtableService;
-
-  // Add a manual sync function for testing
-  (window as any).testJunctionSync = async (recipeId: string) => {
-    const mockIngredients = [
-      { name: 'Sushi Rice', quantity: 2, unit: 'cups' },
-      { name: 'Avocado', quantity: 1, unit: 'piece' }
-    ];
-
-    console.log('🧪 Testing junction table sync with mock ingredients...');
-    const result = await airtableService.syncRecipeIngredientsToJunctionTable(recipeId, mockIngredients);
-    console.log('🧪 Test result:', result);
-    return result;
-  };
-
-  // Add cost calculation functions for testing
-  (window as any).getRecipeCostBreakdown = async (recipeId: string) => {
-    return await airtableService.calculateRecipeCostBreakdown(recipeId);
-  };
-
-  // Make debug function available globally for testing
-  (window as any).debugAirtableStructure = async () => {
-    return await airtableService.debugAirtableStructure();
-  };
-
-  // Function to discover valid categories from existing recipes
-  (window as any).getValidCategories = async () => {
-    try {
-      const recipes = await airtableService.getRecipes();
-      const allCategories = recipes.map((r: any) => r.category).filter(Boolean);
-      const uniqueCategories = allCategories.filter((category: string, index: number) =>
-        allCategories.indexOf(category) === index
-      );
-      console.log('📋 Valid categories found in existing recipes:', uniqueCategories);
-      return uniqueCategories;
-    } catch (error) {
-      console.error('Error getting categories:', error);
-      return [];
-    }
-  };
-
-  // Diagnostic function to test Airtable permissions and field constraints
-  (window as any).diagnoseAirtableIssues = async () => {
-    console.log('🔍 Diagnosing Airtable permissions and field constraints...');
-
-    try {
-      // Test 1: Check basic read permissions
-      console.log('\n📖 TEST 1: Basic read permissions');
-      const recipes = await airtableService.getRecipes();
-      console.log(`✅ Read permissions: OK (found ${recipes.length} recipes)`);
-
-      // Test 2: Check field structure and constraints
-      console.log('\n🔧 TEST 2: Field structure analysis');
-      await airtableService.debugAirtableStructure();
-
-      // Test 3: Test minimal recipe creation with safe values
-      console.log('\n📝 TEST 3: Minimal recipe creation');
-
-      // Get valid categories first
-      const validCategories = await (window as any).getValidCategories();
-      const categoryToUse = validCategories.length > 0 ? validCategories[0] : undefined;
-      console.log(`🔍 Using category: "${categoryToUse}"`);
-
-      const testRecipe = {
-        name: `Test Recipe ${Date.now()}`,
-        description: 'Minimal test recipe',
-        category: categoryToUse, // Use first valid category found
-        servings: 1,
-        instructions: 'Test instructions',
-        prepTime: 5,
-        cookTime: 5,
-        ingredients: [], // Required by TypeScript
-        totalCost: 0,
-        costPerServing: 0
-      };
-
-      console.log('🔄 Attempting to create minimal recipe...');
-      const result = await airtableService.createRecipe(testRecipe);
-
-      if (result) {
-        console.log('✅ Recipe creation: OK', result.id);
-
-        // Test 4: Test update permissions
-        console.log('\n✏️ TEST 4: Update permissions');
-        const updateResult = await airtableService.updateRecipe(result.id, {
-          description: 'Updated description'
-        });
-
-        if (updateResult) {
-          console.log('✅ Update permissions: OK');
-        } else {
-          console.log('❌ Update permissions: FAILED');
-        }
-      } else {
-        console.log('❌ Recipe creation: FAILED');
-      }
-
-      console.log('\n📋 SUMMARY:');
-      console.log('- If creation failed, check API key permissions in Airtable');
-      console.log('- If update failed, check if API key has edit permissions');
-      console.log('- Check field types in Airtable base for Category field constraints');
-
-    } catch (error) {
-      console.error('❌ Diagnostic failed:', error);
-    }
-  };
-
-  // Test function to create a sample recipe with ingredients
-  (window as any).testRecipeWithIngredients = async () => {
-    console.log('🧪 Testing recipe creation with ingredients...');
-
-    // First get valid categories
-    const validCategories = await (window as any).getValidCategories();
-    const categoryToUse = validCategories.length > 0 ? validCategories[0] : undefined;
-
-    console.log(`🔍 Using category: "${categoryToUse}" (from valid options: ${validCategories.join(', ')})`);
-
-    const sampleRecipe = {
-      name: 'Test Recipe with Ingredients',
-      description: 'Testing junction table sync',
-      category: categoryToUse, // Use first valid category found
-      servings: 2,
-      prepTime: 10,
-      cookTime: 15,
-      instructions: 'Mix ingredients and cook.',
-      ingredients: [
-        { name: 'Sushi Rice', quantity: 1, unit: 'cup', cost: 2.50, totalCost: 2.50 },
-        { name: 'Avocado', quantity: 1, unit: 'piece', cost: 1.50, totalCost: 1.50 }
-      ]
-    };
-
-    try {
-      const result = await airtableService.createRecipe(sampleRecipe);
-      console.log('✅ Recipe created:', result);
-
-      if (result) {
-        console.log('🔍 Checking junction table...');
-        const ingredients = await airtableService.getRecipeIngredients(result.id);
-
-        const costBreakdown = await airtableService.calculateRecipeCostBreakdown(result.id);
-        console.log('💰 Cost breakdown:', costBreakdown);
-      }
-
-      return result;
-    } catch (error) {
-      console.error('❌ Test failed:', error);
-      return null;
-    }
-  };
-
-  (window as any).getAverageRecipeCosts = async () => {
-    const recipes = await airtableService.getRecipes();
-    const recipeIds = recipes.map((r: Recipe) => r.id);
-    return await airtableService.calculateAverageRecipeCosts(recipeIds);
-  };
-
-  (window as any).getAllRecipeCosts = async () => {
-    const recipes = await airtableService.getRecipes();
-    const results: any[] = [];
-
-    for (const recipe of recipes) {
-      const breakdown = await airtableService.calculateRecipeCostBreakdown(recipe.id);
-      results.push({
-        recipeName: recipe.name,
-        recipeId: recipe.id,
-        ...breakdown
-      });
-    }
-
-    console.table(results.map((r: any) => ({
-      Recipe: r.recipeName,
-      'Total Cost': `$${r.totalCost.toFixed(2)}`,
-      'Cost/Serving': `$${r.costPerServing.toFixed(2)}`,
-      Servings: r.servings,
-      Ingredients: r.ingredientCosts.length
-    })));
-
-    return results;
-  };
 }

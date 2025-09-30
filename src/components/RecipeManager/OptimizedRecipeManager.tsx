@@ -212,6 +212,34 @@ const OptimizedRecipeManager: React.FC = () => {
     }
   };
 
+  const createNewRecipe = () => {
+    const newRecipe: Recipe = {
+      id: '', // Empty ID indicates this is a new recipe
+      name: 'New Recipe',
+      category: selectedCategory || 'Main Courses',
+      prepTime: 0,
+      cookTime: 0,
+      servings: 1,
+      ingredients: [
+        {
+          id: '',
+          name: '',
+          quantity: 0,
+          unit: '',
+          cost: 0,
+          totalCost: 0
+        }
+      ],
+      instructions: '',
+      totalCost: 0,
+      qFactorPercentage: qFactor
+    };
+
+    setSelectedRecipe(newRecipe);
+    setSelectedRecipeId(''); // Clear selected recipe ID since this is new
+    setIsEditing(true); // Start in edit mode for new recipes
+  };
+
   const searchIngredients = async (query: string, index: number) => {
     setIngredientSearchTerms(prev => ({ ...prev, [index]: query }));
     setShowIngredientDropdowns(prev => ({ ...prev, [index]: true }));
@@ -362,6 +390,13 @@ const OptimizedRecipeManager: React.FC = () => {
               {isLoadingList ? 'Refreshing...' : '🔄 Refresh'}
             </button>
             <button
+              onClick={createNewRecipe}
+              className="btn btn-success"
+              title="Create a new recipe"
+            >
+              + New Recipe
+            </button>
+            <button
               onClick={() => setIsEditing(!isEditing)}
               className="btn btn-primary"
               disabled={!selectedRecipe}
@@ -427,12 +462,103 @@ const OptimizedRecipeManager: React.FC = () => {
           ) : selectedRecipe ? (
             <div className="recipe-details">
               <div className="recipe-header-section">
-                <h2>{selectedRecipe.name}</h2>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={selectedRecipe.name}
+                    onChange={(e) => setSelectedRecipe({
+                      ...selectedRecipe,
+                      name: e.target.value
+                    })}
+                    className="recipe-name-input"
+                    placeholder="Recipe Name"
+                    style={{ fontSize: '1.5rem', fontWeight: 'bold', border: '2px solid #ddd', padding: '8px', borderRadius: '4px', width: '100%', marginBottom: '1rem' }}
+                  />
+                ) : (
+                  <h2>{selectedRecipe.name}</h2>
+                )}
                 <div className="recipe-meta-grid">
-                  <div>Category: {selectedRecipe.category}</div>
-                  {selectedRecipe.servings > 1 && <div>Servings: {selectedRecipe.servings}</div>}
-                  <div>Prep Time: {selectedRecipe.prepTime || 0} min</div>
-                  <div>Cook Time: {selectedRecipe.cookTime || 0} min</div>
+                  <div className="recipe-meta-info">
+                    {isEditing ? (
+                      <>
+                        <div>
+                          Category:
+                          <select
+                            value={selectedRecipe.category}
+                            onChange={(e) => setSelectedRecipe({
+                              ...selectedRecipe,
+                              category: e.target.value
+                            })}
+                            style={{ marginLeft: '8px', padding: '4px' }}
+                          >
+                            <option value="Appetizers">Appetizers</option>
+                            <option value="Main Courses">Main Courses</option>
+                            <option value="Desserts">Desserts</option>
+                            <option value="Beverages">Beverages</option>
+                            <option value="Sides">Sides</option>
+                            <option value="Sauces">Sauces</option>
+                          </select>
+                        </div>
+                        <div>
+                          Prep Time:
+                          <input
+                            type="number"
+                            value={selectedRecipe.prepTime || 0}
+                            onChange={(e) => setSelectedRecipe({
+                              ...selectedRecipe,
+                              prepTime: parseInt(e.target.value) || 0
+                            })}
+                            style={{ marginLeft: '8px', padding: '4px', width: '60px' }}
+                          /> min
+                        </div>
+                        <div>
+                          Cook Time:
+                          <input
+                            type="number"
+                            value={selectedRecipe.cookTime || 0}
+                            onChange={(e) => setSelectedRecipe({
+                              ...selectedRecipe,
+                              cookTime: parseInt(e.target.value) || 0
+                            })}
+                            style={{ marginLeft: '8px', padding: '4px', width: '60px' }}
+                          /> min
+                        </div>
+                        <div>
+                          Servings:
+                          <input
+                            type="number"
+                            value={selectedRecipe.servings || 1}
+                            onChange={(e) => setSelectedRecipe({
+                              ...selectedRecipe,
+                              servings: parseInt(e.target.value) || 1
+                            })}
+                            style={{ marginLeft: '8px', padding: '4px', width: '60px' }}
+                          />
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div>Category: {selectedRecipe.category}</div>
+                        <div>Prep Time: {selectedRecipe.prepTime || 0} min</div>
+                        <div>Cook Time: {selectedRecipe.cookTime || 0} min</div>
+                        {selectedRecipe.servings > 1 && <div>Servings: {selectedRecipe.servings}</div>}
+                      </>
+                    )}
+                  </div>
+                  <div className="recipe-image-container">
+                    {selectedRecipe.image ? (
+                      <img
+                        src={selectedRecipe.image}
+                        alt={selectedRecipe.name}
+                        className="recipe-image"
+                      />
+                    ) : (
+                      <div className="no-image-placeholder">
+                        <span>📷</span>
+                        <p>No image available</p>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
 
@@ -610,12 +736,14 @@ const OptimizedRecipeManager: React.FC = () => {
                               <li key={index}>{step}</li>
                             ))}
                           </ol>
-                        ) : (
+                        ) : typeof selectedRecipe.instructions === 'string' ? (
                           <div className="instructions-text">
                             {selectedRecipe.instructions.split('\n').map((line, index) => (
                               <p key={index}>{line}</p>
                             ))}
                           </div>
+                        ) : (
+                          <p className="no-instructions">Instructions format not supported</p>
                         )
                       ) : (
                         <p className="no-instructions">No instructions provided</p>
