@@ -1,0 +1,31 @@
+﻿__Recipe,RECIPE NAME:,,Missing purchase quantity of ingredient,,,Missing unitary cost of ingredient,0,-,0,-
+Chef Fried Rice pork,MENU CATEGORY:,,Combinations,,1
+Chef Fried Rice pork,RECIPE,,AS PURCHASED,,,INVOICE,,RECIPE,,INDIVIDUAL
+Chef Fried Rice pork,QTY,UNIT,QTY,UNIT,INGREDIENT,COST,UNIT,COST,UNIT,INGREDIENT COST
+Chef Fried Rice pork,7.76,Un,50,LB,rice,0.075,Un,0.582,Un,0.582
+Chef Fried Rice pork,0.7,Un,1,LB,green pepper,0.15625,Un,0.109375,Un,0.109375
+Chef Fried Rice pork,0.35,,56,Oz(v),sesame oil,0.5485714285714286,0,0.192,0,0.192
+Chef Fried Rice pork,0.07,,2,LB,chives,0.5,0,0.035,0,0.035
+Chef Fried Rice pork,0.7,,25,LB,carrot,0.035,0,0.0245,0,0.0245
+Chef Fried Rice pork,4,,33.81,Oz(v),japanese sauce,0.1520260278024253,0,0.6081041112097012,0,0.6081041112097012
+Chef Fried Rice pork,0.07,,2,LB,hondashi,1.4625,0,0.10237500000000001,0,0.10237500000000001
+Chef Fried Rice pork,0.7,,2.5,LB,mushroom,0.32375,0,0.22662499999999997,0,0.22662499999999997
+Chef Fried Rice pork,0.7,,1,LB,pearl onion,0.09375,0,0.06562499999999999,0,0.06562499999999999
+Chef Fried Rice pork,1,,180,Un,egg,0.24666666666666665,0,0.24666666666666665,0,0.24666666666666665
+Chef Fried Rice pork,0.35,,5,LB,bean sprout,0.1375,0,0.048125,0,0.048125
+Chef Fried Rice pork,4,,1,LB,pork diced,0.274375,0,1.0975,0,1.0975
+Chef Fried Rice pork,,,,,,,TOTAL INGREDIENT COST,,,3.3378957778763683
+Chef Fried Rice pork,,,,,,,15% Q FACTOR,,,0.33378957778763685
+Chef Fried Rice pork,,,,,,,RECIPE COST,,,3.671685355664005
+Chef Fried Rice pork,,,,,,,PORTION COST,,,0.01912336122741669
+Chef Fried Rice pork,PROCEDURE:,,,,,,ADDITIONAL COST,,,0.5
+Chef Fried Rice pork,,,,,,,TOTAL COST,,,4.190808716891421
+Chef Fried Rice pork,,,,,,,DESIRED FOOD COST %,,,0.3
+Chef Fried Rice pork,,,,,,,DESRIRED MENU PRICE,,,13.969362389638071
+Chef Fried Rice pork,,,,,,,CURRENT PRICE,,,19
+Chef Fried Rice pork,,,,,,,VARIANCE,,,5.030637610361929
+Chef Fried Rice pork,,,,,,,ACTUAL FOOD COST,,,0.2205688798363906
+Chef Fried Rice pork,,,,,,,PVP MENU UBER,,,19
+Chef Fried Rice pork,,,,,,,COM 25%,,,4.75
+Chef Fried Rice pork,,,,,,,PVP FINAL,,,14.25
+Chef Fried Rice pork,,,,,,,MARGEN,,,0.7059081602181458

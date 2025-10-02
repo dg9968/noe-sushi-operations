@@ -1,0 +1,24 @@
+﻿__Recipe,RECIPE NAME:,,Missing purchase quantity of ingredient,,,Missing unitary cost of ingredient,0,-,0,-
+Shrimp Salad,MENU CATEGORY:,,Combinations,,1
+Shrimp Salad,RECIPE,,AS PURCHASED,,,INVOICE,,RECIPE,,INDIVIDUAL
+Shrimp Salad,QTY,UNIT,QTY,UNIT,INGREDIENT,COST,UNIT,COST,UNIT,INGREDIENT COST
+Shrimp Salad,1.5,Un,50,Un,lettuce,0.72,Un,1.08,Un,1.08
+Shrimp Salad,1,Un,25,LB,carrot,0.035,Un,0.035,Un,0.035
+Shrimp Salad,1,,1,LB,cucumber,0.059375,0,0.059375,0,0.059375
+Shrimp Salad,2,,10,LB,ebi tempura,0.4955,0,0.991,0,0.991
+Shrimp Salad,2,,1,Oz(v),mustard sauce,0.24,0,0.48,0,0.48
+Shrimp Salad,,,,,,,TOTAL INGREDIENT COST,,,2.645375
+Shrimp Salad,,,,,,,15% Q FACTOR,,,0.26453750000000004
+Shrimp Salad,,,,,,,RECIPE COST,,,2.9099125
+Shrimp Salad,,,,,,,PORTION COST,,,0.015155794270833333
+Shrimp Salad,PROCEDURE:,,,,,,ADDITIONAL COST,,,0.5
+Shrimp Salad,,,,,,,TOTAL COST,,,3.425068294270833
+Shrimp Salad,,,,,,,DESIRED FOOD COST %,,,0.3
+Shrimp Salad,,,,,,,DESRIRED MENU PRICE,,,11.41689431423611
+Shrimp Salad,,,,,,,CURRENT PRICE,,,15
+Shrimp Salad,,,,,,,VARIANCE,,,3.58310568576389
+Shrimp Salad,,,,,,,ACTUAL FOOD COST,,,0.2283378862847222
+Shrimp Salad,,,,,,,PVP MENU UBER,,,15
+Shrimp Salad,,,,,,,COM 25%,,,3.75
+Shrimp Salad,,,,,,,PVP FINAL,,,11.25
+Shrimp Salad,,,,,,,MARGEN,,,0.6955494849537037

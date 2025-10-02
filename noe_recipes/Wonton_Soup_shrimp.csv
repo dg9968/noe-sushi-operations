@@ -1,0 +1,26 @@
+﻿__Recipe,RECIPE NAME:,,Missing purchase quantity of ingredient,,,Missing unitary cost of ingredient,0,-,0,-
+Wonton Soup shrimp,MENU CATEGORY:,,Combinations,,1
+Wonton Soup shrimp,RECIPE,,AS PURCHASED,,,INVOICE,,RECIPE,,INDIVIDUAL
+Wonton Soup shrimp,QTY,UNIT,QTY,UNIT,INGREDIENT,COST,UNIT,COST,UNIT,INGREDIENT COST
+Wonton Soup shrimp,7,Un,1,Oz(w),ramen deep,0.08,Un,0.56,Un,0.56
+Wonton Soup shrimp,3,Un,200,Un,dumpling shrimp,0.26145,Un,0.7843500000000001,Un,0.7843500000000001
+Wonton Soup shrimp,0.63,,10,LB,shrimp 2125,0.39425,0,0.2483775,0,0.2483775
+Wonton Soup shrimp,1,,1,LB,chicken,0.125,0,0.125,0,0.125
+Wonton Soup shrimp,0.6,,10,LB,nabo chino,0.1875,0,0.11249999999999999,0,0.11249999999999999
+Wonton Soup shrimp,0.035,,56,Oz(v),sesame oil,0.5485714285714286,0,0.019200000000000002,0,0.019200000000000002
+Wonton Soup shrimp,0.35,,12,Un,green onion,0.8291666666666666,0,0.2902083333333333,0,0.2902083333333333
+Wonton Soup shrimp,,,,,,,TOTAL INGREDIENT COST,,,2.1396358333333336
+Wonton Soup shrimp,,,,,,,15% Q FACTOR,,,0.21396358333333337
+Wonton Soup shrimp,,,,,,,RECIPE COST,,,2.353599416666667
+Wonton Soup shrimp,,,,,,,PORTION COST,,,0.01225833029513889
+Wonton Soup shrimp,PROCEDURE:,,,,,,ADDITIONAL COST,,,0.5
+Wonton Soup shrimp,,,,,,,TOTAL COST,,,2.865857746961806
+Wonton Soup shrimp,,,,,,,DESIRED FOOD COST %,,,0.3
+Wonton Soup shrimp,,,,,,,DESRIRED MENU PRICE,,,9.552859156539354
+Wonton Soup shrimp,,,,,,,CURRENT PRICE,,,14
+Wonton Soup shrimp,,,,,,,VARIANCE,,,4.447140843460646
+Wonton Soup shrimp,,,,,,,ACTUAL FOOD COST,,,0.20470412478298614
+Wonton Soup shrimp,,,,,,,PVP MENU UBER,,,14
+Wonton Soup shrimp,,,,,,,COM 25%,,,3.5
+Wonton Soup shrimp,,,,,,,PVP FINAL,,,10.5
+Wonton Soup shrimp,,,,,,,MARGEN,,,0.7270611669560184

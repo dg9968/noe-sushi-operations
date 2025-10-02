@@ -1,0 +1,23 @@
+﻿__Recipe,RECIPE NAME:,,Missing purchase quantity of ingredient,,,Missing unitary cost of ingredient,0,-,0,-
+Hand Roll Crab,MENU CATEGORY:,,Sushi Special rolls Rolls,,1
+Hand Roll Crab,RECIPE,,AS PURCHASED,,,INVOICE,,RECIPE,,INDIVIDUAL
+Hand Roll Crab,QTY,UNIT,QTY,UNIT,INGREDIENT,COST,UNIT,COST,UNIT,INGREDIENT COST
+Hand Roll Crab,0.035,Oz(w),500,Un,Nory Seaweed,0.25,Oz(w),0.00875,Oz(w),0.00875
+Hand Roll Crab,1.41,Oz(w),200,LB,Sushi Rice,0.05,Oz(w),0.0705,Oz(w),0.0705
+Hand Roll Crab,0.07,,18,Un,white sesame,0.5583333333333333,0,0.03908333333333334,0,0.03908333333333334
+Hand Roll Crab,0.35,Oz(w),2,LB,chives,0.5,Oz(w),0.175,Oz(w),0.175
+Hand Roll Crab,1,Oz(w),25,LB,avocado,0.115,Oz(w),0.115,Oz(w),0.115
+Hand Roll Crab,1.25,Oz(w),1,Oz(w),kanikama mix,0.72,Oz(w),0.8999999999999999,Oz(w),0.8999999999999999
+Hand Roll Crab,0.07,,8.45,Oz(v),truffle oil,1.676923076923077,0,0.11738461538461539,0,0.11738461538461539
+Hand Roll Crab,0.07,,4.4,LB,orange masago,0.5312499999999999,0,0.0371875,0,0.0371875
+Hand Roll Crab,,,,,,,TOTAL INGREDIENT COST,,,1.4629054487179485
+Hand Roll Crab,,,,,,,15% Q FACTOR,,,0.14629054487179485
+Hand Roll Crab,,,,,,,RECIPE COST,,,1.6091959935897433
+Hand Roll Crab,,,,,,,PORTION COST,,,0.008381229133279914
+Hand Roll Crab,PROCEDURE:,,,,,,ADDITIONAL COST,,,0.5
+Hand Roll Crab,,,,,,,TOTAL COST,,,2.117577222723023
+Hand Roll Crab,,,,,,,DESIRED FOOD COST %,,,0.3
+Hand Roll Crab,,,,,,,DESRIRED MENU PRICE,,,7.058590742410077
+Hand Roll Crab,,,,,,,CURRENT PRICE,,,,7
+Hand Roll Crab,,,,,,,VARIANCE,,,-7.058590742410077
+Hand Roll Crab,,,,,,,ACTUAL FOOD COST,,,-

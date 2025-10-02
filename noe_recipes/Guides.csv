@@ -1,0 +1,13 @@
+﻿__Recipe,,,,,,,Table 1,,,,Array 1,,Table 3,,,,,,Table 4,,,Table 5
+Guides,,,,,,,Menu categories,Tab color,,,Item category,,AS units,IS units,One As,Equals to IS units,Conversion Factor,,Abbreviation,Meaning,,Category,Total,Cost,Missing
+Guides,,,,,,,Cold Entrees,,,,Proteins,,LB,gr,1,454,0.0022026431718061676,,LB,Pound (unit of weight),,Proteins,49,49,0
+Guides,,,,,,,Hot Entrees,,,,Vegetables,,Oz(v),ml,1,29.754,0.0336089265308866,,CS,Case (bulk quantity),,Vegetables,32,32,0
+Guides,,,,,,,Salads,,,,Fruits,,Oz(w),gr,1,28.35,0.03527336860670194,,CT,Count (number of items),,Fruits,5,4,1
+Guides,,,,,,,Traditional Rolls,,,,Sauces,,Un,Un,1,1,1,,BG,Bag,,Sauces,14,14,0
+Guides,,,,,,,Special Rolls,,,,Asian items,,,,,,,,OZ,Ounce (unit of weight),,Asian items,19,19,0
+Guides,,,,,,,Sushi,,,,Groceries,,,,,,,,,,,Groceries,30,30,0
+Guides,,,,,,,Sashimis,,,,Home-made,,Unit,Desired,Conversion factor,,,,,,,Home-made,51,51,0
+Guides,,,,,,,Combinations,,,,Oils,,1oz(w),"0,0625LB",0.0625,,,,,,,Oils,5,5,0
+Guides,,,,,,,Sides,,,,,,1LB,16oz(w),16,,,,,,,Total,0,0,0
+Guides,,,,,,,Main plates
+Guides,,,,,,,Desserts

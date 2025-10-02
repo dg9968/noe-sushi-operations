@@ -1,0 +1,16 @@
+﻿__Recipe,RECIPE NAME:,,Key lime Pie,,,Missing unitary cost of ingredient,0,-,0,-
+Key lime Pie,MENU CATEGORY:,,Desserts,,1
+Key lime Pie,RECIPE,,AS PURCHASED,,,INVOICE,,RECIPE,,INDIVIDUAL
+Key lime Pie,QTY,UNIT,QTY,UNIT,INGREDIENT,COST,UNIT,COST,UNIT,INGREDIENT COST
+Key lime Pie,1,Un,8,Un,key lime pie,3.125,Un,3.125,Un,3.125
+Key lime Pie,,,,,,,TOTAL INGREDIENT COST,,,3.125
+Key lime Pie,,,,,,,15% Q FACTOR,,,0.3125
+Key lime Pie,,,,,,,RECIPE COST,,,3.4375
+Key lime Pie,,,,,,,PORTION COST,,,0.017903645833333332
+Key lime Pie,PROCEDURE:,,,,,,ADDITIONAL COST,,,0.5
+Key lime Pie,,,,,,,TOTAL COST,,,3.9554036458333335
+Key lime Pie,,,,,,,DESIRED FOOD COST %,,,0.3
+Key lime Pie,,,,,,,DESRIRED MENU PRICE,,,13.184678819444445
+Key lime Pie,,,,,,,CURRENT PRICE,,,14
+Key lime Pie,,,,,,,VARIANCE,,,0.8153211805555554
+Key lime Pie,,,,,,,ACTUAL FOOD COST,,,0.2825288318452381

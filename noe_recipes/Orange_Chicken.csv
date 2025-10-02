@@ -1,0 +1,25 @@
+﻿__Recipe,RECIPE NAME:,,Missing purchase quantity of ingredient,,,Missing unitary cost of ingredient,0,-,0,-
+Orange Chicken,MENU CATEGORY:,,Combinations,,1
+Orange Chicken,RECIPE,,AS PURCHASED,,,INVOICE,,RECIPE,,INDIVIDUAL
+Orange Chicken,QTY,UNIT,QTY,UNIT,INGREDIENT,COST,UNIT,COST,UNIT,INGREDIENT COST
+Orange Chicken,8,Un,10,LB,chicken nuggets,0.22756249999999997,Un,1.8204999999999998,Un,1.8204999999999998
+Orange Chicken,4,Un,20,LB,orange choy sauce,0.18121875,Un,0.724875,Un,0.724875
+Orange Chicken,0.07,Un,18,Un,white sesame,0.5583333333333333,Un,0.03908333333333334,Un,0.03908333333333334
+Orange Chicken,2,Un
+Orange Chicken,2,Un
+Orange Chicken,6,,50,LB,rice,0.075,0,0.44999999999999996,0,0.44999999999999996
+Orange Chicken,,,,,,,TOTAL INGREDIENT COST,,,3.0344583333333333
+Orange Chicken,,,,,,,15% Q FACTOR,,,0.30344583333333336
+Orange Chicken,,,,,,,RECIPE COST,,,3.3379041666666667
+Orange Chicken,,,,,,,PORTION COST,,,0.01738491753472222
+Orange Chicken,PROCEDURE:,,,,,,ADDITIONAL COST,,,0.5
+Orange Chicken,,,,,,,TOTAL COST,,,3.855289084201389
+Orange Chicken,,,,,,,DESIRED FOOD COST %,,,0.3
+Orange Chicken,,,,,,,DESRIRED MENU PRICE,,,12.85096361400463
+Orange Chicken,,,,,,,CURRENT PRICE,,,18
+Orange Chicken,,,,,,,VARIANCE,,,5.14903638599537
+Orange Chicken,,,,,,,ACTUAL FOOD COST,,,0.21418272690007717
+Orange Chicken,,,,,,,PVP MENU UBER,,,18
+Orange Chicken,,,,,,,COM 25%,,,4.5
+Orange Chicken,,,,,,,PVP FINAL,,,13.5
+Orange Chicken,,,,,,,MARGEN,,,0.7144230307998972

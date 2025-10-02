@@ -1,0 +1,20 @@
+﻿__Recipe,RECIPE NAME:,,Gunkan Ebi,,,Missing unitary cost of ingredient,0,-,0,-
+Gunkan Ebi,MENU CATEGORY:,,Sushi,,1
+Gunkan Ebi,RECIPE,,AS PURCHASED,,,INVOICE,,RECIPE,,INDIVIDUAL
+Gunkan Ebi,QTY,UNIT,QTY,UNIT,INGREDIENT,COST,UNIT,COST,UNIT,INGREDIENT COST
+Gunkan Ebi,0.63,Oz(w),200,LB,Sushi Rice,0.05,Oz(w),0.0315,Oz(w),0.0315
+Gunkan Ebi,0.017,Oz(w),500,Un,Nory Seaweed,0.25,Oz(w),0.00425,Oz(w),0.00425
+Gunkan Ebi,0.42,Oz(w),1,Oz(v),ebi mix,0.82,Oz(w),0.3444,Oz(w),0.3444
+Gunkan Ebi,0.035,Oz(w),1,Oz(v),kimiyaki sauce,0.35,Oz(w),0.01225,Oz(w),0.01225
+Gunkan Ebi,0.17,Oz(w),4.4,LB,orange Masago,0.5312499999999999,Oz(w),0.09031249999999999,Oz(w),0.09031249999999999
+Gunkan Ebi,,,,,,,TOTAL INGREDIENT COST,,,0.4827125
+Gunkan Ebi,,,,,,,15% Q FACTOR,,,0.04827125
+Gunkan Ebi,,,,,,,RECIPE COST,,,0.53098375
+Gunkan Ebi,,,,,,,PORTION COST,,,0.002765540364583333
+Gunkan Ebi,PROCEDURE:,,,,,,ADDITIONAL COST,,,0.5
+Gunkan Ebi,,,,,,,TOTAL COST,,,1.0337492903645833
+Gunkan Ebi,,,,,,,DESIRED FOOD COST %,,,0.3
+Gunkan Ebi,,,,,,,DESRIRED MENU PRICE,,,3.4458309678819443
+Gunkan Ebi,,,,,,,CURRENT PRICE,,,,6
+Gunkan Ebi,,,,,,,VARIANCE,,,-3.4458309678819443
+Gunkan Ebi,,,,,,,ACTUAL FOOD COST,,,-

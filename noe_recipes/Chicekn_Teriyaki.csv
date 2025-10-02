@@ -1,0 +1,28 @@
+﻿__Recipe,RECIPE NAME:,,Missing purchase quantity of ingredient,,,Missing unitary cost of ingredient,0,-,0,-
+Chicekn Teriyaki,MENU CATEGORY:,,Combinations,,1
+Chicekn Teriyaki,RECIPE,,AS PURCHASED,,,INVOICE,,RECIPE,,INDIVIDUAL
+Chicekn Teriyaki,QTY,UNIT,QTY,UNIT,INGREDIENT,COST,UNIT,COST,UNIT,INGREDIENT COST
+Chicekn Teriyaki,8,Un,1,LB,chicken,0.125,Un,1,Un,1
+Chicekn Teriyaki,2,Un,256,Oz(v),teriyaki sauce,0.200546875,Un,0.40109375,Un,0.40109375
+Chicekn Teriyaki,8,Un,50,LB,rice,0.075,Un,0.6,Un,0.6
+Chicekn Teriyaki,0.035,Un,56,Oz(v),sesame oil,0.5485714285714286,Un,0.019200000000000002,Un,0.019200000000000002
+Chicekn Teriyaki,0.035,Un,18,Un,white sesame,0.5583333333333333,Un,0.01954166666666667,Un,0.01954166666666667
+Chicekn Teriyaki,0.035,,19,Oz(w),black sesame,0.6957894736842105,0,0.02435263157894737,0,0.02435263157894737
+Chicekn Teriyaki,2
+Chicekn Teriyaki,2,,25,LB,Carrot,0.035,0,0.07,0,0.07
+Chicekn Teriyaki,2,,6,LB,Green zucchini,0.121875,0,0.24375,0,0.24375
+Chicekn Teriyaki,,,,,,,TOTAL INGREDIENT COST,,,2.3779380482456136
+Chicekn Teriyaki,,,,,,,15% Q FACTOR,,,0.23779380482456136
+Chicekn Teriyaki,,,,,,,RECIPE COST,,,2.6157318530701748
+Chicekn Teriyaki,,,,,,,PORTION COST,,,0.01362360340140716
+Chicekn Teriyaki,PROCEDURE:,,,,,,ADDITIONAL COST,,,0.5
+Chicekn Teriyaki,,,,,,,TOTAL COST,,,3.1293554564715818
+Chicekn Teriyaki,,,,,,,DESIRED FOOD COST %,,,0.3
+Chicekn Teriyaki,,,,,,,DESRIRED MENU PRICE,,,10.431184854905274
+Chicekn Teriyaki,,,,,,,CURRENT PRICE,,,15
+Chicekn Teriyaki,,,,,,,VARIANCE,,,4.568815145094726
+Chicekn Teriyaki,,,,,,,ACTUAL FOOD COST,,,0.20862369709810544
+Chicekn Teriyaki,,,,,,,PVP MENU UBER,,,15
+Chicekn Teriyaki,,,,,,,COM 25%,,,3.75
+Chicekn Teriyaki,,,,,,,PVP FINAL,,,11.25
+Chicekn Teriyaki,,,,,,,MARGEN,,,0.7218350705358593

@@ -1,0 +1,137 @@
+﻿Recipe (Sheet),Rows (without header),CSV file
+Guides,12,Guides.csv
+Ingredient Database,205,Ingredient_Database.csv
+Chef Lo Mein special,34,Chef_Lo_Mein_special.csv
+Chef Lo Mein shrimp,31,Chef_Lo_Mein_shrimp.csv
+Chef Lo Mein beef,31,Chef_Lo_Mein_beef.csv
+Chef Lo Mein pork,31,Chef_Lo_Mein_pork.csv
+Chef Lo Mein chicken,31,Chef_Lo_Mein_chicken.csv
+Chef Lo Mein,30,Chef_Lo_Mein.csv
+Chef Fried Rice special,33,Chef_Fried_Rice_special.csv
+Chef Fried Rice shrimp,30,Chef_Fried_Rice_shrimp.csv
+Chef Fried Rice beef,30,Chef_Fried_Rice_beef.csv
+Chef Fried Rice chicken,30,Chef_Fried_Rice_chicken.csv
+Chef Fried Rice pork,30,Chef_Fried_Rice_pork.csv
+Chef Fried Rice,29,Chef_Fried_Rice.csv
+Side White Rice,29,Side_White_Rice.csv
+Side Fried Rice,29,Side_Fried_Rice.csv
+Chicken Salad,24,Chicken_Salad.csv
+Shrimp Salad,23,Shrimp_Salad.csv
+Beef Ramen,31,Beef_Ramen.csv
+Pork Ramen,31,Pork_Ramen.csv
+Wonton Soup shrimp,25,Wonton_Soup_shrimp.csv
+Wonton Soup pork,25,Wonton_Soup_pork.csv
+Chicekn Wings,20,Chicekn_Wings.csv
+Korean Ribs,20,Korean_Ribs.csv
+CRAB CROQUETA,25,CRAB_CROQUETA.csv
+Shrimp Tempura,20,Shrimp_Tempura.csv
+Cali Spring Roll,20,Cali_Spring_Roll.csv
+Spring Roll,20,Spring_Roll.csv
+D Shitaki,23,D_Shitaki.csv
+D Veg,23,D_Veg.csv
+D Shrimp,23,D_Shrimp.csv
+D Pork,24,D_Pork.csv
+D Chicken,23,D_Chicken.csv
+Beef Teriyaki,27,Beef_Teriyaki.csv
+Chicekn Teriyaki,27,Chicekn_Teriyaki.csv
+Teriyaki Salmon,27,Teriyaki_Salmon.csv
+General T Chicken,24,General_T_Chicken.csv
+Orange Chicken,24,Orange_Chicken.csv
+Chirashi sushi,31,Chirashi_sushi.csv
+Sashimi platter,25,Sashimi_platter.csv
+Bonsai Kaiko,31,Bonsai_Kaiko.csv
+Bonsai Sushi 12,24,Bonsai_Sushi_12.csv
+Bonsai Rolls 20 (2),24,Bonsai_Rolls_20_2.csv
+Bonsai Jade 32,24,Bonsai_Jade_32.csv
+BENTO 15,22,BENTO_15.csv
+BENTO 18,22,BENTO_18.csv
+Blu fin toro.S,15,Blu_fin_toroS.csv
+Salmon.S,15,SalmonS.csv
+Tuna.S,15,TunaS.csv
+Hamach,15,Hamach.csv
+Tarta vasca,15,Tarta_vasca.csv
+ice cream,15,ice_cream.csv
+Mochis,15,Mochis.csv
+Choco Cake,24,Choco_Cake.csv
+Key lime Pie,15,Key_lime_Pie.csv
+Monte Fuji,19,Monte_Fuji.csv
+Edamame,15,Edamame.csv
+Mashed Poatatoes,15,Mashed_Poatatoes.csv
+Truffle Fries,16,Truffle_Fries.csv
+Fried Rice,22,Fried_Rice.csv
+Tenderloin Kubai,22,Tenderloin_Kubai.csv
+Skirt Steak,22,Skirt_Steak.csv
+Lamb osoducco,23,Lamb_osoducco.csv
+Salmon Reisui,24,Salmon_Reisui.csv
+Sea foof katsura,28,Sea_foof_katsura.csv
+Gunkan Taco,19,Gunkan_Taco.csv
+Gunkan Sake,19,Gunkan_Sake.csv
+Gunkan Ebi,19,Gunkan_Ebi.csv
+Gunkan Kani,19,Gunkan_Kani.csv
+Toki Salmon,17,Toki_Salmon.csv
+Gunkan uni,20,Gunkan_uni.csv
+Gunkan Ikura,20,Gunkan_Ikura.csv
+Gunkan Arcoiris,22,Gunkan_Arcoiris.csv
+Hotate Trufado,23,Hotate_Trufado.csv
+Negui Hama,23,Negui_Hama.csv
+Iku sake,22,Iku_sake.csv
+Makano,23,Makano.csv
+Pesca Blanca,18,Pesca_Blanca.csv
+Salmon,18,Salmon.csv
+Blu fin toro,18,Blu_fin_toro.csv
+Tuna,18,Tuna.csv
+Hamachi,18,Hamachi.csv
+Hand Roll Crab,22,Hand_Roll_Crab.csv
+Hand Roll Salmon,21,Hand_Roll_Salmon.csv
+Hand Roll Hamachi,20,Hand_Roll_Hamachi.csv
+Hand Roll Tuna,21,Hand_Roll_Tuna.csv
+Passion roll,26,Passion_roll.csv
+Butter Truffle,19,Butter_Truffle.csv
+Pangora Especial,25,Pangora_Especial.csv
+Cumbaya,21,Cumbaya.csv
+Spicy tuna,22,Spicy_tuna.csv
+Samurai ebi,23,Samurai_ebi.csv
+Samurai Salmon,22,Samurai_Salmon.csv
+Lobster,27,Lobster.csv
+Fire roll ebi,23,Fire_roll_ebi.csv
+Fire roll crab,23,Fire_roll_crab.csv
+Tokio,20,Tokio.csv
+Guayas,29,Guayas.csv
+Noe Special,22,Noe_Special.csv
+Special Tuna,23,Special_Tuna.csv
+Nubori,25,Nubori.csv
+Kanebi,26,Kanebi.csv
+Ebi Zu,25,Ebi_Zu.csv
+Cevichihi,25,Cevichihi.csv
+Kani Kiuri Maki,19,Kani_Kiuri_Maki.csv
+Tuna Light,21,Tuna_Light.csv
+Kani Maguro,21,Kani_Maguro.csv
+Sake Kani.S,21,Sake_KaniS.csv
+Special Philadelphia,22,Special_Philadelphia.csv
+California Especial,21,California_Especial.csv
+Eel Especial,20,Eel_Especial.csv
+Teka Maki,18,Teka_Maki.csv
+Sake Maki,18,Sake_Maki.csv
+Philadlephia,21,Philadlephia.csv
+California,20,California.csv
+Hiyashi Wakame,16,Hiyashi_Wakame.csv
+Kani Seaweed,24,Kani_Seaweed.csv
+P.Ramen ,27,PRamen.csv
+B.Ramen,27,BRamen.csv
+Miso Soup,17,Miso_Soup.csv
+Kamasuki Soup,29,Kamasuki_Soup.csv
+Sumashi Soup,29,Sumashi_Soup.csv
+Pork Tacos,20,Pork_Tacos.csv
+Truffled Dompling,32,Truffled_Dompling.csv
+Mizu Tako,26,Mizu_Tako.csv
+By Fay Tu Pan,25,By_Fay_Tu_Pan.csv
+By Fay Tu Sh,25,By_Fay_Tu_Sh.csv
+By Fay Tu Oct,25,By_Fay_Tu_Oct.csv
+Sake Foie,20,Sake_Foie.csv
+Tuna Foie,19,Tuna_Foie.csv
+Fresh Oysters,19,Fresh_Oysters.csv
+Maki Tartar,26,Maki_Tartar.csv
+Tuna Tartar,26,Tuna_Tartar.csv
+Toni Doki,27,Toni_Doki.csv
+Hamachi Jalapeño,27,Hamachi_Jalapeño.csv
+NOE Tataki,26,NOE_Tataki.csv

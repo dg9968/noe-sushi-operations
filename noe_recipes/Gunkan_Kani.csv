@@ -1,0 +1,20 @@
+﻿__Recipe,RECIPE NAME:,,Gunkan Kani
+Gunkan Kani,MENU CATEGORY:,,Sushi,,1
+Gunkan Kani,RECIPE,,AS PURCHASED,,,INVOICE,,RECIPE,,INDIVIDUAL
+Gunkan Kani,QTY,UNIT,QTY,UNIT,INGREDIENT,COST,UNIT,COST,UNIT,INGREDIENT COST
+Gunkan Kani,0.63,Oz(w),200,LB,Sushi Rice,0.05,Oz(w),0.0315,Oz(w),0.0315
+Gunkan Kani,0.017,Oz(w),500,Un,Nory Seaweed,0.25,Oz(w),0.00425,Oz(w),0.00425
+Gunkan Kani,0.42,Oz(w),1,Oz(w),Kanikama Mix,0.72,Oz(w),0.3024,Oz(w),0.3024
+Gunkan Kani,0.035,Oz(w),1,Oz(v),kimiyaki sauce,0.35,Oz(w),0.01225,Oz(w),0.01225
+Gunkan Kani,0.17,Oz(w),4.4,LB,orange Masago,0.5312499999999999,Oz(w),0.09031249999999999,Oz(w),0.09031249999999999
+Gunkan Kani,,,,,,,TOTAL INGREDIENT COST,,,0.44071249999999995
+Gunkan Kani,,,,,,,15% Q FACTOR,,,0.04407125
+Gunkan Kani,,,,,,,RECIPE COST,,,0.48478374999999996
+Gunkan Kani,,,,,,,PORTION COST,,,0.002524915364583333
+Gunkan Kani,PROCEDURE:,,,,,,ADDITIONAL COST,,,0.5
+Gunkan Kani,,,,,,,TOTAL COST,,,0.9873086653645833
+Gunkan Kani,,,,,,,DESIRED FOOD COST %,,,0.3
+Gunkan Kani,,,,,,,DESRIRED MENU PRICE,,,3.291028884548611
+Gunkan Kani,,,,,,,CURRENT PRICE,,,,6
+Gunkan Kani,,,,,,,VARIANCE,,,-3.291028884548611
+Gunkan Kani,,,,,,,ACTUAL FOOD COST,,,-

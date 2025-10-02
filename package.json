@@ -1,0 +1,22 @@
+{
+  "name": "noe-operations-proxy",
+  "version": "1.0.0",
+  "description": "Proxy server for Noe Sushi Bar operations",
+  "main": "odoo-proxy-server.js",
+  "scripts": {
+    "start": "node odoo-proxy-server.js",
+    "dev": "nodemon odoo-proxy-server.js"
+  },
+  "dependencies": {
+    "airtable": "^0.12.2",
+    "cors": "^2.8.5",
+    "csv-parser": "^3.2.0",
+    "dotenv": "^17.2.2",
+    "express": "^4.18.2",
+    "http-proxy-middleware": "^2.0.6",
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

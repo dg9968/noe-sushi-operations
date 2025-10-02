@@ -1,0 +1,26 @@
+﻿__Recipe,RECIPE NAME:,,Missing purchase quantity of ingredient,,,Missing unitary cost of ingredient,0,-,0,-
+Wonton Soup pork,MENU CATEGORY:,,Combinations,,1
+Wonton Soup pork,RECIPE,,AS PURCHASED,,,INVOICE,,RECIPE,,INDIVIDUAL
+Wonton Soup pork,QTY,UNIT,QTY,UNIT,INGREDIENT,COST,UNIT,COST,UNIT,INGREDIENT COST
+Wonton Soup pork,7,Un,1,Oz(w),ramen deep,0.08,Un,0.56,Un,0.56
+Wonton Soup pork,2,Un,120,Un,dumpling pork,0.5209166666666667,Un,1.0418333333333334,Un,1.0418333333333334
+Wonton Soup pork,1,,1,LB,pork tenderloin,0.436875,0,0.436875,0,0.436875
+Wonton Soup pork,0,,1,LB,chicken,0.125,0,0,0,0
+Wonton Soup pork,0.6,,10,LB,nabo chino,0.1875,0,0.11249999999999999,0,0.11249999999999999
+Wonton Soup pork,0.035,,56,Oz(v),sesame oil,0.5485714285714286,0,0.019200000000000002,0,0.019200000000000002
+Wonton Soup pork,0.35,,12,Un,green onion,0.8291666666666666,0,0.2902083333333333,0,0.2902083333333333
+Wonton Soup pork,,,,,,,TOTAL INGREDIENT COST,,,2.4606166666666667
+Wonton Soup pork,,,,,,,15% Q FACTOR,,,0.24606166666666668
+Wonton Soup pork,,,,,,,RECIPE COST,,,2.7066783333333335
+Wonton Soup pork,,,,,,,PORTION COST,,,0.014097282986111112
+Wonton Soup pork,PROCEDURE:,,,,,,ADDITIONAL COST,,,0.5
+Wonton Soup pork,,,,,,,TOTAL COST,,,3.2207756163194445
+Wonton Soup pork,,,,,,,DESIRED FOOD COST %,,,0.3
+Wonton Soup pork,,,,,,,DESRIRED MENU PRICE,,,10.735918721064815
+Wonton Soup pork,,,,,,,CURRENT PRICE,,,14
+Wonton Soup pork,,,,,,,VARIANCE,,,3.264081278935185
+Wonton Soup pork,,,,,,,ACTUAL FOOD COST,,,0.2300554011656746
+Wonton Soup pork,,,,,,,PVP MENU UBER,,,14
+Wonton Soup pork,,,,,,,COM 25%,,,3.5
+Wonton Soup pork,,,,,,,PVP FINAL,,,10.5
+Wonton Soup pork,,,,,,,MARGEN,,,0.6932594651124339

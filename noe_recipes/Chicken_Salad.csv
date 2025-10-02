@@ -1,0 +1,25 @@
+﻿__Recipe,RECIPE NAME:,,Missing purchase quantity of ingredient,,,Missing unitary cost of ingredient,0,-,0,-
+Chicken Salad,MENU CATEGORY:,,Combinations,,1
+Chicken Salad,RECIPE,,AS PURCHASED,,,INVOICE,,RECIPE,,INDIVIDUAL
+Chicken Salad,QTY,UNIT,QTY,UNIT,INGREDIENT,COST,UNIT,COST,UNIT,INGREDIENT COST
+Chicken Salad,1.5,Un,50,Un,lettuce,0.72,Un,1.08,Un,1.08
+Chicken Salad,1,Un,25,LB,carrot,0.035,Un,0.035,Un,0.035
+Chicken Salad,1,,1,LB,cucumber,0.059375,0,0.059375,0,0.059375
+Chicken Salad,3.5,,1,LB,chicken,0.125,0,0.4375,0,0.4375
+Chicken Salad,2,,256,Oz(v),teriyaki sauce,0.200546875,0,0.40109375,0,0.40109375
+Chicken Salad,0.035,,18,Un,white sesame,0.5583333333333333,0,0.01954166666666667,0,0.01954166666666667
+Chicken Salad,,,,,,,TOTAL INGREDIENT COST,,,2.0325104166666663
+Chicken Salad,,,,,,,15% Q FACTOR,,,0.20325104166666663
+Chicken Salad,,,,,,,RECIPE COST,,,2.235761458333333
+Chicken Salad,,,,,,,PORTION COST,,,0.011644590928819443
+Chicken Salad,PROCEDURE:,,,,,,ADDITIONAL COST,,,0.5
+Chicken Salad,,,,,,,TOTAL COST,,,2.747406049262153
+Chicken Salad,,,,,,,DESIRED FOOD COST %,,,0.3
+Chicken Salad,,,,,,,DESRIRED MENU PRICE,,,9.158020164207176
+Chicken Salad,,,,,,,CURRENT PRICE,,,14
+Chicken Salad,,,,,,,VARIANCE,,,4.841979835792824
+Chicken Salad,,,,,,,ACTUAL FOOD COST,,,0.1962432892330109
+Chicken Salad,,,,,,,PVP MENU UBER,,,14
+Chicken Salad,,,,,,,COM 25%,,,3.5
+Chicken Salad,,,,,,,PVP FINAL,,,10.5
+Chicken Salad,,,,,,,MARGEN,,,0.7383422810226521

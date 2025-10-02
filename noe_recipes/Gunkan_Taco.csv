@@ -1,0 +1,20 @@
+﻿__Recipe,RECIPE NAME:,,Gunkan Taco,,,Missing unitary cost of ingredient,0,-,0,-
+Gunkan Taco,MENU CATEGORY:,,Sushi,,1
+Gunkan Taco,RECIPE,,AS PURCHASED,,,INVOICE,,RECIPE,,INDIVIDUAL
+Gunkan Taco,QTY,UNIT,QTY,UNIT,INGREDIENT,COST,UNIT,COST,UNIT,INGREDIENT COST
+Gunkan Taco,0.63,Oz(w),200,LB,Sushi Rice,0.05,Oz(w),0.0315,Oz(w),0.0315
+Gunkan Taco,0.42,Oz(w),1,Oz(w),Octopus Mix,1.21,Oz(w),0.5082,Oz(w),0.5082
+Gunkan Taco,0.017,Oz(w),500,Un,nory seaweed,0.25,Oz(w),0.00425,Oz(w),0.00425
+Gunkan Taco,0.17,Oz(w),4.4,LB,orange masago,0.5312499999999999,Oz(w),0.09031249999999999,Oz(w),0.09031249999999999
+Gunkan Taco,0.035,Oz(w),2,LB,chives,0.5,Oz(w),0.0175,Oz(w),0.0175
+Gunkan Taco,,,,,,,TOTAL INGREDIENT COST,,,0.6517624999999999
+Gunkan Taco,,,,,,,15% Q FACTOR,,,0.06517624999999999
+Gunkan Taco,,,,,,,RECIPE COST,,,0.71693875
+Gunkan Taco,,,,,,,PORTION COST,,,0.0037340559895833333
+Gunkan Taco,PROCEDURE:,,,,,,ADDITIONAL COST,,,0.5
+Gunkan Taco,,,,,,,TOTAL COST,,,1.2206728059895833
+Gunkan Taco,,,,,,,DESIRED FOOD COST %,,,0.3
+Gunkan Taco,,,,,,,DESRIRED MENU PRICE,,,4.068909353298611
+Gunkan Taco,,,,,,,CURRENT PRICE,,,,6
+Gunkan Taco,,,,,,,VARIANCE,,,-4.068909353298611
+Gunkan Taco,,,,,,,ACTUAL FOOD COST,,,-

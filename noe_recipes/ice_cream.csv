@@ -1,0 +1,16 @@
+﻿__Recipe,RECIPE NAME:,,Missing purchase quantity of ingredient,,,Missing unitary cost of ingredient,0,-,0,-
+ice cream,MENU CATEGORY:,,Desserts,,1
+ice cream,RECIPE,,AS PURCHASED,,,INVOICE,,RECIPE,,INDIVIDUAL
+ice cream,QTY,UNIT,QTY,UNIT,INGREDIENT,COST,UNIT,COST,UNIT,INGREDIENT COST
+ice cream,8.7,Oz(v),1,Oz(v),ice cream,0.16,Oz(v),1.392,Oz(v),1.392
+ice cream,,,,,,,TOTAL INGREDIENT COST,,,1.392
+ice cream,,,,,,,15% Q FACTOR,,,0.1392
+ice cream,,,,,,,RECIPE COST,,,1.5312
+ice cream,,,,,,,PORTION COST,,,0.007975
+ice cream,PROCEDURE:,,,,,,ADDITIONAL COST,,,0.5
+ice cream,,,,,,,TOTAL COST,,,2.039175
+ice cream,,,,,,,DESIRED FOOD COST %,,,0.3
+ice cream,,,,,,,DESRIRED MENU PRICE,,,6.797250000000001
+ice cream,,,,,,,CURRENT PRICE,,,12
+ice cream,,,,,,,VARIANCE,,,5.202749999999999
+ice cream,,,,,,,ACTUAL FOOD COST,,,0.16993125

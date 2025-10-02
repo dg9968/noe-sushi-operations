@@ -1,0 +1,28 @@
+﻿__Recipe,RECIPE NAME:,,Missing purchase quantity of ingredient,,,Missing unitary cost of ingredient,0,-,0,-
+Beef Teriyaki,MENU CATEGORY:,,Combinations,,1
+Beef Teriyaki,RECIPE,,AS PURCHASED,,,INVOICE,,RECIPE,,INDIVIDUAL
+Beef Teriyaki,QTY,UNIT,QTY,UNIT,INGREDIENT,COST,UNIT,COST,UNIT,INGREDIENT COST
+Beef Teriyaki,5,Un,10,LB,sirloin,0.2984375,Un,1.4921875,Un,1.4921875
+Beef Teriyaki,2,Un,256,Oz(v),teriyaki sauce,0.200546875,Un,0.40109375,Un,0.40109375
+Beef Teriyaki,8,Un,50,LB,rice,0.075,Un,0.6,Un,0.6
+Beef Teriyaki,0.035,Un,56,Oz(v),sesame oil,0.5485714285714286,Un,0.019200000000000002,Un,0.019200000000000002
+Beef Teriyaki,0.035,Un,18,Un,white sesame,0.5583333333333333,Un,0.01954166666666667,Un,0.01954166666666667
+Beef Teriyaki,0.035,,19,Oz(w),black sesame,0.6957894736842105,0,0.02435263157894737,0,0.02435263157894737
+Beef Teriyaki,2
+Beef Teriyaki,2,,25,LB,Carrot,0.035,0,0.07,0,0.07
+Beef Teriyaki,2,,6,LB,Green zucchini,0.121875,0,0.24375,0,0.24375
+Beef Teriyaki,,,,,,,TOTAL INGREDIENT COST,,,2.8701255482456136
+Beef Teriyaki,,,,,,,15% Q FACTOR,,,0.2870125548245614
+Beef Teriyaki,,,,,,,RECIPE COST,,,3.157138103070175
+Beef Teriyaki,,,,,,,PORTION COST,,,0.016443427620157162
+Beef Teriyaki,PROCEDURE:,,,,,,ADDITIONAL COST,,,0.5
+Beef Teriyaki,,,,,,,TOTAL COST,,,3.673581530690332
+Beef Teriyaki,,,,,,,DESIRED FOOD COST %,,,0.3
+Beef Teriyaki,,,,,,,DESRIRED MENU PRICE,,,12.245271768967774
+Beef Teriyaki,,,,,,,CURRENT PRICE,,,21,19
+Beef Teriyaki,,,,,,,VARIANCE,,,8.754728231032226
+Beef Teriyaki,,,,,,,ACTUAL FOOD COST,,,0.17493245384239678
+Beef Teriyaki,,,,,,,PVP MENU UBER,,,21
+Beef Teriyaki,,,,,,,COM 25%,,,5.25
+Beef Teriyaki,,,,,,,PVP FINAL,,,15.75
+Beef Teriyaki,,,,,,,MARGEN,,,0.7667567282101377

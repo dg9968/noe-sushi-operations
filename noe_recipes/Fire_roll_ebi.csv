@@ -1,0 +1,24 @@
+﻿__Recipe,RECIPE NAME:,,Fire roll crab
+Fire roll ebi,MENU CATEGORY:,,Sushi Special rolls Rolls,,1
+Fire roll ebi,RECIPE,,AS PURCHASED,,,INVOICE,,RECIPE,,INDIVIDUAL
+Fire roll ebi,QTY,UNIT,QTY,UNIT,INGREDIENT,COST,UNIT,COST,UNIT,INGREDIENT COST
+Fire roll ebi,0.035,Oz(w),500,Un,Nory Seaweed,0.25,Oz(w),0.00875,Oz(w),0.00875
+Fire roll ebi,3.52,Oz(w),200,LB,Sushi Rice,0.05,Oz(w),0.17600000000000002,Oz(w),0.17600000000000002
+Fire roll ebi,0.28,Oz(w),18,LB,Cream Cheese,0.3035069444444444,Oz(w),0.08498194444444444,Oz(w),0.08498194444444444
+Fire roll ebi,0.035,Oz(w),18,Un,White sesame,0.5583333333333333,Oz(w),0.01954166666666667,Oz(w),0.01954166666666667
+Fire roll ebi,0.88,Oz(w),25,LB,Avocado,0.115,Oz(w),0.1012,Oz(w),0.1012
+Fire roll ebi,1.41,Oz(w),10,LB,Ebi tempura,0.4955,Oz(w),0.6986549999999999,Oz(w),0.6986549999999999
+Fire roll ebi,0.7,Oz(w),25,LB,Panko,0.118125,Oz(w),0.0826875,Oz(w),0.0826875
+Fire roll ebi,1.76,Oz(v),1,Oz(v),Flambe sauce,0.2,Oz(v),0.35200000000000004,Oz(v),0.35200000000000004
+Fire roll ebi,2.82,,1,LB,tempura,0.0825,0,0.23265,0,0.23265
+Fire roll ebi,,,,,,,TOTAL INGREDIENT COST,,,1.7564661111111113
+Fire roll ebi,,,,,,,15% Q FACTOR,,,0.17564661111111113
+Fire roll ebi,,,,,,,RECIPE COST,,,1.9321127222222225
+Fire roll ebi,,,,,,,PORTION COST,,,0.010063087094907408
+Fire roll ebi,PROCEDURE:,,,,,,ADDITIONAL COST,,,0.5
+Fire roll ebi,,,,,,,TOTAL COST,,,2.44217580931713
+Fire roll ebi,,,,,,,DESIRED FOOD COST %,,,0.3
+Fire roll ebi,,,,,,,DESRIRED MENU PRICE,,,8.1405860310571
+Fire roll ebi,,,,,,,CURRENT PRICE,,,24
+Fire roll ebi,,,,,,,VARIANCE,,,15.8594139689429
+Fire roll ebi,,,,,,,ACTUAL FOOD COST,,,0.10175732538821375

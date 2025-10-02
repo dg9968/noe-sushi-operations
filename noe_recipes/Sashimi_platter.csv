@@ -1,0 +1,26 @@
+﻿__Recipe,RECIPE NAME:,,Sashimi platter
+Sashimi platter,MENU CATEGORY:,,Combinations,,1
+Sashimi platter,RECIPE,,AS PURCHASED,,,INVOICE,,RECIPE,,INDIVIDUAL
+Sashimi platter,QTY,UNIT,QTY,UNIT,INGREDIENT,COST,UNIT,COST,UNIT,INGREDIENT COST
+Sashimi platter,1.58,Oz(w),10,LB,Ebi sushi,0.578125,Oz(w),0.9134375,Oz(w),0.9134375
+Sashimi platter,1.59,Oz(w),20,LB,tuna,0.746875,Oz(w),1.18753125,Oz(w),1.18753125
+Sashimi platter,2.64,Oz(w),22.8,LB,Salmon Noruego,0.71875,Oz(w),1.8975000000000002,Oz(w),1.8975000000000002
+Sashimi platter,1.59,Oz(w),17.25,LB,pesca blanca,0.8093840579710144,Oz(w),1.286920652173913,Oz(w),1.286920652173913
+Sashimi platter,1.05,Oz(w),10,LB,Octopus,1.1465,Oz(w),1.2038250000000001,Oz(w),1.2038250000000001
+Sashimi platter,1.19,Oz(w),176,Oz(v),Kanikama,0.6193181818181818,Oz(w),0.7369886363636363,Oz(w),0.7369886363636363
+Sashimi platter,5.64,Oz(w),50,LB,Gohan Rice,0.075,Oz(w),0.423,Oz(w),0.423
+Sashimi platter,1,,1,Un,vegie side,0.29,0,0.29,0,0.29
+Sashimi platter,1.76,,512,Oz(v),soy sauce,0.11080078125,0,0.19500937499999998,0,0.19500937499999998
+Sashimi platter,0.17,,5,LB,ginger,0.1875,0,0.031875,0,0.031875
+Sashimi platter,0.07,,2.2,LB,wasabi,0.45312499999999994,0,0.03171875,0,0.03171875
+Sashimi platter,,,,,,,TOTAL INGREDIENT COST,,,8.197806163537548
+Sashimi platter,,,,,,,15% Q FACTOR,,,0.8197806163537549
+Sashimi platter,,,,,,,RECIPE COST,,,9.017586779891303
+Sashimi platter,,,,,,,PORTION COST,,,0.04696659781193387
+Sashimi platter,PROCEDURE:,,,,,,ADDITIONAL COST,,,0.5
+Sashimi platter,,,,,,,TOTAL COST,,,9.564553377703238
+Sashimi platter,,,,,,,DESIRED FOOD COST %,,,0.3
+Sashimi platter,,,,,,,DESRIRED MENU PRICE,,,31.881844592344127
+Sashimi platter,,,,,,,CURRENT PRICE,,,39
+Sashimi platter,,,,,,,VARIANCE,,,7.118155407655873
+Sashimi platter,,,,,,,ACTUAL FOOD COST,,,0.24524495840264712

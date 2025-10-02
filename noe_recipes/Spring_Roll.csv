@@ -1,0 +1,21 @@
+﻿__Recipe,RECIPE NAME:,,Missing purchase quantity of ingredient,,,Missing unitary cost of ingredient,0,-,0,-
+Spring Roll,MENU CATEGORY:,,Combinations,,1
+Spring Roll,RECIPE,,AS PURCHASED,,,INVOICE,,RECIPE,,INDIVIDUAL
+Spring Roll,QTY,UNIT,QTY,UNIT,INGREDIENT,COST,UNIT,COST,UNIT,INGREDIENT COST
+Spring Roll,5,Un,100,Un,spring roll,0.7987000000000001,Un,3.9935000000000005,Un,3.9935000000000005
+Spring Roll,2,Un,,,sweet chili sauce
+Spring Roll,,,,,,,TOTAL INGREDIENT COST,,,3.9935000000000005
+Spring Roll,,,,,,,15% Q FACTOR,,,0.3993500000000001
+Spring Roll,,,,,,,RECIPE COST,,,4.392850000000001
+Spring Roll,,,,,,,PORTION COST,,,0.022879427083333338
+Spring Roll,PROCEDURE:,,,,,,ADDITIONAL COST,,,0.5
+Spring Roll,,,,,,,TOTAL COST,,,4.915729427083335
+Spring Roll,,,,,,,DESIRED FOOD COST %,,,0.3
+Spring Roll,,,,,,,DESRIRED MENU PRICE,,,16.38576475694445
+Spring Roll,,,,,,,CURRENT PRICE,,,22
+Spring Roll,,,,,,,VARIANCE,,,5.61423524305555
+Spring Roll,,,,,,,ACTUAL FOOD COST,,,0.2234422466856061
+Spring Roll,,,,,,,PVP MENU UBER,,,22
+Spring Roll,,,,,,,COM 25%,,,5.5
+Spring Roll,,,,,,,PVP FINAL,,,16.5
+Spring Roll,,,,,,,MARGEN,,,0.7020770044191919

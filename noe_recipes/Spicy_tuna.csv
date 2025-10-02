@@ -1,0 +1,23 @@
+﻿__Recipe,RECIPE NAME:,,Spicy tuna
+Spicy tuna,MENU CATEGORY:,,Sushi Special rolls Rolls,,1
+Spicy tuna,RECIPE,,AS PURCHASED,,,INVOICE,,RECIPE,,INDIVIDUAL
+Spicy tuna,QTY,UNIT,QTY,UNIT,INGREDIENT,COST,UNIT,COST,UNIT,INGREDIENT COST
+Spicy tuna,0.035,Oz(w),500,Un,Nory Seaweed,0.25,Oz(w),0.00875,Oz(w),0.00875
+Spicy tuna,3.88,Oz(w),200,LB,Sushi Rice,0.05,Oz(w),0.194,Oz(w),0.194
+Spicy tuna,1.06,Oz(w),25,LB,Avocado,0.115,Oz(w),0.12190000000000001,Oz(w),0.12190000000000001
+Spicy tuna,0.35,Oz(w),50,Un,lettuce,0.72,Oz(w),0.252,Oz(w),0.252
+Spicy tuna,2.46,Oz(w),20,LB,Tuna,0.746875,Oz(w),1.8373125,Oz(w),1.8373125
+Spicy tuna,0.07,Oz(w),2,LB,Chives,0.5,Oz(w),0.035,Oz(w),0.035
+Spicy tuna,0.035,Oz(w),18,Un,white sesame,0.5583333333333333,Oz(w),0.01954166666666667,Oz(w),0.01954166666666667
+Spicy tuna,0.52,Oz(w),17,Oz(v),Spicy Mayo,0.2711764705882353,Oz(w),0.14101176470588236,Oz(w),0.14101176470588236
+Spicy tuna,,,,,,,TOTAL INGREDIENT COST,,,2.609515931372549
+Spicy tuna,,,,,,,15% Q FACTOR,,,0.2609515931372549
+Spicy tuna,,,,,,,RECIPE COST,,,2.8704675245098037
+Spicy tuna,,,,,,,PORTION COST,,,0.014950351690155227
+Spicy tuna,PROCEDURE:,,,,,,ADDITIONAL COST,,,0.5
+Spicy tuna,,,,,,,TOTAL COST,,,3.3854178761999587
+Spicy tuna,,,,,,,DESIRED FOOD COST %,,,0.3
+Spicy tuna,,,,,,,DESRIRED MENU PRICE,,,11.284726253999862
+Spicy tuna,,,,,,,CURRENT PRICE,,,,19
+Spicy tuna,,,,,,,VARIANCE,,,-11.284726253999862
+Spicy tuna,,,,,,,ACTUAL FOOD COST,,,-

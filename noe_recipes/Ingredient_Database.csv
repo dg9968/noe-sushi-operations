@@ -1,0 +1,206 @@
+﻿__Recipe,Ingredient,Category,Form,ASU,A,T.Cost,Unitary cost,C/oz
+Ingredient Database,Sushi Rice,Asian items,BG,LB,200,240,60,0.05
+Ingredient Database,Ebi sushi,Home-made,CS,LB,10,92.5,9.25,0.578125
+Ingredient Database,Tuna,Proteins,CS,LB,20,239,11.95,0.746875
+Ingredient Database,Salmon Chileno,Proteins,LB,LB,13.4,119.93,8.950000000000001,0.5593750000000001
+Ingredient Database,Octopus,Proteins,CS,LB,10,183.44,18.344,1.1465
+Ingredient Database,Kanikama,Proteins,OZ,Oz(v),176,109,0.6193181818181818,0.6193181818181818
+Ingredient Database,Red masago,Proteins,CS,LB,12.12,120,9.900990099009901,0.6188118811881188
+Ingredient Database,Orange masago,Proteins,LB,LB,4.4,37.4,8.499999999999998,0.5312499999999999
+Ingredient Database,Unagui,Proteins,CS,LB,11,239,21.727272727272727,1.3579545454545454
+Ingredient Database,Pangora nail grande,Proteins,LB,Oz(w),2.86,3.93,1.3741258741258742,1.3741258741258742
+Ingredient Database,Gohan Rice,Asian items,BG,LB,50,60,1.2,0.075
+Ingredient Database,Special California,Home-made,CT,Un,1,1.9364677338324654,1.9364677338324654,1.9364677338324654
+Ingredient Database,Special Anguila,Home-made,CT,Un,1,4.005868454861111,4.005868454861111,4.005868454861111
+Ingredient Database,Spicy Tuna,Home-made,CT,Un,1,3.3854178761999587,3.3854178761999587,3.3854178761999587
+Ingredient Database,Samurai salmon,Home-made,CT,Un,1,4.102482518084491,4.102482518084491,4.102482518084491
+Ingredient Database,Tokio,Home-made,CT,Un,1,3.533862829861111,3.533862829861111,3.533862829861111
+Ingredient Database,Hamachi,Proteins,LB,LB,11.35,203.73,17.94977973568282,1.1218612334801763
+Ingredient Database,Key lime pie,Groceries,CS,Un,8,25,3.125,3.125
+Ingredient Database,Egg,Groceries,CS,Un,180,44.4,0.24666666666666665,0.24666666666666665
+Ingredient Database,Sugar,Groceries,BG,LB,50,45.19,0.9037999999999999,0.056487499999999996
+Ingredient Database,Caramel,Groceries,CS,Oz(v),204,48.05,0.2355392156862745,0.2355392156862745
+Ingredient Database,Peach,Fruits,CS,Oz(v),630,88.82,0.14098412698412696,0.14098412698412696
+Ingredient Database,Strawberry,Fruits,CS,LB,1,4.5,4.5,0.28125
+Ingredient Database,Edamame,Proteins,LB,LB,20,52,2.6,0.1625
+Ingredient Database,French Fries,Groceries,BG,LB,22,27.48,1.249090909090909,0.07806818181818181
+Ingredient Database,Carrot,Vegetables,CS,LB,25,14,0.56,0.035
+Ingredient Database,Mushroom,Vegetables,LB,LB,2.5,12.95,5.18,0.32375
+Ingredient Database,Green pepper,Vegetables,LB,LB,1,2.5,2.5,0.15625
+Ingredient Database,Pearl onion,Vegetables,LB,LB,1,1.5,1.5,0.09375
+Ingredient Database,Japanese Sauce,Sauces,OZ,Oz(v),33.81,5.14,0.1520260278024253,0.1520260278024253
+Ingredient Database,Soy sauce,Sauces,OZ,Oz(v),512,56.73,0.11080078125,0.11080078125
+Ingredient Database,Thin loin,Proteins,LB,LB,64,745.6,11.65,0.728125
+Ingredient Database,Fried rice,Home-made,CT,Un,1,2.247487458407276,2.247487458407276,2.247487458407276
+Ingredient Database,Green zucchini,Vegetables,LB,LB,6,11.7,1.95,0.121875
+Ingredient Database,Rice,Groceries,BG,LB,50,60,1.2,0.075
+Ingredient Database,White Sesame,Asian items,OZ,Un,18,10.05,0.5583333333333333,0.5583333333333333
+Ingredient Database,Lamb,Proteins,CS,LB,27,158.49,5.87,0.366875
+Ingredient Database,Red pepper,Vegetables,LB,LB,1,3.25,3.25,0.203125
+Ingredient Database,Yellow Zucchini,Vegetables,LB,LB,1,1.95,1.95,0.121875
+Ingredient Database,heavy cream,Groceries,CS,Oz(v),384,57.52,0.14979166666666668,0.14979166666666668
+Ingredient Database,Eel Sauce,Sauces,OZ,Oz(v),1,0.49,0.49,0.49
+Ingredient Database,Ponzu Sauce,Sauces,BG,Oz(v),1,0.216,0.216,0.216
+Ingredient Database,Hondashi,Asian items,BG,LB,2,46.8,23.4,1.4625
+Ingredient Database,Quinoa,Vegetables,CS,LB,12,59.77,4.980833333333334,0.31130208333333337
+Ingredient Database,Asparagus,Vegetables,CS,LB,11,39.75,3.6136363636363638,0.22585227272727273
+Ingredient Database,Mussel,Proteins,CS,LB,10,26.47,2.647,0.1654375
+Ingredient Database,Shrimp 2125,Proteins,CS,LB,10,63.08,6.308,0.39425
+Ingredient Database,Tomato paste,Sauces,CS,LB,42,50.1,1.1928571428571428,0.07455357142857143
+Ingredient Database,Langostino bisket,Home-made,CS,LB,12,65.89,5.490833333333334,0.34317708333333335
+Ingredient Database,Suimono deep,Home-made,OZ,Oz(v),1,0.03,0.03,0.03
+Ingredient Database,Nory Seaweed,Asian items,CS,Un,500,125,0.25,0.25
+Ingredient Database,Kanikama Mix,Home-made,OZ,Oz(w),1,0.72,0.72,0.72
+Ingredient Database,Octopus Mix,Home-made,OZ,Oz(w),1,1.21,1.21,1.21
+Ingredient Database,Black Masago,Proteins,CS,LB,1,24,24,1.5
+Ingredient Database,Surimi,Proteins,CS,LB,10,42.85,4.285,0.2678125
+Ingredient Database,Uni,Proteins,CS,LB,1,79,79,4.9375
+Ingredient Database,Ikura,Proteins,CS,LB,2.2,96.69,43.949999999999996,2.7468749999999997
+Ingredient Database,Hotate,Asian items,LB,LB,1,22.95,22.95,1.434375
+Ingredient Database,Truffle oil,Oils,CT,Oz(v),8.45,14.17,1.676923076923077,1.676923076923077
+Ingredient Database,Platano Maduro,Vegetables,CS,LB,40,43,1.075,0.0671875
+Ingredient Database,Pesca Blanca,Proteins,LB,LB,17.25,223.39,12.95014492753623,0.8093840579710144
+Ingredient Database,Blu fin toro,Proteins,LB,LB,9.41,536.37,57,3.5625
+Ingredient Database,Ebi tempura,Home-made,CS,LB,10,79.28,7.928,0.4955
+Ingredient Database,Avocado,Vegetables,CS,LB,25,46,1.84,0.115
+Ingredient Database,Panko,Asian items,BG,LB,25,47.25,1.89,0.118125
+Ingredient Database,Passion Sauce,Sauces,BG,Oz(v),34,7.69,0.2261764705882353,0.2261764705882353
+Ingredient Database,Beetroot,Vegetables,LB,LB,8,16,2,0.125
+Ingredient Database,Lettuce,Vegetables,CS,Un,50,36,0.72,0.72
+Ingredient Database,Chives,Vegetables,BG,LB,2,16,8,0.5
+Ingredient Database,Spicy Mayo,Sauces,BG,Oz(v),17,4.61,0.2711764705882353,0.2711764705882353
+Ingredient Database,Cream Cheese,Groceries,CS,LB,18,87.41,4.856111111111111,0.3035069444444444
+Ingredient Database,Ebi mix,Home-made,OZ,Oz(v),1,0.82,0.82,0.82
+Ingredient Database,Salmon mix,Home-made,OZ,Oz(v),1,0.82,0.82,0.82
+Ingredient Database,Lobster,Proteins,LB,LB,9,135,15,0.9375
+Ingredient Database,Black sesame,Asian items,CT,Oz(w),19,13.22,0.6957894736842105,0.6957894736842105
+Ingredient Database,Flambe sauce,Sauces,OZ,Oz(v),1,0.2,0.2,0.2
+Ingredient Database,Kimiyaki sauce,Home-made,OZ,Oz(v),1,0.35,0.35,0.35
+Ingredient Database,Tuna Mix,Home-made,OZ,Oz(v),1,0.72,0.72,0.72
+Ingredient Database,Orenso sauce,Home-made,OZ,Oz(v),1,0.35,0.35,0.35
+Ingredient Database,Wantan,Asian items,CT,Oz(w),16,3.99,0.249375,0.249375
+Ingredient Database,Toni Doki oil,Oils,CT,Oz(v),56.1,29.19,0.5203208556149733,0.5203208556149733
+Ingredient Database,Orange Sauce,Home-made,OZ,Oz(v),1,0.04,0.04,0.04
+Ingredient Database,Wakame,Asian items,CS,LB,17.6,24,1.3636363636363635,0.08522727272727272
+Ingredient Database,Chifle,Groceries,OZ,Oz(w),60,40,0.6666666666666666,0.6666666666666666
+Ingredient Database,Cevichimi mayo,Home-made,OZ,Oz(v),1,1.75,1.75,1.75
+Ingredient Database,Ceviche mix,Home-made,OZ,Oz(v),1,0.32,0.32,0.32
+Ingredient Database,Cucumber,Vegetables,LB,LB,1,0.95,0.95,0.059375
+Ingredient Database,Teriyaki sauce,Sauces,CS,Oz(v),256,51.34,0.200546875,0.200546875
+Ingredient Database,European cucumber,Vegetables,CT,Un,1,0.1,0.1,0.1
+Ingredient Database,Seaweed salad,Home-made,LB,LB,17.6,66.99,3.8062499999999995,0.23789062499999997
+Ingredient Database,Crunchy wantan,Home-made,CS,LB,24,59.6,2.4833333333333334,0.15520833333333334
+Ingredient Database,Mustard Sauce,Home-made,OZ,Oz(v),1,0.24,0.24,0.24
+Ingredient Database,Japanese mayo,Home-made,OZ,Oz(v),1,0.37,0.37,0.37
+Ingredient Database,Pepper,Groceries,CT,LB,5,124.4,24.880000000000003,1.5550000000000002
+Ingredient Database,salt,Groceries,LB,LB,25,11.5,0.46,0.02875
+Ingredient Database,Togarashi,Asian items,LB,LB,1.32,15.4,11.666666666666666,0.7291666666666666
+Ingredient Database,Ramen deep,Home-made,OZ,Oz(w),1,0.08,0.08,0.08
+Ingredient Database,Ramen noddles,Asian items,CS,Oz(w),55,42.4,0.7709090909090909,0.7709090909090909
+Ingredient Database,Pork Tenderloin,Proteins,CS,LB,1,6.99,6.99,0.436875
+Ingredient Database,Sweet corn,Groceries,CS,LB,20,34,1.7,0.10625
+Ingredient Database,Spinach,Vegetables,LB,LB,2.5,7.5,3,0.1875
+Ingredient Database,Tenderloin,Proteins,LB,LB,64,768,12,0.75
+Ingredient Database,Miso deep,Home-made,OZ,Oz(v),1,0.021,0.021,0.021
+Ingredient Database,Tofu,Asian items,CS,Oz(w),129.6,23.2,0.17901234567901234,0.17901234567901234
+Ingredient Database,Kombu seaweed,Asian items,BG,Oz(w),192,12,0.0625,0.0625
+Ingredient Database,Squid,Proteins,CS,LB,10,70.44,7.044,0.44025
+Ingredient Database,Ginger,Fruits,LB,LB,5,15,3,0.1875
+Ingredient Database,Aji fresno,Vegetables,LB,LB,4,39.8,9.95,0.621875
+Ingredient Database,Bechamel Sauce,Home-made,OZ,Oz(v),1,0.027,0.027,0.027
+Ingredient Database,Todarashi,Asian items,LB,LB,1.32,15.4,11.666666666666666,0.7291666666666666
+Ingredient Database,Parsley,Vegetables,LB,LB,2,11.4,5.7,0.35625
+Ingredient Database,Pork Belly,Proteins,CS,LB,1,6.99,6.99,0.436875
+Ingredient Database,Marinated onion,Home-made,OZ,Oz(w),1,0.1,0.1,0.1
+Ingredient Database,Corn tortilla,Groceries,CS,Un,480,27.17,0.05660416666666667,0.05660416666666667
+Ingredient Database,Lemon,Fruits,CT,LB,165,38,0.23030303030303031,0.014393939393939395
+Ingredient Database,Micro cilantro,Vegetables,OZ,Oz(w),8,23.5,2.9375,2.9375
+Ingredient Database,Pangora mix,Proteins,LB,LB,1,1.114,1.114,0.069625
+Ingredient Database,Palm,Vegetables,CS,Oz(w),336,67.3,0.20029761904761903,0.20029761904761903
+Ingredient Database,Cilantro,Vegetables,LB,LB,1,7.5,7.5,0.46875
+Ingredient Database,Wantan leaf,Asian items,CT,Oz(w),16,3.99,0.249375,0.249375
+Ingredient Database,Sesame Oil,Oils,CT,Oz(v),56,30.72,0.5485714285714286,0.5485714285714286
+Ingredient Database,Tempura sauce,Home-made,CT,Oz(v),1,0.1,0.1,0.1
+Ingredient Database,Oil,Oils,LB,LB,35,30.57,0.8734285714285714,0.054589285714285715
+Ingredient Database,Papanabo,Vegetables,LB,LB,6,15,2.5,0.15625
+Ingredient Database,Bambo leaf,Vegetables,BG,Un,100,15.9,0.159,0.159
+Ingredient Database,Cherry tomato,Vegetables,CT,Un,1,3,3,3
+Ingredient Database,Persian onion,Vegetables,LB,LB,25,11.48,0.4592,0.0287
+Ingredient Database,Foie gras,Proteins,CS,LB,1,33.35,33.35,2.084375
+Ingredient Database,Sukiyaki Sauce,Home-made,OZ,Oz(w),1,0.18,0.18,0.18
+Ingredient Database,Maldon Salt,Groceries,CT,LB,3.1,31.41,10.13225806451613,0.6332661290322581
+Ingredient Database,Oysters,Proteins,CS,Un,100,96,0.96,0.96
+Ingredient Database,Daikon,Home-made,OZ,Oz(w),7.06,11.07,1.5679886685552409,1.5679886685552409
+Ingredient Database,Wasabi Masago,Proteins,LB,LB,1,20,20,1.25
+Ingredient Database,Olive oil,Oils,CT,Oz(v),128,132.58,1.03578125,1.03578125
+Ingredient Database,Siracha Sauce,Sauces,CS,Oz(v),120,29.07,0.24225,0.24225
+Ingredient Database,Truffled Honey,Sauces,CT,Oz(v),8.81,36,4.086265607264472,4.086265607264472
+Ingredient Database,Almond Sauce,Home-made,OZ,Oz(w),1,0.36,0.36,0.36
+Ingredient Database,Potato,Vegetables,LB,LB,8,10,1.25,0.078125
+Ingredient Database,Rice paper,Asian items,CS,Oz(w),120,68.52,0.571,0.571
+Ingredient Database,Jalapeno,Groceries,LB,LB,5,9.5,1.9,0.11875
+Ingredient Database,Crunchy Vegetables,Home-made,CT,Un,1,0.33,0.33,0.33
+Ingredient Database,Green Onion,Vegetables,CS,Un,12,9.95,0.8291666666666666,0.8291666666666666
+Ingredient Database,Kanebi,Home-made,CT,Un,1,3.7810403890944806,3.7810403890944806,3.7810403890944806
+Ingredient Database,Samurai Ebi,Home-made,CT,Un,1,4.294962322771991,4.294962322771991,4.294962322771991
+Ingredient Database,Salmon Noruego,Proteins,LB,LB,22.8,262.2,11.5,0.71875
+Ingredient Database,Shrimp 5160,Proteins,CS,LB,10,54.8,5.4799999999999995,0.34249999999999997
+Ingredient Database,Pangora nail small,Proteins,LB,Oz(w),1.73,0.97,0.5606936416184971,0.5606936416184971
+Ingredient Database,tarta vasca,Home-made,CS,Un,8,50,6.25,6.25
+Ingredient Database,Vinegar,Groceries,OZ,Oz(w),1,0.04,0.04,0.04
+Ingredient Database,lime,Groceries,OZ,Oz(v),1,0.05,0.05,0.05
+Ingredient Database,Sesame Paste,Home-made,OZ,Oz(v),1,1.24,1.24,1.24
+Ingredient Database,Kani maguro,Home-made,CT,Un,1,3.102080379946197,3.102080379946197,3.102080379946197
+Ingredient Database,Sesame Sheet,Asian items,OZ,Oz(v),1,0.5,0.5,0.5
+Ingredient Database,Wasabi,Asian items,LB,LB,2.2,15.95,7.249999999999999,0.45312499999999994
+Ingredient Database,Vegie Side,Home-made,CT,Un,1,0.29,0.29,0.29
+Ingredient Database,Gunkan Kani,Home-made,CT,Un,1,0.35,0.9873086653645833,0.9873086653645833
+Ingredient Database,Gunkan Taco,Home-made,CT,Un,1,1.2206728059895833,1.2206728059895833,1.2206728059895833
+Ingredient Database,Toki Salmon,Home-made,CT,Un,1,1.025052039388021,1.025052039388021,1.025052039388021
+Ingredient Database,Kubai Sauce,Home-made,OZ,Oz(v),1,0.16,0.16,0.16
+Ingredient Database,Tempura,Groceries,LB,LB,1,1.32,1.32,0.0825
+Ingredient Database,Skirt Steak,Proteins,LB,LB,1,13.99,13.99,0.874375
+Ingredient Database,mashed potato,Home-made,CT,Un,1,1.1046956380208335,1.1046956380208335,1.1046956380208335
+Ingredient Database,Coconut Milk,Groceries,OZ,Oz(v),13.5,2.41,0.17851851851851852,0.17851851851851852
+Ingredient Database,lobster bisque,Groceries,OZ,Oz(v),1,0.33,0.33,0.33
+Ingredient Database,clam,Proteins,CT,Un,22,3.64,0.16545454545454547,0.16545454545454547
+Ingredient Database,cake mix,Groceries,LB,LB,1,3.94,3.94,0.24625
+Ingredient Database,vanilla,Groceries,CT,Un,16,5.68,0.355,0.355
+Ingredient Database,cocoa,Groceries,LB,LB,1,5,5,0.3125
+Ingredient Database,condensate milk,Groceries,OZ,Oz(v),14,3.11,0.22214285714285714,0.22214285714285714
+Ingredient Database,chocolate chips,Groceries,LB,LB,25,92.42,3.6968,0.23105
+Ingredient Database,ice cream,Groceries,OZ,Oz(v),1,0.16,0.16,0.16
+Ingredient Database,fruit mix,Fruits,,,,,-,-
+Ingredient Database,Mochis,Groceries,CS,Un,96,115.2,1.2,1.2
+Ingredient Database,Gunkan Sake,Home-made,CT,Un,1,1.0337492903645833,1.0337492903645833,1.0337492903645833
+Ingredient Database,Gunkan Ebi,Home-made,CT,Un,1,1.0337492903645833,1.0337492903645833,1.0337492903645833
+Ingredient Database,Octopus low,Proteins,LB,LB,1,11.21,11.21,0.700625
+Ingredient Database,miso soup,Home-made,CT,Un,1,0.7143367283950617,0.7143367283950617,0.7143367283950617
+Ingredient Database,chicken,Proteins,LB,LB,1,2,2,0.125
+Ingredient Database,Adamame,Home-made,CT,Un,1,0.56875,0.56875,0.56875
+Ingredient Database,Chicken Nuggets,Proteins,CS,LB,10,36.41,3.6409999999999996,0.22756249999999997
+Ingredient Database,Orange Choy Sauce,Sauces,CS,LB,20,57.99,2.8995,0.18121875
+Ingredient Database,Container Rice,Groceries,CS,Un,300,35.99,0.11996666666666668,0.11996666666666668
+Ingredient Database,Container Lid,Groceries,CS,Un,300,53.98,0.17993333333333333,0.17993333333333333
+Ingredient Database,Broccoli,Vegetables,CS,LB,20,28.37,1.4185,0.08865625
+Ingredient Database,salmon choy,Proteins,CS,LB,10,88.98,8.898,0.556125
+Ingredient Database,Sirloin,Proteins,CS,LB,10,47.75,4.775,0.2984375
+Ingredient Database,Dumpling Veg,Proteins,CS,Un,120,52.1,0.4341666666666667,0.4341666666666667
+Ingredient Database,Dumpling Pork,Proteins,CS,Un,120,62.51,0.5209166666666667,0.5209166666666667
+Ingredient Database,Dumpling Chicken,Proteins,CS,Un,120,61.28,0.5106666666666667,0.5106666666666667
+Ingredient Database,Dumpling Shrimp,Proteins,CS,Un,200,52.29,0.26145,0.26145
+Ingredient Database,Dumpling Shitaki,Proteins,CS,Un,120,58.92,0.491,0.491
+Ingredient Database,Spring Roll,Proteins,CS,Un,100,79.87,0.7987000000000001,0.7987000000000001
+Ingredient Database,Sweet Chili Sauce,Sauces,LB,LB,18.75,52.57,2.803733333333333,0.17523333333333332
+Ingredient Database,Cali Spring Roll,Proteins,CS,Un,80,83.64,1.0455,1.0455
+Ingredient Database,Wings,Proteins,CS,LB,40,70.68,1.7670000000000001,0.11043750000000001
+Ingredient Database,Korean ribs,Proteins,CS,Un,36,183.16,5.087777777777777,5.087777777777777
+Ingredient Database,bean sprout,Vegetables,LB,LB,5,11,2.2,0.1375
+Ingredient Database,chinese noodle,Groceries,LB,LB,30,58,1.9333333333333333,0.12083333333333333
+Ingredient Database,Nabo Chino,Vegetables,CS,LB,10,30,3,0.1875
+Ingredient Database,General Tso Sauce,Sauces,CS,Un,1,0.2,0.2,0.2
+Ingredient Database,Pork Diced,Proteins,CS,LB,1,4.39,4.39,0.274375
+Ingredient Database,Basil,Vegetables,CS,LB,1,5.9,5.9,0.36875
+Ingredient Database,Fire Roll,Home-made,CT,Un,1,2.44217580931713,2.44217580931713,2.44217580931713
+Ingredient Database,KANEBI,Home-made,CT,Un,1,3.7810403890944806,3.7810403890944806,3.7810403890944806
+Ingredient Database,sake kani,Home-made,CT,Un,1,2.6646262783836976,2.6646262783836976,2.6646262783836976

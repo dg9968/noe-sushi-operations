@@ -1,0 +1,21 @@
+﻿__Recipe,RECIPE NAME:,,Missing purchase quantity of ingredient,,,Missing unitary cost of ingredient,0,-,0,-
+Chicekn Wings,MENU CATEGORY:,,Combinations,,1
+Chicekn Wings,RECIPE,,AS PURCHASED,,,INVOICE,,RECIPE,,INDIVIDUAL
+Chicekn Wings,QTY,UNIT,QTY,UNIT,INGREDIENT,COST,UNIT,COST,UNIT,INGREDIENT COST
+Chicekn Wings,8,Un,40,LB,wings,0.11043750000000001,Un,0.8835000000000001,Un,0.8835000000000001
+Chicekn Wings,4,Un,18.75,LB,sweet chili sauce,0.17523333333333332,Un,0.7009333333333333,Un,0.7009333333333333
+Chicekn Wings,,,,,,,TOTAL INGREDIENT COST,,,1.5844333333333334
+Chicekn Wings,,,,,,,15% Q FACTOR,,,0.15844333333333335
+Chicekn Wings,,,,,,,RECIPE COST,,,1.7428766666666666
+Chicekn Wings,,,,,,,PORTION COST,,,0.00907748263888889
+Chicekn Wings,PROCEDURE:,,,,,,ADDITIONAL COST,,,0.5
+Chicekn Wings,,,,,,,TOTAL COST,,,2.2519541493055555
+Chicekn Wings,,,,,,,DESIRED FOOD COST %,,,0.3
+Chicekn Wings,,,,,,,DESRIRED MENU PRICE,,,7.506513831018519
+Chicekn Wings,,,,,,,CURRENT PRICE,,,19,BOGO
+Chicekn Wings,,,,,,,VARIANCE,,,11.49348616898148
+Chicekn Wings,,,,,,,ACTUAL FOOD COST,,,0.11852390259502923
+Chicekn Wings,,,,,,,PVP MENU UBER,,,9.5
+Chicekn Wings,,,,,,,COM 25%,,,2.375
+Chicekn Wings,,,,,,,PVP FINAL,,,7.125
+Chicekn Wings,,,,,,,MARGEN,,,0.6839362597465887

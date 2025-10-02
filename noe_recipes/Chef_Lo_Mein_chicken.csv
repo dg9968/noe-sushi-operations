@@ -1,0 +1,32 @@
+﻿__Recipe,RECIPE NAME:,,Missing purchase quantity of ingredient,,,Missing unitary cost of ingredient,0,-,0,-
+Chef Lo Mein chicken,MENU CATEGORY:,,Combinations,,1
+Chef Lo Mein chicken,RECIPE,,AS PURCHASED,,,INVOICE,,RECIPE,,INDIVIDUAL
+Chef Lo Mein chicken,QTY,UNIT,QTY,UNIT,INGREDIENT,COST,UNIT,COST,UNIT,INGREDIENT COST
+Chef Lo Mein chicken,6.35,Un,30,LB,chinese noodle,0.12083333333333333,Un,0.7672916666666666,Un,0.7672916666666666
+Chef Lo Mein chicken,0.7,Un,1,LB,yellow zucchini,0.121875,Un,0.0853125,Un,0.0853125
+Chef Lo Mein chicken,0.35,,56,Oz(v),sesame oil,0.5485714285714286,0,0.192,0,0.192
+Chef Lo Mein chicken,0.07,,2,LB,chives,0.5,0,0.035,0,0.035
+Chef Lo Mein chicken,0.035,,18,Un,white sesame,0.5583333333333333,0,0.01954166666666667,0,0.01954166666666667
+Chef Lo Mein chicken,4,,33.81,Oz(v),japanese sauce,0.1520260278024253,0,0.6081041112097012,0,0.6081041112097012
+Chef Lo Mein chicken,0.07,,2,LB,hondashi,1.4625,0,0.10237500000000001,0,0.10237500000000001
+Chef Lo Mein chicken,0.035,,1.32,LB,togarashi,0.7291666666666666,0,0.025520833333333333,0,0.025520833333333333
+Chef Lo Mein chicken,1.76,,20,LB,broccoli,0.08865625,0,0.156035,0,0.156035
+Chef Lo Mein chicken,1.76,,1,LB,pearl onion,0.09375,0,0.165,0,0.165
+Chef Lo Mein chicken,1,,1,LB,red pepper,0.203125,0,0.203125,0,0.203125
+Chef Lo Mein chicken,0.35,,5,LB,bean sprout,0.1375,0,0.048125,0,0.048125
+Chef Lo Mein chicken,5,,1,LB,chicken,0.125,0,0.625,0,0.625
+Chef Lo Mein chicken,,,,,,,TOTAL INGREDIENT COST,,,3.032430777876368
+Chef Lo Mein chicken,,,,,,,15% Q FACTOR,,,0.3032430777876368
+Chef Lo Mein chicken,,,,,,,RECIPE COST,,,3.335673855664005
+Chef Lo Mein chicken,,,,,,,PORTION COST,,,0.01737330133158336
+Chef Lo Mein chicken,PROCEDURE:,,,,,,ADDITIONAL COST,,,0.5
+Chef Lo Mein chicken,,,,,,,TOTAL COST,,,3.853047156995588
+Chef Lo Mein chicken,,,,,,,DESIRED FOOD COST %,,,0.3
+Chef Lo Mein chicken,,,,,,,DESRIRED MENU PRICE,,,12.843490523318629
+Chef Lo Mein chicken,,,,,,,CURRENT PRICE,,,18,15.8125
+Chef Lo Mein chicken,,,,,,,VARIANCE,,,5.1565094766813715
+Chef Lo Mein chicken,,,,,,,ACTUAL FOOD COST,,,0.2140581753886438
+Chef Lo Mein chicken,,,,,,,PVP MENU UBER,,,18
+Chef Lo Mein chicken,,,,,,,COM 25%,,,4.5
+Chef Lo Mein chicken,,,,,,,PVP FINAL,,,13.5
+Chef Lo Mein chicken,,,,,,,MARGEN,,,0.7145890994818083

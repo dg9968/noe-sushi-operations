@@ -1,0 +1,24 @@
+﻿__Recipe,RECIPE NAME:,,Missing purchase quantity of ingredient,,,Missing unitary cost of ingredient,0,-,0,-
+D Shitaki,MENU CATEGORY:,,Combinations,,1
+D Shitaki,RECIPE,,AS PURCHASED,,,INVOICE,,RECIPE,,INDIVIDUAL
+D Shitaki,QTY,UNIT,QTY,UNIT,INGREDIENT,COST,UNIT,COST,UNIT,INGREDIENT COST
+D Shitaki,6,Un,120,Un,dumpling shitaki,0.491,Un,2.9459999999999997,Un,2.9459999999999997
+D Shitaki,2,Un,1,Oz(v),tempura sauce,0.1,Un,0.2,Un,0.2
+D Shitaki,0.07,Un,2,LB,chives,0.5,Un,0.035,Un,0.035
+D Shitaki,1,Un
+D Shitaki,1,Un
+D Shitaki,,,,,,,TOTAL INGREDIENT COST,,,3.181
+D Shitaki,,,,,,,15% Q FACTOR,,,0.31810000000000005
+D Shitaki,,,,,,,RECIPE COST,,,3.4991000000000003
+D Shitaki,,,,,,,PORTION COST,,,0.01822447916666667
+D Shitaki,PROCEDURE:,,,,,,ADDITIONAL COST,,,0.5
+D Shitaki,,,,,,,TOTAL COST,,,4.017324479166668
+D Shitaki,,,,,,,DESIRED FOOD COST %,,,0.3
+D Shitaki,,,,,,,DESRIRED MENU PRICE,,,13.391081597222225
+D Shitaki,,,,,,,CURRENT PRICE,,,18
+D Shitaki,,,,,,,VARIANCE,,,4.608918402777775
+D Shitaki,,,,,,,ACTUAL FOOD COST,,,0.22318469328703708
+D Shitaki,,,,,,,PVP MENU UBER,,,18
+D Shitaki,,,,,,,COM 25%,,,4.5
+D Shitaki,,,,,,,PVP FINAL,,,13.5
+D Shitaki,,,,,,,MARGEN,,,0.7024204089506172

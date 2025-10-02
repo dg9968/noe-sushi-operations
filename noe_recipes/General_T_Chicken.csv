@@ -1,0 +1,25 @@
+﻿__Recipe,RECIPE NAME:,,Missing purchase quantity of ingredient,,,Missing unitary cost of ingredient,0,-,0,-
+General T Chicken,MENU CATEGORY:,,Combinations,,1
+General T Chicken,RECIPE,,AS PURCHASED,,,INVOICE,,RECIPE,,INDIVIDUAL
+General T Chicken,QTY,UNIT,QTY,UNIT,INGREDIENT,COST,UNIT,COST,UNIT,INGREDIENT COST
+General T Chicken,8,Un,10,LB,chicken nuggets,0.22756249999999997,Un,1.8204999999999998,Un,1.8204999999999998
+General T Chicken,6,Un,1,Un,general tso sauce,0.2,Un,1.2000000000000002,Un,1.2000000000000002
+General T Chicken,0.07,Un,19,Oz(w),black sesame,0.6957894736842105,Un,0.04870526315789474,Un,0.04870526315789474
+General T Chicken,2,Un
+General T Chicken,2,Un
+General T Chicken,6,,50,LB,rice,0.075,0,0.44999999999999996,0,0.44999999999999996
+General T Chicken,,,,,,,TOTAL INGREDIENT COST,,,3.519205263157895
+General T Chicken,,,,,,,15% Q FACTOR,,,0.3519205263157895
+General T Chicken,,,,,,,RECIPE COST,,,3.8711257894736844
+General T Chicken,,,,,,,PORTION COST,,,0.020162113486842107
+General T Chicken,PROCEDURE:,,,,,,ADDITIONAL COST,,,0.5
+General T Chicken,,,,,,,TOTAL COST,,,4.391287902960526
+General T Chicken,,,,,,,DESIRED FOOD COST %,,,0.3
+General T Chicken,,,,,,,DESRIRED MENU PRICE,,,14.637626343201754
+General T Chicken,,,,,,,CURRENT PRICE,,,20
+General T Chicken,,,,,,,VARIANCE,,,5.362373656798246
+General T Chicken,,,,,,,ACTUAL FOOD COST,,,0.2195643951480263
+General T Chicken,,,,,,,PVP MENU UBER,,,20
+General T Chicken,,,,,,,COM 25%,,,5
+General T Chicken,,,,,,,PVP FINAL,,,15
+General T Chicken,,,,,,,MARGEN,,,0.7072474731359649

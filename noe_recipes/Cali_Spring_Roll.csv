@@ -1,0 +1,21 @@
+﻿__Recipe,RECIPE NAME:,,Missing purchase quantity of ingredient,,,Missing unitary cost of ingredient,0,-,0,-
+Cali Spring Roll,MENU CATEGORY:,,Combinations,,1
+Cali Spring Roll,RECIPE,,AS PURCHASED,,,INVOICE,,RECIPE,,INDIVIDUAL
+Cali Spring Roll,QTY,UNIT,QTY,UNIT,INGREDIENT,COST,UNIT,COST,UNIT,INGREDIENT COST
+Cali Spring Roll,2,Un,80,Un,cali spring roll,1.0455,Un,2.091,Un,2.091
+Cali Spring Roll,2,Un,18.75,LB,sweet chili sauce,0.17523333333333332,Un,0.35046666666666665,Un,0.35046666666666665
+Cali Spring Roll,,,,,,,TOTAL INGREDIENT COST,,,2.441466666666667
+Cali Spring Roll,,,,,,,15% Q FACTOR,,,0.2441466666666667
+Cali Spring Roll,,,,,,,RECIPE COST,,,2.6856133333333334
+Cali Spring Roll,,,,,,,PORTION COST,,,0.013987569444444445
+Cali Spring Roll,PROCEDURE:,,,,,,ADDITIONAL COST,,,0.5
+Cali Spring Roll,,,,,,,TOTAL COST,,,3.1996009027777776
+Cali Spring Roll,,,,,,,DESIRED FOOD COST %,,,0.3
+Cali Spring Roll,,,,,,,DESRIRED MENU PRICE,,,10.665336342592592
+Cali Spring Roll,,,,,,,CURRENT PRICE,,,14
+Cali Spring Roll,,,,,,,VARIANCE,,,3.3346636574074076
+Cali Spring Roll,,,,,,,ACTUAL FOOD COST,,,0.2285429216269841
+Cali Spring Roll,,,,,,,PVP MENU UBER,,,14
+Cali Spring Roll,,,,,,,COM 25%,,,3.5
+Cali Spring Roll,,,,,,,PVP FINAL,,,10.5
+Cali Spring Roll,,,,,,,MARGEN,,,0.6952761044973544

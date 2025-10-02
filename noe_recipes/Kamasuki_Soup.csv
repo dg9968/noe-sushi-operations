@@ -1,0 +1,30 @@
+﻿__Recipe,RECIPE NAME:,,Kamasuki Soup,,,Missing unitary cost of ingredient,0,-,0,-
+Kamasuki Soup,MENU CATEGORY:,,Hot Entrees,,1
+Kamasuki Soup,RECIPE,,AS PURCHASED,,,INVOICE,,RECIPE,,INDIVIDUAL
+Kamasuki Soup,QTY,UNIT,QTY,UNIT,INGREDIENT,COST,UNIT,COST,UNIT,INGREDIENT COST
+Kamasuki Soup,1.06,Oz(w),10,LB,Shrimp 2125,0.39425,Oz(w),0.417905,Oz(w),0.417905
+Kamasuki Soup,0.035,Oz(w),12.12,LB,red masago,0.6188118811881188,Oz(w),0.02165841584158416,Oz(w),0.02165841584158416
+Kamasuki Soup,0.035,Oz(w),4.4,LB,orange masago,0.5312499999999999,Oz(w),0.01859375,Oz(w),0.01859375
+Kamasuki Soup,5.29,Oz(w),1,Oz(v),lobster bisque,0.33,Oz(w),1.7457,Oz(w),1.7457
+Kamasuki Soup,2.7,Oz(w),384,Oz(v),heavy cream,0.14979166666666668,Oz(w),0.40443750000000006,Oz(w),0.40443750000000006
+Kamasuki Soup,0.35,Oz(w),1,LB,pearl onion,0.09375,Oz(w),0.032812499999999994,Oz(w),0.032812499999999994
+Kamasuki Soup,3,Un,22,Un,clam,0.16545454545454547,Un,0.4963636363636364,Un,0.4963636363636364
+Kamasuki Soup,0.035,Oz(w),192,Oz(w),kombu seaweed,0.0625,Oz(w),0.0021875,Oz(w),0.0021875
+Kamasuki Soup,1.05,Oz(w),42,LB,tomato paste,0.07455357142857143,Oz(w),0.07828125,Oz(w),0.07828125
+Kamasuki Soup,0.91,Oz(v),13.4,LB,salmon chileno,0.5593750000000001,Oz(v),0.50903125,Oz(v),0.50903125
+Kamasuki Soup,0.63,Oz(w),10,LB,squid,0.44025,Oz(w),0.2773575,Oz(w),0.2773575
+Kamasuki Soup,0.035,Oz(w),25,LB,Salt,0.02875,Oz(w),0.0010062500000000002,Oz(w),0.0010062500000000002
+Kamasuki Soup,0.07,Oz(w),2,LB,Hondashi,1.4625,Oz(w),0.10237500000000001,Oz(w),0.10237500000000001
+Kamasuki Soup,0.42,Oz(w),176,Oz(v),kanikama,0.6193181818181818,Oz(w),0.2601136363636363,Oz(w),0.2601136363636363
+Kamasuki Soup,1.69,,,,coconut milk
+Kamasuki Soup,,,,,,,TOTAL INGREDIENT COST,,,4.367823188568857
+Kamasuki Soup,,,,,,,15% Q FACTOR,,,0.43678231885688573
+Kamasuki Soup,,,,,,,RECIPE COST,,,4.804605507425743
+Kamasuki Soup,,,,,,,PORTION COST,,,0.02502398701784241
+Kamasuki Soup,PROCEDURE:,,,,,,ADDITIONAL COST,,,0.5
+Kamasuki Soup,,,,,,,TOTAL COST,,,5.329629494443585
+Kamasuki Soup,,,,,,,DESIRED FOOD COST %,,,0.3
+Kamasuki Soup,,,,,,,DESRIRED MENU PRICE,,,17.765431648145285
+Kamasuki Soup,,,,,,,CURRENT PRICE,,,18
+Kamasuki Soup,,,,,,,VARIANCE,,,0.23456835185471547
+Kamasuki Soup,,,,,,,ACTUAL FOOD COST,,,0.2960905274690881

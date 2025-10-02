@@ -1,0 +1,28 @@
+﻿__Recipe,RECIPE NAME:,,Missing purchase quantity of ingredient,,,Missing unitary cost of ingredient,0,-,0,-
+Teriyaki Salmon,MENU CATEGORY:,,Combinations,,1
+Teriyaki Salmon,RECIPE,,AS PURCHASED,,,INVOICE,,RECIPE,,INDIVIDUAL
+Teriyaki Salmon,QTY,UNIT,QTY,UNIT,INGREDIENT,COST,UNIT,COST,UNIT,INGREDIENT COST
+Teriyaki Salmon,6,Un,13.4,LB,salmon chileno,0.5593750000000001,Un,3.35625,Un,3.35625
+Teriyaki Salmon,2,Un,256,Oz(v),teriyaki sauce,0.200546875,Un,0.40109375,Un,0.40109375
+Teriyaki Salmon,8,Un,50,LB,rice,0.075,Un,0.6,Un,0.6
+Teriyaki Salmon,0.035,Un,56,Oz(v),sesame oil,0.5485714285714286,Un,0.019200000000000002,Un,0.019200000000000002
+Teriyaki Salmon,0.035,Un,18,Un,white sesame,0.5583333333333333,Un,0.01954166666666667,Un,0.01954166666666667
+Teriyaki Salmon,0.035,,19,Oz(w),black sesame,0.6957894736842105,0,0.02435263157894737,0,0.02435263157894737
+Teriyaki Salmon,2
+Teriyaki Salmon,2,,25,LB,Carrot,0.035,0,0.07,0,0.07
+Teriyaki Salmon,2,,6,LB,Green zucchini,0.121875,0,0.24375,0,0.24375
+Teriyaki Salmon,,,,,,,TOTAL INGREDIENT COST,,,4.734188048245615
+Teriyaki Salmon,,,,,,,15% Q FACTOR,,,0.47341880482456156
+Teriyaki Salmon,,,,,,,RECIPE COST,,,5.2076068530701765
+Teriyaki Salmon,,,,,,,PORTION COST,,,0.027122952359740504
+Teriyaki Salmon,PROCEDURE:,,,,,,ADDITIONAL COST,,,0.5
+Teriyaki Salmon,,,,,,,TOTAL COST,,,5.734729805429917
+Teriyaki Salmon,,,,,,,DESIRED FOOD COST %,,,0.3
+Teriyaki Salmon,,,,,,,DESRIRED MENU PRICE,,,19.115766018099723
+Teriyaki Salmon,,,,,,,CURRENT PRICE,,,25
+Teriyaki Salmon,,,,,,,VARIANCE,,,5.884233981900277
+Teriyaki Salmon,,,,,,,ACTUAL FOOD COST,,,0.2293891922171967
+Teriyaki Salmon,,,,,,,PVP MENU UBER,,,25
+Teriyaki Salmon,,,,,,,COM 25%,,,6.25
+Teriyaki Salmon,,,,,,,PVP FINAL,,,18.75
+Teriyaki Salmon,,,,,,,MARGEN,,,0.6941477437104043

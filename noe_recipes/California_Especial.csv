@@ -1,0 +1,22 @@
+﻿__Recipe,RECIPE NAME:,,Special California
+California Especial,MENU CATEGORY:,,Sushi Special rolls Rolls,,1
+California Especial,RECIPE,,AS PURCHASED,,,INVOICE,,RECIPE,,INDIVIDUAL
+California Especial,QTY,UNIT,QTY,UNIT,INGREDIENT,COST,UNIT,COST,UNIT,INGREDIENT COST
+California Especial,0.035,Oz(w),500,Un,Nory Seaweed,0.25,Oz(w),0.00875,Oz(w),0.00875
+California Especial,3.88,Oz(w),200,LB,Sushi rice,0.05,Oz(w),0.194,Oz(w),0.194
+California Especial,2.47,Oz(w),10,LB,Surimi,0.2678125,Oz(w),0.6614968750000001,Oz(w),0.6614968750000001
+California Especial,0.88,Oz(w),25,LB,Avocado,0.115,Oz(w),0.1012,Oz(w),0.1012
+California Especial,0.91,Oz(w),1,Un,European cucumber,0.1,Oz(w),0.09100000000000001,Oz(w),0.09100000000000001
+California Especial,0.035,Oz(w),18,Un,White Sesame,0.5583333333333333,Oz(w),0.01954166666666667,Oz(w),0.01954166666666667
+California Especial,0.42,Oz(w),4.4,LB,Orange Masago,0.5312499999999999,Oz(w),0.22312499999999993,Oz(w),0.22312499999999993
+California Especial,,,,,,,TOTAL INGREDIENT COST,,,1.2991135416666666
+California Especial,,,,,,,15% Q FACTOR,,,0.12991135416666666
+California Especial,,,,,,,RECIPE COST,,,1.4290248958333334
+California Especial,,,,,,,PORTION COST,,,0.007442837999131945
+California Especial,PROCEDURE:,,,,,,ADDITIONAL COST,,,0.5
+California Especial,,,,,,,TOTAL COST,,,1.9364677338324654
+California Especial,,,,,,,DESIRED FOOD COST %,,,0.3
+California Especial,,,,,,,DESRIRED MENU PRICE,,,6.454892446108218
+California Especial,,,,,,,CURRENT PRICE,,,16
+California Especial,,,,,,,VARIANCE,,,9.545107553891782
+California Especial,,,,,,,ACTUAL FOOD COST,,,0.12102923336452909

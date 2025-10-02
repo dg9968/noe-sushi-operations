@@ -1,0 +1,26 @@
+﻿__Recipe,RECIPE NAME:,,Pangora Especial,,,,0,-,0,-
+Pangora Especial,MENU CATEGORY:,,Sushi Special rolls Rolls,,1
+Pangora Especial,RECIPE,,AS PURCHASED,,,INVOICE,,RECIPE,,INDIVIDUAL
+Pangora Especial,QTY,UNIT,QTY,UNIT,INGREDIENT,COST,UNIT,COST,UNIT,INGREDIENT COST
+Pangora Especial,0.035,Oz(w),500,Un,Nory Seaweed,0.25,Oz(w),0.00875,Oz(w),0.00875
+Pangora Especial,2.29,Oz(w),1.73,Oz(w),pangora nail small,0.5606936416184971,Oz(w),1.2839884393063583,Oz(w),1.2839884393063583
+Pangora Especial,0.035,Oz(w),18,Un,white sesame,0.5583333333333333,Oz(w),0.01954166666666667,Oz(w),0.01954166666666667
+Pangora Especial,0.07,Oz(w),12.12,LB,red masago,0.6188118811881188,Oz(w),0.04331683168316832,Oz(w),0.04331683168316832
+Pangora Especial,1,Oz(w),1,LB,hotate,1.434375,Oz(w),1.434375,Oz(w),1.434375
+Pangora Especial,0.88,Oz(w),25,LB,avocado,0.115,Oz(w),0.1012,Oz(w),0.1012
+Pangora Especial,0.52,,17,Oz(v),spicy mayo,0.2711764705882353,0,0.14101176470588236,0,0.14101176470588236
+Pangora Especial,1.55,,17.25,LB,pesca blanca,0.8093840579710144,0,1.2545452898550724,0,1.2545452898550724
+Pangora Especial,0.07,,2,LB,chives,0.5,0,0.035,0,0.035
+Pangora Especial,3.88,,200,LB,sushi rice,0.05,0,0.194,0,0.194
+Pangora Especial,1,,1,Un,vegie side,0.29,0,0.29,0,0.29
+Pangora Especial,,,,,,,TOTAL INGREDIENT COST,,,4.805728992217148
+Pangora Especial,,,,,,,15% Q FACTOR,,,0.4805728992217148
+Pangora Especial,,,,,,,RECIPE COST,,,5.286301891438862
+Pangora Especial,,,,,,,PORTION COST,,,0.027532822351244074
+Pangora Especial,PROCEDURE:,,,,,,ADDITIONAL COST,,,0.5
+Pangora Especial,,,,,,,TOTAL COST,,,5.813834713790106
+Pangora Especial,,,,,,,DESIRED FOOD COST %,,,0.3
+Pangora Especial,,,,,,,DESRIRED MENU PRICE,,,19.37944904596702
+Pangora Especial,,,,,,,CURRENT PRICE,,,26
+Pangora Especial,,,,,,,VARIANCE,,,6.6205509540329786
+Pangora Especial,,,,,,,ACTUAL FOOD COST,,,0.22360902745346561

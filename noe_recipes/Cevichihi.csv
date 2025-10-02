@@ -1,0 +1,26 @@
+﻿__Recipe,RECIPE NAME:,,Cevichihi
+Cevichihi,MENU CATEGORY:,,Sushi Special rolls Rolls,,1
+Cevichihi,RECIPE,,AS PURCHASED,,,INVOICE,,RECIPE,,INDIVIDUAL
+Cevichihi,QTY,UNIT,QTY,UNIT,INGREDIENT,COST,UNIT,COST,UNIT,INGREDIENT COST
+Cevichihi,0.035,Oz(w),500,Un,Nory Seaweed,0.25,Oz(w),0.00875,Oz(w),0.00875
+Cevichihi,3.17,Oz(w),200,LB,Sushi Rice,0.05,Oz(w),0.1585,Oz(w),0.1585
+Cevichihi,0.035,Oz(w),18,Un,White Sesame,0.5583333333333333,Oz(w),0.01954166666666667,Oz(w),0.01954166666666667
+Cevichihi,1.06,Oz(w),25,LB,Avocado,0.115,Oz(w),0.12190000000000001,Oz(w),0.12190000000000001
+Cevichihi,1.58,Oz(w),10,LB,Ebi tempura,0.4955,Oz(w),0.78289,Oz(w),0.78289
+Cevichihi,1.4,Oz(w),60,Oz(w),Chifle,0.6666666666666666,Oz(w),0.9333333333333332,Oz(w),0.9333333333333332
+Cevichihi,1.76,Oz(w),8,LB,beetroot,0.125,Oz(w),0.22,Oz(w),0.22
+Cevichihi,0.88,Oz(w),1,Oz(v),Cevichimi mayo,1.75,Oz(w),1.54,Oz(w),1.54
+Cevichihi,0.07,Oz(w),12.12,LB,Red Masago,0.6188118811881188,Oz(w),0.04331683168316832,Oz(w),0.04331683168316832
+Cevichihi,0.07,Oz(w),2,LB,Chives,0.5,Oz(w),0.035,Oz(w),0.035
+Cevichihi,1.41,Oz(w),1,Oz(v),Ceviche mix,0.32,Oz(w),0.4512,Oz(w),0.4512
+Cevichihi,,,,,,,TOTAL INGREDIENT COST,,,4.3144318316831685
+Cevichihi,,,,,,,15% Q FACTOR,,,0.43144318316831687
+Cevichihi,,,,,,,RECIPE COST,,,4.745875014851485
+Cevichihi,,,,,,,PORTION COST,,,0.02471809903568482
+Cevichihi,PROCEDURE:,,,,,,ADDITIONAL COST,,,0.5
+Cevichihi,,,,,,,TOTAL COST,,,5.27059311388717
+Cevichihi,,,,,,,DESIRED FOOD COST %,,,0.3
+Cevichihi,,,,,,,DESRIRED MENU PRICE,,,17.568643712957233
+Cevichihi,,,,,,,CURRENT PRICE,,,18
+Cevichihi,,,,,,,VARIANCE,,,0.4313562870427674,21
+Cevichihi,,,,,,,ACTUAL FOOD COST,,,0.2928107285492872

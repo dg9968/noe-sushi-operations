@@ -1,0 +1,24 @@
+﻿__Recipe,RECIPE NAME:,,Samurai ebi
+Samurai ebi,MENU CATEGORY:,,Sushi Special rolls Rolls,,1
+Samurai ebi,RECIPE,,AS PURCHASED,,,INVOICE,,RECIPE,,INDIVIDUAL
+Samurai ebi,QTY,UNIT,QTY,UNIT,INGREDIENT,COST,UNIT,COST,UNIT,INGREDIENT COST
+Samurai ebi,0.035,Oz(w),500,Un,Nory Seaweed,0.25,Oz(w),0.00875,Oz(w),0.00875
+Samurai ebi,3.88,Oz(w),200,LB,Sushi Rice,0.05,Oz(w),0.194,Oz(w),0.194
+Samurai ebi,0.28,Oz(w),18,LB,Cream Cheese,0.3035069444444444,Oz(w),0.08498194444444444,Oz(w),0.08498194444444444
+Samurai ebi,0.07,Oz(w),18,Un,White sesame,0.5583333333333333,Oz(w),0.03908333333333334,Oz(w),0.03908333333333334
+Samurai ebi,2.47,Oz(w),1,Oz(v),Ebi mix,0.82,Oz(w),2.0254,Oz(w),2.0254
+Samurai ebi,0.07,Oz(w),2,LB,Chives,0.5,Oz(w),0.035,Oz(w),0.035
+Samurai ebi,1.76,Oz(v),1,Oz(v),kimiyaki sauce,0.35,Oz(v),0.616,Oz(v),0.616
+Samurai ebi,2.11,,1,LB,tempura,0.0825,0,0.174075,0,0.174075
+Samurai ebi,0.52,,1,Oz(v),eel sauce,0.49,0,0.2548,0,0.2548
+Samurai ebi,,,,,,,TOTAL INGREDIENT COST,,,3.432090277777778
+Samurai ebi,,,,,,,15% Q FACTOR,,,0.34320902777777784
+Samurai ebi,,,,,,,RECIPE COST,,,3.775299305555556
+Samurai ebi,,,,,,,PORTION COST,,,0.019663017216435187
+Samurai ebi,PROCEDURE:,,,,,,ADDITIONAL COST,,,0.5
+Samurai ebi,,,,,,,TOTAL COST,,,4.294962322771991
+Samurai ebi,,,,,,,DESIRED FOOD COST %,,,0.3
+Samurai ebi,,,,,,,DESRIRED MENU PRICE,,,14.316541075906638
+Samurai ebi,,,,,,,CURRENT PRICE,,,21
+Samurai ebi,,,,,,,VARIANCE,,,6.683458924093362
+Samurai ebi,,,,,,,ACTUAL FOOD COST,,,0.20452201537009482

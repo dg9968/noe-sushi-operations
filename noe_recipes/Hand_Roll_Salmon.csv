@@ -1,0 +1,22 @@
+﻿__Recipe,RECIPE NAME:,,Hand Roll Saslmon,,,Missing unitary cost of ingredient,0,-,0,-
+Hand Roll Salmon,MENU CATEGORY:,,Sushi Special rolls Rolls,,1
+Hand Roll Salmon,RECIPE,,AS PURCHASED,,,INVOICE,,RECIPE,,INDIVIDUAL
+Hand Roll Salmon,QTY,UNIT,QTY,UNIT,INGREDIENT,COST,UNIT,COST,UNIT,INGREDIENT COST
+Hand Roll Salmon,0.035,Oz(w),500,Un,Nory Seaweed,0.25,Oz(w),0.00875,Oz(w),0.00875
+Hand Roll Salmon,1.41,Oz(w),200,LB,Sushi Rice,0.05,Oz(w),0.0705,Oz(w),0.0705
+Hand Roll Salmon,0.07,,18,Un,white sesame,0.5583333333333333,0,0.03908333333333334,0,0.03908333333333334
+Hand Roll Salmon,0.35,Oz(w),2,LB,chives,0.5,Oz(w),0.175,Oz(w),0.175
+Hand Roll Salmon,0.07,Oz(w),50,Un,lettuce,0.72,Oz(w),0.0504,Oz(w),0.0504
+Hand Roll Salmon,1.25,Oz(w),13.4,LB,salmon chileno,0.5593750000000001,Oz(w),0.6992187500000001,Oz(w),0.6992187500000001
+Hand Roll Salmon,0.17,,2.2,LB,ikura,2.7468749999999997,0,0.46696875,0,0.46696875
+Hand Roll Salmon,,,,,,,TOTAL INGREDIENT COST,,,1.5099208333333334
+Hand Roll Salmon,,,,,,,15% Q FACTOR,,,0.15099208333333336
+Hand Roll Salmon,,,,,,,RECIPE COST,,,1.6609129166666667
+Hand Roll Salmon,,,,,,,PORTION COST,,,0.00865058810763889
+Hand Roll Salmon,PROCEDURE:,,,,,,ADDITIONAL COST,,,0.5
+Hand Roll Salmon,,,,,,,TOTAL COST,,,2.1695635047743056
+Hand Roll Salmon,,,,,,,DESIRED FOOD COST %,,,0.3
+Hand Roll Salmon,,,,,,,DESRIRED MENU PRICE,,,7.231878349247686
+Hand Roll Salmon,,,,,,,CURRENT PRICE,,,,7
+Hand Roll Salmon,,,,,,,VARIANCE,,,-7.231878349247686
+Hand Roll Salmon,,,,,,,ACTUAL FOOD COST,,,-

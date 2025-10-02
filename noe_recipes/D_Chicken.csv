@@ -1,0 +1,24 @@
+﻿__Recipe,RECIPE NAME:,,Missing purchase quantity of ingredient,,,Missing unitary cost of ingredient,0,-,0,-
+D Chicken,MENU CATEGORY:,,Combinations,,1
+D Chicken,RECIPE,,AS PURCHASED,,,INVOICE,,RECIPE,,INDIVIDUAL
+D Chicken,QTY,UNIT,QTY,UNIT,INGREDIENT,COST,UNIT,COST,UNIT,INGREDIENT COST
+D Chicken,6,Un,120,Un,dumpling chicken,0.5106666666666667,Un,3.064,Un,3.064
+D Chicken,2,Un,1,Oz(v),tempura sauce,0.1,Un,0.2,Un,0.2
+D Chicken,0.07,Un,2,LB,chives,0.5,Un,0.035,Un,0.035
+D Chicken,1,Un
+D Chicken,1,Un
+D Chicken,,,,,,,TOTAL INGREDIENT COST,,,3.2990000000000004
+D Chicken,,,,,,,15% Q FACTOR,,,0.3299000000000001
+D Chicken,,,,,,,RECIPE COST,,,3.6289000000000007
+D Chicken,,,,,,,PORTION COST,,,0.018900520833333337
+D Chicken,PROCEDURE:,,,,,,ADDITIONAL COST,,,0.5
+D Chicken,,,,,,,TOTAL COST,,,4.147800520833334
+D Chicken,,,,,,,DESIRED FOOD COST %,,,0.3
+D Chicken,,,,,,,DESRIRED MENU PRICE,,,13.826001736111113
+D Chicken,,,,,,,CURRENT PRICE,,,18
+D Chicken,,,,,,,VARIANCE,,,4.173998263888887
+D Chicken,,,,,,,ACTUAL FOOD COST,,,0.23043336226851854
+D Chicken,,,,,,,PVP MENU UBER,,,18
+D Chicken,,,,,,,COM 25%,,,4.5
+D Chicken,,,,,,,PVP FINAL,,,13.5
+D Chicken,,,,,,,MARGEN,,,0.6927555169753086

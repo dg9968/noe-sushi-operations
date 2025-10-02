@@ -1,0 +1,16 @@
+﻿__Recipe,RECIPE NAME:,,Tarta Vasca
+Tarta vasca,MENU CATEGORY:,,Desserts,,1
+Tarta vasca,RECIPE,,AS PURCHASED,,,INVOICE,,RECIPE,,INDIVIDUAL
+Tarta vasca,QTY,UNIT,QTY,UNIT,INGREDIENT,COST,UNIT,COST,UNIT,INGREDIENT COST
+Tarta vasca,1,Un,8,Un,tarta vasca,6.25,Un,6.25,Un,6.25
+Tarta vasca,,,,,,,TOTAL INGREDIENT COST,,,6.25
+Tarta vasca,,,,,,,15% Q FACTOR,,,0.625
+Tarta vasca,,,,,,,RECIPE COST,,,6.875
+Tarta vasca,,,,,,,PORTION COST,,,0.035807291666666664
+Tarta vasca,PROCEDURE:,,,,,,ADDITIONAL COST,,,0.5
+Tarta vasca,,,,,,,TOTAL COST,,,7.410807291666667
+Tarta vasca,,,,,,,DESIRED FOOD COST %,,,0.3
+Tarta vasca,,,,,,,DESRIRED MENU PRICE,,,24.702690972222225
+Tarta vasca,,,,,,,CURRENT PRICE,,,14,18
+Tarta vasca,,,,,,,VARIANCE,,,-10.702690972222225
+Tarta vasca,,,,,,,ACTUAL FOOD COST,,,0.5293433779761905

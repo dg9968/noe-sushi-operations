@@ -1,0 +1,21 @@
+﻿__Recipe,RECIPE NAME:,,Missing purchase quantity of ingredient,,,Missing unitary cost of ingredient,0,-,0,-
+Shrimp Tempura,MENU CATEGORY:,,Combinations,,1
+Shrimp Tempura,RECIPE,,AS PURCHASED,,,INVOICE,,RECIPE,,INDIVIDUAL
+Shrimp Tempura,QTY,UNIT,QTY,UNIT,INGREDIENT,COST,UNIT,COST,UNIT,INGREDIENT COST
+Shrimp Tempura,4,Un,10,LB,ebi tempura,0.4955,Un,1.982,Un,1.982
+Shrimp Tempura,2,Un,18.75,LB,sweet chili sauce,0.17523333333333332,Un,0.35046666666666665,Un,0.35046666666666665
+Shrimp Tempura,,,,,,,TOTAL INGREDIENT COST,,,2.3324666666666665
+Shrimp Tempura,,,,,,,15% Q FACTOR,,,0.23324666666666666
+Shrimp Tempura,,,,,,,RECIPE COST,,,2.565713333333333
+Shrimp Tempura,,,,,,,PORTION COST,,,0.013363090277777776
+Shrimp Tempura,PROCEDURE:,,,,,,ADDITIONAL COST,,,0.5
+Shrimp Tempura,,,,,,,TOTAL COST,,,3.079076423611111
+Shrimp Tempura,,,,,,,DESIRED FOOD COST %,,,0.3
+Shrimp Tempura,,,,,,,DESRIRED MENU PRICE,,,10.263588078703703
+Shrimp Tempura,,,,,,,CURRENT PRICE,,,14
+Shrimp Tempura,,,,,,,VARIANCE,,,3.7364119212962965
+Shrimp Tempura,,,,,,,ACTUAL FOOD COST,,,0.21993403025793648
+Shrimp Tempura,,,,,,,PVP MENU UBER,,,14
+Shrimp Tempura,,,,,,,COM 25%,,,3.5
+Shrimp Tempura,,,,,,,PVP FINAL,,,10.5
+Shrimp Tempura,,,,,,,MARGEN,,,0.7067546263227513

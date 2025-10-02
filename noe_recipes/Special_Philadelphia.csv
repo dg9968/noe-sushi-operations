@@ -1,0 +1,23 @@
+﻿__Recipe,RECIPE NAME:,,Special Philadelphia
+Special Philadelphia,MENU CATEGORY:,,Sushi Special rolls Rolls,,1
+Special Philadelphia,RECIPE,,AS PURCHASED,,,INVOICE,,RECIPE,,INDIVIDUAL
+Special Philadelphia,QTY,UNIT,QTY,UNIT,INGREDIENT,COST,UNIT,COST,UNIT,INGREDIENT COST
+Special Philadelphia,0.035,Oz(w),500,Un,Nory Seaweed,0.25,Oz(w),0.00875,Oz(w),0.00875
+Special Philadelphia,3.88,Oz(w),200,LB,Sushi Rice,0.05,Oz(w),0.194,Oz(w),0.194
+Special Philadelphia,2.47,Oz(w),22.8,LB,Salmon noruego,0.71875,Oz(w),1.7753125,Oz(w),1.7753125
+Special Philadelphia,1.06,Oz(w),25,LB,Avocado,0.115,Oz(w),0.12190000000000001,Oz(w),0.12190000000000001
+Special Philadelphia,0.52,Oz(w),11,LB,Asparagus,0.22585227272727273,Oz(w),0.11744318181818182,Oz(w),0.11744318181818182
+Special Philadelphia,0.035,Oz(w),18,Un,White Sesame,0.5583333333333333,Oz(w),0.01954166666666667,Oz(w),0.01954166666666667
+Special Philadelphia,0.35,Oz(w),18,LB,Cream cheese,0.3035069444444444,Oz(w),0.10622743055555554,Oz(w),0.10622743055555554
+Special Philadelphia,0.42,Oz(w),4.4,LB,Orange Masago,0.5312499999999999,Oz(w),0.22312499999999993,Oz(w),0.22312499999999993
+Special Philadelphia,,,,,,,TOTAL INGREDIENT COST,,,2.5662997790404045
+Special Philadelphia,,,,,,,15% Q FACTOR,,,0.25662997790404046
+Special Philadelphia,,,,,,,RECIPE COST,,,2.822929756944445
+Special Philadelphia,,,,,,,PORTION COST,,,0.014702759150752318
+Special Philadelphia,PROCEDURE:,,,,,,ADDITIONAL COST,,,0.5
+Special Philadelphia,,,,,,,TOTAL COST,,,3.3376325160951974
+Special Philadelphia,,,,,,,DESIRED FOOD COST %,,,0.3
+Special Philadelphia,,,,,,,DESRIRED MENU PRICE,,,11.125441720317324
+Special Philadelphia,,,,,,,CURRENT PRICE,,,16
+Special Philadelphia,,,,,,,VARIANCE,,,4.874558279682676
+Special Philadelphia,,,,,,,ACTUAL FOOD COST,,,0.20860203225594984

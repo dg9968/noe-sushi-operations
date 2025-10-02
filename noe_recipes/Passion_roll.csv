@@ -1,0 +1,27 @@
+﻿__Recipe,RECIPE NAME:,,Passion roll
+Passion roll,MENU CATEGORY:,,Sushi Special rolls Rolls,,1
+Passion roll,RECIPE,,AS PURCHASED,,,INVOICE,,RECIPE,,INDIVIDUAL
+Passion roll,QTY,UNIT,QTY,UNIT,INGREDIENT,COST,UNIT,COST,UNIT,INGREDIENT COST
+Passion roll,0.035,Oz(w),500,Un,Nory Seaweed,0.25,Oz(w),0.00875,Oz(w),0.00875
+Passion roll,3.5,Oz(w),200,LB,Sushi Rice,0.05,Oz(w),0.17500000000000002,Oz(w),0.17500000000000002
+Passion roll,0.035,Oz(w),18,Un,White sesame,0.5583333333333333,Oz(w),0.01954166666666667,Oz(w),0.01954166666666667
+Passion roll,1.19,Oz(w),10,LB,Ebi tempura,0.4955,Oz(w),0.589645,Oz(w),0.589645
+Passion roll,1.41,Oz(w),10,LB,Surimi,0.2678125,Oz(w),0.377615625,Oz(w),0.377615625
+Passion roll,0.88,Oz(w),25,LB,Avocado,0.115,Oz(w),0.1012,Oz(w),0.1012
+Passion roll,0.53,Oz(w),11,LB,Asparagus,0.22585227272727273,Oz(w),0.11970170454545455,Oz(w),0.11970170454545455
+Passion roll,0.7,Oz(w),25,LB,Panko,0.118125,Oz(w),0.0826875,Oz(w),0.0826875
+Passion roll,1,Oz(v),34,Oz(v),Passion Sauce,0.2261764705882353,Oz(v),0.2261764705882353,Oz(v),0.2261764705882353
+Passion roll,2.11,Oz(w),8,LB,Beetroot,0.125,Oz(w),0.26375,Oz(w),0.26375
+Passion roll,1.41,,1,Oz(v),kimiyaki sauce,0.35,0,0.49349999999999994,0,0.49349999999999994
+Passion roll,2.11,,1,LB,tempura,0.0825,0,0.174075,0,0.174075
+Passion roll,,,,,,,TOTAL INGREDIENT COST,,,2.6316429668003565
+Passion roll,,,,,,,15% Q FACTOR,,,0.26316429668003566
+Passion roll,,,,,,,RECIPE COST,,,2.8948072634803923
+Passion roll,,,,,,,PORTION COST,,,0.015077121163960377
+Passion roll,PROCEDURE:,,,,,,ADDITIONAL COST,,,0.5
+Passion roll,,,,,,,TOTAL COST,,,3.4098843846443527
+Passion roll,,,,,,,DESIRED FOOD COST %,,,0.3
+Passion roll,,,,,,,DESRIRED MENU PRICE,,,11.366281282147844
+Passion roll,,,,,,,CURRENT PRICE,,,21
+Passion roll,,,,,,,VARIANCE,,,9.633718717852156
+Passion roll,,,,,,,ACTUAL FOOD COST,,,0.16237544688782632

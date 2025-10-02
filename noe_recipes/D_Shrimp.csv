@@ -1,0 +1,24 @@
+﻿__Recipe,RECIPE NAME:,,Missing purchase quantity of ingredient,,,Missing unitary cost of ingredient,0,-,0,-
+D Shrimp,MENU CATEGORY:,,Combinations,,1
+D Shrimp,RECIPE,,AS PURCHASED,,,INVOICE,,RECIPE,,INDIVIDUAL
+D Shrimp,QTY,UNIT,QTY,UNIT,INGREDIENT,COST,UNIT,COST,UNIT,INGREDIENT COST
+D Shrimp,8,Un,200,Un,dumpling shrimp,0.26145,Un,2.0916,Un,2.0916
+D Shrimp,2,Un,1,Oz(v),tempura sauce,0.1,Un,0.2,Un,0.2
+D Shrimp,0.07,Un,2,LB,chives,0.5,Un,0.035,Un,0.035
+D Shrimp,1,Un
+D Shrimp,1,Un
+D Shrimp,,,,,,,TOTAL INGREDIENT COST,,,2.3266000000000004
+D Shrimp,,,,,,,15% Q FACTOR,,,0.23266000000000006
+D Shrimp,,,,,,,RECIPE COST,,,2.5592600000000005
+D Shrimp,,,,,,,PORTION COST,,,0.01332947916666667
+D Shrimp,PROCEDURE:,,,,,,ADDITIONAL COST,,,0.5
+D Shrimp,,,,,,,TOTAL COST,,,3.072589479166667
+D Shrimp,,,,,,,DESIRED FOOD COST %,,,0.3
+D Shrimp,,,,,,,DESRIRED MENU PRICE,,,10.241964930555557
+D Shrimp,,,,,,,CURRENT PRICE,,,18
+D Shrimp,,,,,,,VARIANCE,,,7.758035069444443
+D Shrimp,,,,,,,ACTUAL FOOD COST,,,0.17069941550925927
+D Shrimp,,,,,,,PVP MENU UBER,,,18
+D Shrimp,,,,,,,COM 25%,,,4.5
+D Shrimp,,,,,,,PVP FINAL,,,13.5
+D Shrimp,,,,,,,MARGEN,,,0.7724007793209877

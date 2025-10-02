@@ -1,0 +1,16 @@
+﻿__Recipe,RECIPE NAME:,,Mashed Poatatoes
+Mashed Poatatoes,MENU CATEGORY:,,Sides,,1
+Mashed Poatatoes,RECIPE,,AS PURCHASED,,,INVOICE,,RECIPE,,INDIVIDUAL
+Mashed Poatatoes,QTY,UNIT,QTY,UNIT,INGREDIENT,COST,UNIT,COST,UNIT,INGREDIENT COST
+Mashed Poatatoes,7,Oz(w),8,LB,Potato,0.078125,Oz(w),0.546875,Oz(w),0.546875
+Mashed Poatatoes,,,,,,,TOTAL INGREDIENT COST,,,0.546875
+Mashed Poatatoes,,,,,,,15% Q FACTOR,,,0.0546875
+Mashed Poatatoes,,,,,,,RECIPE COST,,,0.6015625
+Mashed Poatatoes,,,,,,,PORTION COST,,,0.0031331380208333335
+Mashed Poatatoes,PROCEDURE:,,,,,,ADDITIONAL COST,,,0.5
+Mashed Poatatoes,,,,,,,TOTAL COST,,,1.1046956380208335
+Mashed Poatatoes,,,,,,,DESIRED FOOD COST %,,,0.3
+Mashed Poatatoes,,,,,,,DESRIRED MENU PRICE,,,3.6823187934027786
+Mashed Poatatoes,,,,,,,CURRENT PRICE,,,8
+Mashed Poatatoes,,,,,,,VARIANCE,,,4.317681206597221
+Mashed Poatatoes,,,,,,,ACTUAL FOOD COST,,,0.13808695475260419
