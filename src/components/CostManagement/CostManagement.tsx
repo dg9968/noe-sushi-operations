@@ -24,6 +24,7 @@ const CostManagement: React.FC = () => {
   const [selectedSession, setSelectedSession] = useState('');
   const [isSaving, setIsSaving] = useState(false);
   const [isLoadingSessions, setIsLoadingSessions] = useState(false);
+  const [isUploadingCSV, setIsUploadingCSV] = useState(false);
 
   useEffect(() => {
     loadRecipes();
@@ -208,6 +209,122 @@ const CostManagement: React.FC = () => {
     }
   };
 
+  const handleCSVUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    try {
+      setIsUploadingCSV(true);
+      setError(null);
+
+      const text = await file.text();
+      const lines = text.split('\n').filter(line => line.trim());
+
+      if (lines.length < 2) {
+        setError('CSV file is empty or invalid');
+        return;
+      }
+
+      // Parse CSV header
+      const headers = lines[0].split(',').map(h => h.trim());
+      const menuItemIndex = headers.findIndex(h => h.toLowerCase().includes('menu item'));
+      const qtyIndex = headers.findIndex(h => h.toLowerCase() === 'qty');
+
+      if (menuItemIndex === -1 || qtyIndex === -1) {
+        setError('CSV must have "Menu Item" and "Qty" columns');
+        return;
+      }
+
+      // Parse quantities by menu item
+      const quantityMap = new Map<string, number>();
+
+      for (let i = 1; i < lines.length; i++) {
+        const values = lines[i].split(',');
+        if (values.length > Math.max(menuItemIndex, qtyIndex)) {
+          const menuItem = values[menuItemIndex]?.trim().toUpperCase();
+          const qty = parseFloat(values[qtyIndex]?.trim() || '0');
+
+          if (menuItem && !isNaN(qty) && qty > 0) {
+            quantityMap.set(menuItem, (quantityMap.get(menuItem) || 0) + qty);
+          }
+        }
+      }
+
+      console.log('📊 Parsed CSV quantities:', Object.fromEntries(quantityMap));
+      console.log('📋 Available recipes:', recipeRows.map(r => r.name.toUpperCase()));
+
+      // Match menu items to recipes and update quantities
+      const matchLog: string[] = [];
+      const matchedCsvItems = new Set<string>();
+
+      // Convert Map to Array for iteration
+      const quantityArray = Array.from(quantityMap.entries());
+
+      setRecipeRows(prevRows => {
+        const updatedRows = prevRows.map(row => {
+          const recipeName = row.name.toUpperCase();
+          let matchedQty = 0;
+
+          // Try exact match first
+          if (quantityMap.has(recipeName)) {
+            matchedQty = quantityMap.get(recipeName)!;
+            matchedCsvItems.add(recipeName);
+            matchLog.push(`✅ EXACT: "${row.name}" ↔ CSV "${recipeName}" (qty: ${matchedQty})`);
+          } else {
+            // Try partial match
+            for (let i = 0; i < quantityArray.length; i++) {
+              const csvItem = quantityArray[i][0];
+              const qty = quantityArray[i][1];
+              if (csvItem.includes(recipeName) || recipeName.includes(csvItem)) {
+                matchedQty = qty;
+                matchedCsvItems.add(csvItem);
+                matchLog.push(`✅ PARTIAL: "${row.name}" ↔ CSV "${csvItem}" (qty: ${matchedQty})`);
+                break;
+              }
+            }
+          }
+
+          if (matchedQty > 0) {
+            return {
+              ...row,
+              quantitySold: matchedQty,
+              totalCost: row.unitCost * matchedQty
+            };
+          }
+          return row;
+        });
+
+        return updatedRows;
+      });
+
+      console.log('🔍 Match details:', matchLog);
+
+      // Find unmatched items
+      const unmatchedItems = quantityArray
+        .filter(([item]) => !matchedCsvItems.has(item))
+        .map(([item]) => item);
+
+      const matchedCount = matchLog.length;
+      console.log(`✅ CSV uploaded: ${matchedCount} recipes matched, ${unmatchedItems.length} items unmatched`);
+
+      if (unmatchedItems.length > 0) {
+        console.warn('⚠️ Unmatched items:', unmatchedItems);
+        setError(`Uploaded successfully. ${matchedCount} items matched. ${unmatchedItems.length} items not found in recipes.`);
+      } else {
+        setError(`Successfully uploaded! ${matchedCount} recipes populated from CSV.`);
+      }
+
+      // Clear the file input
+      event.target.value = '';
+
+    } catch (err) {
+      console.error('❌ Error uploading CSV:', err);
+      setError('Failed to parse CSV file');
+    } finally {
+      setIsUploadingCSV(false);
+    }
+  };
+
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -252,6 +369,16 @@ const CostManagement: React.FC = () => {
               />
             </div>
             <div className="action-buttons">
+              <label className="upload-btn" title="Upload CSV file with Menu Item and Qty columns">
+                <input
+                  type="file"
+                  accept=".csv"
+                  onChange={handleCSVUpload}
+                  style={{ display: 'none' }}
+                  disabled={isUploadingCSV}
+                />
+                {isUploadingCSV ? 'Uploading...' : '📤 Upload CSV'}
+              </label>
               <button
                 onClick={() => setShowSaveDialog(true)}
                 className="save-btn"
@@ -448,7 +575,8 @@ const CostManagement: React.FC = () => {
           <div className="instructions">
             <h3>📋 How to Use</h3>
             <ul>
-              <li>Enter the quantity sold for each recipe in the "Quantity Sold" column</li>
+              <li><strong>Upload CSV:</strong> Click "Upload CSV" to import quantities from a CSV file (requires "Menu Item" and "Qty" columns)</li>
+              <li><strong>Manual Entry:</strong> Enter the quantity sold for each recipe in the "Quantity Sold" column</li>
               <li>The system will automatically calculate the total cost (Unit Cost × Quantity)</li>
               <li>Use the search box to quickly find specific recipes</li>
               <li>Save your current calculations using "Save Session" for future reference</li>

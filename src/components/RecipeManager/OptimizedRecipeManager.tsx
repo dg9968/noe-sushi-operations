@@ -25,11 +25,23 @@ const OptimizedRecipeManager: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [useApiService, setUseApiService] = useState<boolean>(false);
   const [qFactor, setQFactor] = useState<number>(10);
+  const [allIngredients, setAllIngredients] = useState<{id: string, name: string, unitCost?: number}[]>([]);
   const [availableIngredients, setAvailableIngredients] = useState<{id: string, name: string, unitCost?: number}[]>([]);
+  const [allRecipes, setAllRecipes] = useState<{id: string, name: string, costPerServing?: number}[]>([]);
+  const [availableRecipes, setAvailableRecipes] = useState<{id: string, name: string, costPerServing?: number}[]>([]);
   const [isEditing, setIsEditing] = useState(false);
   const [ingredientSearchTerms, setIngredientSearchTerms] = useState<{[key: number]: string}>({});
   const [showIngredientDropdowns, setShowIngredientDropdowns] = useState<{[key: number]: boolean}>({});
+  const [showRecipeMode, setShowRecipeMode] = useState<{[key: number]: boolean}>({});
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const [showAddIngredientDialog, setShowAddIngredientDialog] = useState(false);
+  const [newIngredient, setNewIngredient] = useState({
+    name: '',
+    unitCost: 0,
+    unit: 'oz',
+    category: '',
+    notes: ''
+  });
 
   useEffect(() => {
     const initializeServices = async () => {
@@ -52,6 +64,35 @@ const OptimizedRecipeManager: React.FC = () => {
 
     initializeServices();
   }, []);
+
+  // Pre-populate allRecipes and availableRecipes when recipesByCategory loads
+  // Only update allRecipes if we're not searching (to preserve full list)
+  useEffect(() => {
+    if (Object.keys(recipesByCategory).length > 0) {
+      const recipes: {id: string, name: string, costPerServing?: number}[] = [];
+      Object.values(recipesByCategory).forEach(categoryRecipes => {
+        if (Array.isArray(categoryRecipes)) {
+          categoryRecipes.forEach(recipe => {
+            recipes.push({
+              id: recipe.id,
+              name: recipe.name,
+              costPerServing: 0
+            });
+          });
+        }
+      });
+
+      // Only update allRecipes if we have more recipes than currently stored
+      // This prevents search results from overwriting the full list
+      if (recipes.length >= allRecipes.length || allRecipes.length === 0) {
+        setAllRecipes(recipes);
+        setAvailableRecipes(recipes);
+        console.log(`📋 Pre-populated ${recipes.length} recipes for search`);
+      } else {
+        console.log(`📋 Skipping pre-population (search results: ${recipes.length}, cached: ${allRecipes.length})`);
+      }
+    }
+  }, [recipesByCategory]);
 
   const loadRecipeList = async (searchQuery?: string) => {
     setIsLoadingList(true);
@@ -112,14 +153,17 @@ const OptimizedRecipeManager: React.FC = () => {
     try {
       if (useApiService) {
         const ingredients = await apiService.getAllIngredients();
+        setAllIngredients(ingredients);
         setAvailableIngredients(ingredients);
       } else if (airtableService.isEnabled()) {
         const ingredients = await airtableService.getAllIngredients();
-        setAvailableIngredients(ingredients.map((ing: any) => ({
+        const mappedIngredients = ingredients.map((ing: any) => ({
           id: ing.id,
           name: ing.name,
           unitCost: ing.unitCost
-        })));
+        }));
+        setAllIngredients(mappedIngredients);
+        setAvailableIngredients(mappedIngredients);
       }
     } catch (err) {
       console.error('Failed to load ingredients:', err);
@@ -129,16 +173,41 @@ const OptimizedRecipeManager: React.FC = () => {
   const loadFullRecipeDetails = async (recipeId: string) => {
     if (!recipeId) return;
 
+    const startTime = performance.now();
     setIsLoadingRecipe(true);
     setError(null);
     try {
       if (useApiService) {
         const recipe = await apiService.getRecipeById(recipeId, qFactor);
         setSelectedRecipe(recipe);
+
+        // Initialize showRecipeMode for ingredients that are recipes
+        if (recipe && recipe.ingredients) {
+          const recipeModes: {[key: number]: boolean} = {};
+          recipe.ingredients.forEach((ingredient, index) => {
+            if (ingredient.isRecipe) {
+              recipeModes[index] = true;
+            }
+          });
+          setShowRecipeMode(recipeModes);
+        }
       } else if (airtableService.isEnabled()) {
         const recipe = await airtableService.getRecipeById(recipeId);
         setSelectedRecipe(recipe);
+
+        // Initialize showRecipeMode for ingredients that are recipes
+        if (recipe && recipe.ingredients) {
+          const recipeModes: {[key: number]: boolean} = {};
+          recipe.ingredients.forEach((ingredient, index) => {
+            if (ingredient.isRecipe) {
+              recipeModes[index] = true;
+            }
+          });
+          setShowRecipeMode(recipeModes);
+        }
       }
+      const endTime = performance.now();
+      console.log(`⏱️ Recipe loaded in ${(endTime - startTime).toFixed(0)}ms`);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load recipe details');
     } finally {
@@ -212,6 +281,79 @@ const OptimizedRecipeManager: React.FC = () => {
     }
   };
 
+  const handleAddIngredient = async () => {
+    if (!newIngredient.name.trim()) {
+      setError('Ingredient name is required');
+      return;
+    }
+
+    if (newIngredient.unitCost <= 0) {
+      setError('Unit cost must be greater than 0');
+      return;
+    }
+
+    try {
+      const result = await airtableService.createStandaloneIngredient({
+        name: newIngredient.name.trim(),
+        unitCost: newIngredient.unitCost,
+        unit: newIngredient.unit,
+        category: newIngredient.category,
+        notes: newIngredient.notes
+      });
+
+      if (result.success) {
+        console.log('✅ Ingredient created successfully:', result);
+
+        // Small delay to ensure Airtable has processed the write
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        // Clear API cache to ensure fresh data
+        if (useApiService) {
+          try {
+            await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/recipes/clear-cache`, {
+              method: 'POST'
+            });
+            console.log('✅ API cache cleared');
+          } catch (err) {
+            console.warn('⚠️ Failed to clear API cache:', err);
+          }
+        }
+
+        // Refresh available ingredients
+        await loadAvailableIngredients();
+
+        // Refresh recipe list to show updated data
+        if (useApiService) {
+          await loadRecipeList();
+        } else if (airtableService.isEnabled()) {
+          await loadRecipeListFallback();
+        }
+
+        // Reload current recipe if one is selected
+        if (selectedRecipeId) {
+          await loadFullRecipeDetails(selectedRecipeId);
+          console.log('✅ Current recipe reloaded with fresh data');
+        }
+
+        setShowAddIngredientDialog(false);
+        setNewIngredient({
+          name: '',
+          unitCost: 0,
+          unit: 'oz',
+          category: '',
+          notes: ''
+        });
+        setError(null);
+
+        console.log('✅ New ingredient is now available - all data refreshed');
+      } else {
+        setError(result.error || 'Failed to create ingredient');
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to create ingredient');
+    }
+  };
+
   const createNewRecipe = () => {
     const newRecipe: Recipe = {
       id: '', // Empty ID indicates this is a new recipe
@@ -250,8 +392,8 @@ const OptimizedRecipeManager: React.FC = () => {
           const results = await apiService.searchIngredients(query);
           setAvailableIngredients(results);
         } else {
-          // Filter local ingredients
-          const filtered = availableIngredients.filter(ing =>
+          // Filter from full ingredient list
+          const filtered = allIngredients.filter(ing =>
             ing.name.toLowerCase().includes(query.toLowerCase())
           );
           setAvailableIngredients(filtered);
@@ -259,6 +401,38 @@ const OptimizedRecipeManager: React.FC = () => {
       } catch (err) {
         console.error('Search failed:', err);
       }
+    } else {
+      // Reset to show all ingredients when query is empty
+      setAvailableIngredients(allIngredients);
+    }
+  };
+
+  const searchRecipes = async (query: string, index: number) => {
+    setIngredientSearchTerms(prev => ({ ...prev, [index]: query }));
+    setShowIngredientDropdowns(prev => ({ ...prev, [index]: true }));
+
+    console.log(`🔍 searchRecipes called: query="${query}", allRecipes.length=${allRecipes.length}, selectedRecipe=${selectedRecipe?.name}`);
+    console.log(`🔍 First 3 recipes in allRecipes:`, allRecipes.slice(0, 3).map(r => r.name));
+
+    if (query.length > 0) {
+      try {
+        // Filter from full recipe list, excluding current recipe
+        const filtered = allRecipes.filter(recipe =>
+          recipe.id !== selectedRecipe?.id &&
+          recipe.name.toLowerCase().includes(query.toLowerCase())
+        );
+        console.log(`🔍 Filtered to ${filtered.length} recipes matching "${query}"`);
+        console.log(`🔍 Filtered recipes:`, filtered.map(r => r.name));
+        setAvailableRecipes(filtered);
+      } catch (err) {
+        console.error('Recipe search failed:', err);
+      }
+    } else {
+      // Reset to show all recipes (excluding current recipe)
+      const recipesExcludingCurrent = allRecipes.filter(recipe => recipe.id !== selectedRecipe?.id);
+      console.log(`🔍 Showing ${recipesExcludingCurrent.length} total recipes (excluding current)`);
+      console.log(`🔍 First 5 available:`, recipesExcludingCurrent.slice(0, 5).map(r => r.name));
+      setAvailableRecipes(recipesExcludingCurrent);
     }
   };
 
@@ -306,6 +480,53 @@ const OptimizedRecipeManager: React.FC = () => {
       cost: ingredient.unitCost || 0,
       totalCost: (newIngredients[index]?.quantity || 1) * (ingredient.unitCost || 0),
       fromOdoo: fromOdoo
+    };
+
+    setSelectedRecipe({
+      ...selectedRecipe,
+      ingredients: newIngredients
+    });
+
+    setShowIngredientDropdowns(prev => ({ ...prev, [index]: false }));
+    setIngredientSearchTerms(prev => ({ ...prev, [index]: '' }));
+  };
+
+  const addRecipeAsIngredient = async (recipe: {id: string, name: string, costPerServing?: number}, index: number) => {
+    if (!selectedRecipe) return;
+
+    const newIngredients = [...selectedRecipe.ingredients];
+    let costPerServing = 0;
+
+    try {
+      // Load the full recipe details to get accurate cost information
+      if (useApiService) {
+        const fullRecipe = await apiService.getRecipeById(recipe.id, qFactor);
+        if (fullRecipe) {
+          costPerServing = fullRecipe.costPerServing || fullRecipe.totalCostWithQFactor || fullRecipe.totalCost || 0;
+        }
+      } else if (airtableService.isEnabled()) {
+        const fullRecipe = await airtableService.getRecipeById(recipe.id);
+        if (fullRecipe) {
+          costPerServing = fullRecipe.costPerServing || fullRecipe.totalCostWithQFactor || fullRecipe.totalCost || 0;
+        }
+      }
+    } catch (err) {
+      console.error('Failed to load recipe cost details:', err);
+      // Use default cost of 0 if loading fails
+      costPerServing = 0;
+    }
+
+    newIngredients[index] = {
+      id: recipe.id,
+      name: `[Recipe] ${recipe.name}`,
+      quantity: newIngredients[index]?.quantity || 1,
+      unit: 'servings',
+      cost: costPerServing,
+      totalCost: (newIngredients[index]?.quantity || 1) * costPerServing,
+      isRecipe: true,
+      recipeId: recipe.id,
+      recipeServings: newIngredients[index]?.quantity || 1,
+      recipeCostPerServing: costPerServing
     };
 
     setSelectedRecipe({
@@ -388,6 +609,13 @@ const OptimizedRecipeManager: React.FC = () => {
               title="Refresh data from Airtable"
             >
               {isLoadingList ? 'Refreshing...' : '🔄 Refresh'}
+            </button>
+            <button
+              onClick={() => setShowAddIngredientDialog(true)}
+              className="btn btn-success"
+              title="Add a new ingredient to Airtable"
+            >
+              + New Ingredient
             </button>
             <button
               onClick={createNewRecipe}
@@ -571,44 +799,147 @@ const OptimizedRecipeManager: React.FC = () => {
                   {selectedRecipe.ingredients.map((ingredient, index) => (
                     <div key={`${ingredient.id}-${index}`} className="ingredient-row">
                       <div className="ingredient-input-group">
+                        {isEditing && (
+                          <div className="ingredient-mode-toggle">
+                            <button
+                              type="button"
+                              className={`mode-btn ${!showRecipeMode[index] ? 'active' : ''}`}
+                              onClick={() => {
+                                setShowRecipeMode(prev => ({ ...prev, [index]: false }));
+                                setIngredientSearchTerms(prev => ({ ...prev, [index]: '' }));
+                                searchIngredients('', index);
+                              }}
+                            >
+                              Ingredient
+                            </button>
+                            <button
+                              type="button"
+                              className={`mode-btn ${showRecipeMode[index] ? 'active' : ''}`}
+                              onClick={() => {
+                                setShowRecipeMode(prev => ({ ...prev, [index]: true }));
+                                setIngredientSearchTerms(prev => ({ ...prev, [index]: '' }));
+                                searchRecipes('', index);
+                              }}
+                            >
+                              Recipe
+                            </button>
+                          </div>
+                        )}
+
                         <input
                           type="text"
-                          value={ingredientSearchTerms[index] || ingredient.name}
-                          onChange={(e) => searchIngredients(e.target.value, index)}
-                          onFocus={() => setShowIngredientDropdowns(prev => ({ ...prev, [index]: true }))}
-                          placeholder="Search ingredients..."
+                          value={ingredientSearchTerms[index] !== undefined ? ingredientSearchTerms[index] : ingredient.name}
+                          onChange={(e) => {
+                            if (showRecipeMode[index]) {
+                              searchRecipes(e.target.value, index);
+                            } else {
+                              searchIngredients(e.target.value, index);
+                            }
+                          }}
+                          onFocus={() => {
+                            setShowIngredientDropdowns(prev => ({ ...prev, [index]: true }));
+                            // Clear the search term when focusing to enable searching
+                            setIngredientSearchTerms(prev => ({ ...prev, [index]: '' }));
+                            if (showRecipeMode[index]) {
+                              searchRecipes('', index);
+                            } else {
+                              searchIngredients('', index);
+                            }
+                          }}
+                          onBlur={() => {
+                            // Delay hiding dropdown to allow click events to fire
+                            setTimeout(() => {
+                              setShowIngredientDropdowns(prev => ({ ...prev, [index]: false }));
+                              // Reset search term if no selection was made
+                              if (!ingredientSearchTerms[index]) {
+                                setIngredientSearchTerms(prev => {
+                                  const updated = { ...prev };
+                                  delete updated[index];
+                                  return updated;
+                                });
+                              }
+                            }, 200);
+                          }}
+                          placeholder={showRecipeMode[index] ? "Search recipes..." : "Search ingredients..."}
                           disabled={!isEditing}
-                          className="ingredient-search"
+                          className={`ingredient-search ${ingredient.isRecipe ? 'recipe-ingredient' : ''}`}
                         />
 
                         {showIngredientDropdowns[index] && isEditing && (
                           <div className="ingredient-dropdown">
-                            {availableIngredients.slice(0, 10).map(ing => (
-                              <div
-                                key={ing.id}
-                                className="ingredient-option"
-                                onClick={() => addIngredientToRecipe(ing, index)}
-                              >
-                                <span className="ingredient-name">{ing.name}</span>
-                                <span className="ingredient-cost">${ing.unitCost?.toFixed(4) || '0.0000'}</span>
-                              </div>
-                            ))}
+                            {showRecipeMode[index] ? (
+                              // Recipe search results
+                              isLoadingList ? (
+                                <div className="ingredient-option">Loading recipes...</div>
+                              ) : availableRecipes.length > 0 ? (
+                                availableRecipes.slice(0, 10).map(recipe => (
+                                  <div
+                                    key={recipe.id}
+                                    className="ingredient-option recipe-option"
+                                    onClick={async () => await addRecipeAsIngredient(recipe, index)}
+                                  >
+                                    <span className="ingredient-name">[Recipe] {recipe.name}</span>
+                                    <span className="ingredient-cost">${recipe.costPerServing?.toFixed(4) || '0.0000'}/serving</span>
+                                  </div>
+                                ))
+                              ) : (
+                                <div className="ingredient-option">No recipes found</div>
+                              )
+                            ) : (
+                              // Ingredient search results
+                              availableIngredients.length > 0 ? (
+                                availableIngredients.slice(0, 10).map(ing => (
+                                  <div
+                                    key={ing.id}
+                                    className="ingredient-option"
+                                    onClick={() => addIngredientToRecipe(ing, index)}
+                                  >
+                                    <span className="ingredient-name">{ing.name}</span>
+                                    <span className="ingredient-cost">${ing.unitCost?.toFixed(4) || '0.0000'}</span>
+                                  </div>
+                                ))
+                              ) : (
+                                <div className="ingredient-option">No ingredients found</div>
+                              )
+                            )}
                           </div>
                         )}
                       </div>
 
                       <input
                         type="number"
+                        step={ingredient.isRecipe ? "0.5" : "0.1"}
+                        min="0"
                         value={ingredient.quantity}
                         onChange={(e) => {
                           if (!isEditing) return;
-                          const newQuantity = parseFloat(e.target.value) || 0;
+
+                          // Allow empty string and partial decimal inputs like "0." or "1."
+                          const rawValue = e.target.value;
+                          const newQuantity = rawValue === '' ? 0 : parseFloat(rawValue);
+
+                          // Skip update if input is invalid (NaN) but allow 0
+                          if (isNaN(newQuantity) && rawValue !== '') return;
+
                           const newIngredients = [...selectedRecipe.ingredients];
-                          newIngredients[index] = {
-                            ...ingredient,
-                            quantity: newQuantity,
-                            totalCost: newQuantity * (ingredient.cost || 0)
-                          };
+
+                          if (ingredient.isRecipe) {
+                            // For recipe ingredients, update recipe servings and recalculate
+                            newIngredients[index] = {
+                              ...ingredient,
+                              quantity: newQuantity,
+                              recipeServings: newQuantity,
+                              totalCost: newQuantity * (ingredient.recipeCostPerServing || 0)
+                            };
+                          } else {
+                            // For regular ingredients
+                            newIngredients[index] = {
+                              ...ingredient,
+                              quantity: newQuantity,
+                              totalCost: newQuantity * (ingredient.cost || 0)
+                            };
+                          }
+
                           setSelectedRecipe({
                             ...selectedRecipe,
                             ingredients: newIngredients
@@ -616,8 +947,6 @@ const OptimizedRecipeManager: React.FC = () => {
                         }}
                         disabled={!isEditing}
                         className="quantity-input"
-                        step="0.01"
-                        min="0"
                       />
 
                       <select
@@ -634,16 +963,22 @@ const OptimizedRecipeManager: React.FC = () => {
                             ingredients: newIngredients
                           });
                         }}
-                        disabled={!isEditing}
-                        className="unit-select"
+                        disabled={!isEditing || ingredient.isRecipe}
+                        className={`unit-select ${ingredient.isRecipe ? 'recipe-unit' : ''}`}
                       >
-                        <option value="oz">oz</option>
-                        <option value="lb">lb</option>
-                        <option value="cup">cup</option>
-                        <option value="tsp">tsp</option>
-                        <option value="tbsp">tbsp</option>
-                        <option value="each">each</option>
-                        <option value="piece">piece</option>
+                        {ingredient.isRecipe ? (
+                          <option value="servings">servings</option>
+                        ) : (
+                          <>
+                            <option value="oz">oz</option>
+                            <option value="lb">lb</option>
+                            <option value="cup">cup</option>
+                            <option value="tsp">tsp</option>
+                            <option value="tbsp">tbsp</option>
+                            <option value="each">each</option>
+                            <option value="piece">piece</option>
+                          </>
+                        )}
                       </select>
 
                       <div className="cost-display">
@@ -818,6 +1153,121 @@ const OptimizedRecipeManager: React.FC = () => {
           )}
         </div>
       </div>
+
+      {/* Add Ingredient Dialog */}
+      {showAddIngredientDialog && (
+        <div className="dialog-overlay">
+          <div className="dialog">
+            <div className="dialog-header">
+              <h3>➕ Add New Ingredient</h3>
+              <button
+                onClick={() => {
+                  setShowAddIngredientDialog(false);
+                  setError(null);
+                }}
+                className="close-btn"
+              >
+                ×
+              </button>
+            </div>
+            <div className="dialog-content">
+              <div className="form-group">
+                <label>Ingredient Name *</label>
+                <input
+                  type="text"
+                  placeholder="e.g., Soy Sauce"
+                  value={newIngredient.name}
+                  onChange={(e) => setNewIngredient({...newIngredient, name: e.target.value})}
+                  className="form-input"
+                />
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Unit Cost *</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    placeholder="0.00"
+                    value={newIngredient.unitCost || ''}
+                    onChange={(e) => setNewIngredient({...newIngredient, unitCost: parseFloat(e.target.value) || 0})}
+                    className="form-input"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Unit *</label>
+                  <select
+                    value={newIngredient.unit}
+                    onChange={(e) => setNewIngredient({...newIngredient, unit: e.target.value})}
+                    className="form-input"
+                  >
+                    <option value="oz">oz (ounces)</option>
+                    <option value="lb">lb (pounds)</option>
+                    <option value="g">g (grams)</option>
+                    <option value="kg">kg (kilograms)</option>
+                    <option value="cup">cup</option>
+                    <option value="tbsp">tbsp (tablespoon)</option>
+                    <option value="tsp">tsp (teaspoon)</option>
+                    <option value="piece">piece</option>
+                    <option value="each">each</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label>Category (optional)</label>
+                <select
+                  value={newIngredient.category}
+                  onChange={(e) => setNewIngredient({...newIngredient, category: e.target.value})}
+                  className="form-input"
+                >
+                  <option value="">Select category...</option>
+                  <option value="Protein">Protein</option>
+                  <option value="Vegetables">Vegetables</option>
+                  <option value="Grains">Grains</option>
+                  <option value="Condiments">Condiments</option>
+                  <option value="Spices">Spices</option>
+                  <option value="Dairy">Dairy</option>
+                  <option value="Seafood">Seafood</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>Notes (optional)</label>
+                <textarea
+                  placeholder="Any additional notes about this ingredient..."
+                  value={newIngredient.notes}
+                  onChange={(e) => setNewIngredient({...newIngredient, notes: e.target.value})}
+                  className="form-input"
+                  rows={3}
+                />
+              </div>
+
+              <div className="dialog-actions">
+                <button
+                  onClick={() => {
+                    setShowAddIngredientDialog(false);
+                    setError(null);
+                  }}
+                  className="cancel-btn"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleAddIngredient}
+                  className="confirm-btn"
+                  disabled={!newIngredient.name.trim() || newIngredient.unitCost <= 0}
+                >
+                  Add Ingredient
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

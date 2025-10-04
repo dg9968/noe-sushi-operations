@@ -131,6 +131,26 @@
   cursor: not-allowed;
 }
 
+.upload-btn {
+  background: #8b5cf6;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: inline-block;
+}
+
+.upload-btn:hover {
+  background: #7c3aed;
+}
+
+.upload-btn:active {
+  background: #6d28d9;
+}
+
 /* Dialog Styles */
 .dialog-overlay {
   position: fixed;

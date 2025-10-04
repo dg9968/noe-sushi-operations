@@ -10,12 +10,14 @@ interface BackendResponse<T> {
 
 class ProductionOdooService {
   private baseURL: string;
+  private apiBaseURL: string;
   private sessionToken: string | null = null;
   private connection: OdooConnection | null = null;
   private demoMode: boolean = false;
 
-  constructor(baseURL: string = config.api.baseURL) {
+  constructor(baseURL: string = config.odoo.baseURL) {
     this.baseURL = baseURL;
+    this.apiBaseURL = baseURL + '/api';
   }
 
   setConnection(connection: OdooConnection) {
@@ -39,7 +41,7 @@ class ProductionOdooService {
     // In production mode, we authenticate with the backend API directly
     // No need for connection object since backend handles Odoo credentials
     try {
-      const response = await fetch(`${this.baseURL}/auth`, {
+      const response = await fetch(`${this.baseURL}/api/auth`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -93,7 +95,7 @@ class ProductionOdooService {
     }
 
     try {
-      const response = await fetch(`${this.baseURL}/products`, {
+      const response = await fetch(`${this.apiBaseURL}/products`, {
         headers: {
           'Authorization': `Bearer ${this.sessionToken}`,
           'Content-Type': 'application/json',
@@ -136,7 +138,7 @@ class ProductionOdooService {
     }
 
     try {
-      const response = await fetch(`${this.baseURL}/products/search/${encodeURIComponent(name)}`, {
+      const response = await fetch(`${this.apiBaseURL}/products/search/${encodeURIComponent(name)}`, {
         headers: {
           'Authorization': `Bearer ${this.sessionToken}`,
           'Content-Type': 'application/json',

@@ -6,6 +6,12 @@ export const config = {
     baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5000/api',
     timeout: 30000, // 30 seconds
   },
+
+  // Odoo Configuration
+  odoo: {
+    baseURL: process.env.REACT_APP_ODOO_URL || 'http://localhost:3001',
+    timeout: 30000, // 30 seconds
+  },
   
   // Application mode
   mode: process.env.REACT_APP_MODE || 'development', // 'development' | 'production' | 'demo'

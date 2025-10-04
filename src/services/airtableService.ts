@@ -344,10 +344,14 @@ class AirtableService {
       // Skip if it's a computed field
 
       if (recipe.name) updateFields.Name = recipe.name;
-      if (recipe.description) updateFields.Description = recipe.description;
+      if (recipe.description && typeof recipe.description === 'string' && recipe.description.trim()) {
+        updateFields.Description = recipe.description;
+      }
       if (recipe.servings) updateFields.Servings = recipe.servings;
-      if (recipe.instructions) updateFields.Instructions = recipe.instructions;
-      if (recipe.category) updateFields.Category = recipe.category;
+      // Note: Instructions field is computed in Airtable and cannot be written to
+      if (recipe.category && typeof recipe.category === 'string' && recipe.category.trim()) {
+        updateFields.Category = recipe.category;
+      }
       if (recipe.prepTime) updateFields['Prep Time'] = recipe.prepTime;
       if (recipe.cookTime) updateFields['Cook Time'] = recipe.cookTime;
 
@@ -405,7 +409,7 @@ class AirtableService {
 
       // If junction table exists but has no data, try legacy method
       if (junctionResults.length === 0) {
-        console.log('Junction table empty, trying legacy method...');
+        // Reduced logging to avoid console spam
         return await this.getRecipeIngredientsLegacy(recipeId);
       }
 
@@ -1401,8 +1405,8 @@ class AirtableService {
 
       const records = await this.base!('Customer COGS Calculator')
         .select({
-          fields: ['Session Name'],
-          sort: [{ field: 'Created Date', direction: 'desc' }]
+          fields: ['Session Name']
+          // Removed sort by 'Created Date' as field name may vary in Airtable
         })
         .all();
 
@@ -1415,7 +1419,7 @@ class AirtableService {
         }
       });
 
-      const sessions = Array.from(sessionNames);
+      const sessions = Array.from(sessionNames).sort(); // Sort alphabetically
       console.log(`✅ Found ${sessions.length} COGS calculator sessions`);
       return sessions;
 
@@ -1466,6 +1470,87 @@ class AirtableService {
     } catch (error) {
       console.error('❌ Error deleting COGS calculator session:', error);
       throw error;
+    }
+  }
+
+  // ==================== Ingredient Management Methods ====================
+
+  /**
+   * Create a new standalone ingredient in Airtable (not tied to a recipe)
+   */
+  async createStandaloneIngredient(ingredientData: {
+    name: string;
+    unitCost: number;
+    unit: string;
+    category?: string;
+    notes?: string;
+  }): Promise<{ success: boolean; ingredient?: any; error?: string }> {
+    if (!this.checkInitialization()) {
+      return { success: false, error: 'Airtable service not initialized' };
+    }
+
+    try {
+      console.log(`➕ Creating ingredient: ${ingredientData.name}`);
+
+      // Check for duplicate ingredient names
+      const existingIngredients = await this.base!('Ingredients')
+        .select({
+          filterByFormula: `{Ingredient Name} = "${ingredientData.name}"`
+        })
+        .all();
+
+      if (existingIngredients.length > 0) {
+        return {
+          success: false,
+          error: `Ingredient "${ingredientData.name}" already exists`
+        };
+      }
+
+      // Create the ingredient record
+      const recordData: any = {
+        'Ingredient Name': ingredientData.name,
+        'Unit Cost': ingredientData.unitCost,
+        'Unit': ingredientData.unit,
+        'From Odoo': false
+      };
+
+      // Only add optional fields if they have values
+      // Note: Category field commented out due to Airtable validation error
+      // if (ingredientData.category && ingredientData.category.trim()) {
+      //   recordData['Category'] = ingredientData.category;
+      //   console.log(`📋 Adding Category: "${ingredientData.category}"`);
+      // }
+      if (ingredientData.notes && ingredientData.notes.trim()) {
+        recordData['Notes'] = ingredientData.notes;
+      }
+
+      console.log('📤 Sending to Airtable:', JSON.stringify(recordData));
+
+      const record = await this.base!('Ingredients').create(recordData) as any;
+
+      // Clear the ingredients cache to force refresh
+      this.cachedIngredients = null;
+
+      console.log(`✅ Ingredient created: ${ingredientData.name} (ID: ${record.id})`);
+
+      return {
+        success: true,
+        ingredient: {
+          id: record.id,
+          name: ingredientData.name,
+          unitCost: ingredientData.unitCost,
+          unit: ingredientData.unit,
+          category: ingredientData.category,
+          notes: ingredientData.notes
+        }
+      };
+
+    } catch (error: any) {
+      console.error('❌ Error creating ingredient:', error);
+      return {
+        success: false,
+        error: error.message || 'Failed to create ingredient'
+      };
     }
   }
 }

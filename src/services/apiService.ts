@@ -45,11 +45,13 @@ class ApiService {
         ...options,
       });
 
-      if (!response.ok) {
-        throw new Error(`API Error: ${response.status} ${response.statusText}`);
-      }
-
       const result = await response.json();
+
+      if (!response.ok) {
+        // Use the detailed error message from the API response
+        const errorMessage = result.message || result.error || `API Error: ${response.status} ${response.statusText}`;
+        throw new Error(errorMessage);
+      }
 
       if (!result.success) {
         throw new Error(result.message || result.error || 'API request failed');

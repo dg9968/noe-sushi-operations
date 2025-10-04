@@ -29,24 +29,13 @@ const AirtableRecipeManager: React.FC = () => {
 
   useEffect(() => {
     const initializeServices = async () => {
-      // Check if API service is available
-      const apiAvailable = await apiService.isAvailable();
-      setUseApiService(apiAvailable);
+      // ALWAYS use API service - no more dual path confusion
+      setUseApiService(true);
+      setAirtableStatus('Using API service only');
 
-      setAirtableStatus(airtableService.getStatus());
-
-      if (apiAvailable) {
-        console.log('✅ Using optimized API service');
-        await loadRecipes();
-        await loadAvailableIngredients();
-      } else if (airtableService.isEnabled()) {
-        console.log('⚠️ API service unavailable, falling back to direct Airtable');
-        await loadRecipes();
-        await loadAvailableIngredients();
-      } else {
-        // Fallback to localStorage if neither service is available
-        loadLocalRecipes();
-      }
+      console.log('✅ Initializing with API service only');
+      await loadRecipes();
+      await loadAvailableIngredients();
     };
 
     initializeServices();
@@ -55,7 +44,10 @@ const AirtableRecipeManager: React.FC = () => {
   // Calculate real-time costs when a recipe is selected
   useEffect(() => {
     if (selectedRecipe?.id && airtableService.isEnabled()) {
-      calculateRealTimeCosts(selectedRecipe.id);
+      // Only calculate costs for recipes that exist in Airtable (have "rec" IDs)
+      if (selectedRecipe.id.startsWith('rec')) {
+        calculateRealTimeCosts(selectedRecipe.id);
+      }
     }
   }, [selectedRecipe?.id]);
 
@@ -63,18 +55,14 @@ const AirtableRecipeManager: React.FC = () => {
     setIsLoading(true);
     setError(null);
     try {
-      if (useApiService) {
-        const apiRecipes = await apiService.getRecipes();
-        setRecipes(apiRecipes);
-      } else if (airtableService.isEnabled()) {
-        const airtableRecipes = await airtableService.getRecipes();
-        setRecipes(airtableRecipes);
-      } else {
-        loadLocalRecipes();
-      }
+      // ALWAYS use API service to eliminate dual data path confusion
+      const apiRecipes = await apiService.getRecipes();
+      setRecipes(apiRecipes);
+      console.log('✅ Loaded recipes via API service');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load recipes');
-      loadLocalRecipes(); // Fallback to localStorage
+      setError(err instanceof Error ? err.message : 'Failed to load recipes via API');
+      console.error('❌ API service failed, using local fallback:', err);
+      loadLocalRecipes(); // Only fallback to localStorage
     } finally {
       setIsLoading(false);
     }
@@ -93,15 +81,12 @@ const AirtableRecipeManager: React.FC = () => {
 
   const loadAvailableIngredients = async () => {
     try {
-      if (useApiService) {
-        const ingredients = await apiService.getAllIngredients();
-        setAvailableIngredients(ingredients);
-      } else if (airtableService.isEnabled()) {
-        const ingredients = await airtableService.getAllIngredients();
-        setAvailableIngredients(ingredients);
-      }
+      // ALWAYS use API service to eliminate dual data path confusion
+      const ingredients = await apiService.getAllIngredients();
+      setAvailableIngredients(ingredients);
+      console.log('✅ Loaded ingredients via API service');
     } catch (err) {
-      console.error('Failed to load available ingredients:', err);
+      console.error('❌ Failed to load ingredients via API service:', err);
     }
   };
 
@@ -201,21 +186,19 @@ const AirtableRecipeManager: React.FC = () => {
     try {
       let savedRecipe: Recipe | null = null;
 
-      if (airtableService.isEnabled()) {
-        // Check if this is a valid Airtable record ID (starts with "rec")
-        const isAirtableRecord = recipe.id && recipe.id.startsWith('rec');
-        const existsInAirtable = isAirtableRecord && recipes.find(r => r.id === recipe.id);
+      // ALWAYS use API service to eliminate dual data path confusion
+      const isAirtableRecord = recipe.id && recipe.id.startsWith('rec');
+      const existsInAirtable = isAirtableRecord && recipes.find(r => r.id === recipe.id);
 
-        if (isAirtableRecord && existsInAirtable) {
-          // Update existing Airtable recipe
-          console.log(`Updating existing Airtable recipe: ${recipe.id}`);
-          savedRecipe = await airtableService.updateRecipe(recipe.id, recipe);
-        } else {
-          // Create new recipe (either no ID, timestamp ID, or doesn't exist in Airtable)
-          console.log(`Creating new recipe in Airtable. Original ID: ${recipe.id}`);
-          const { id, ...recipeData } = recipe;
-          savedRecipe = await airtableService.createRecipe(recipeData);
-        }
+      if (isAirtableRecord && existsInAirtable) {
+        // Update existing recipe via API
+        console.log(`✅ Updating existing recipe via API: ${recipe.id}`);
+        savedRecipe = await apiService.updateRecipe(recipe.id, recipe);
+      } else {
+        // Create new recipe via API
+        console.log(`✅ Creating new recipe via API. Original ID: ${recipe.id}`);
+        const { id, ...recipeData } = recipe;
+        savedRecipe = await apiService.createRecipe(recipeData);
       }
 
       if (savedRecipe) {
@@ -268,9 +251,9 @@ const AirtableRecipeManager: React.FC = () => {
     setError(null);
 
     try {
-      if (airtableService.isEnabled()) {
-        await airtableService.deleteRecipe(id);
-      }
+      // ALWAYS use API service to eliminate dual data path confusion
+      console.log(`✅ Deleting recipe via API: ${id}`);
+      await apiService.deleteRecipe(id);
 
       const updatedRecipes = recipes.filter(r => r.id !== id);
       setRecipes(updatedRecipes);
@@ -541,7 +524,13 @@ const AirtableRecipeManager: React.FC = () => {
         {selectedRecipe && (
           <div className="recipe-details">
             <div className="recipe-header">
-              <h3>{isEditing ? 'Edit Recipe' : selectedRecipe.name}</h3>
+              <div className="recipe-header-content">
+                <h3>{isEditing ? 'Edit Recipe' : (selectedRecipe.name || 'Untitled Recipe')}</h3>
+                <div className="q-factor-display">
+                  <span className="q-factor-label">Q Factor: {selectedRecipe.qFactorPercentage || 10}%</span>
+                  <span className="q-factor-note">(Computed by Airtable)</span>
+                </div>
+              </div>
               <div className="recipe-actions">
                 {!isEditing && (
                   <>
@@ -552,7 +541,7 @@ const AirtableRecipeManager: React.FC = () => {
                     >
                       {isCalculatingCosts ? '⏳ Calculating...' : '💰 Update Costs from Odoo'}
                     </button>
-                    {airtableService.isEnabled() && (
+                    {airtableService.isEnabled() && selectedRecipe.id.startsWith('rec') && (
                       <button
                         onClick={() => calculateRealTimeCosts(selectedRecipe.id!)}
                         disabled={isCalculatingCosts}
@@ -638,6 +627,19 @@ const AirtableRecipeManager: React.FC = () => {
                         min="0"
                         value={selectedRecipe.cookTime || 0}
                         onChange={(e) => setSelectedRecipe({...selectedRecipe, cookTime: parseInt(e.target.value) || 0})}
+                        className="quantity-input"
+                      />
+                    </label>
+
+                    <label>
+                      Q Factor (%):
+                      <input
+                        type="number"
+                        min="0"
+                        max="100"
+                        step="0.1"
+                        value={selectedRecipe.qFactorPercentage || 10}
+                        onChange={(e) => setSelectedRecipe({...selectedRecipe, qFactorPercentage: parseFloat(e.target.value) || 10})}
                         className="quantity-input"
                       />
                     </label>
@@ -847,16 +849,12 @@ const AirtableRecipeManager: React.FC = () => {
             ) : (
               <div className="recipe-view">
                 <div className="recipe-info">
+                  <h4>{selectedRecipe.name || 'Untitled Recipe'}</h4>
                   <p><strong>Category:</strong> {selectedRecipe.category}</p>
-                  <p><strong>Servings:</strong> {selectedRecipe.servings}</p>
-                  <p><strong>Prep Time:</strong> {selectedRecipe.prepTime || 0} minutes</p>
-                  <p><strong>Cook Time:</strong> {selectedRecipe.cookTime || 0} minutes</p>
-                  {selectedRecipe.description && (
-                    <p><strong>Description:</strong> {selectedRecipe.description}</p>
-                  )}
                 </div>
 
                 <div className="cost-summary">
+                  <h4 style={{ color: 'white', margin: '0 0 1rem 0', fontSize: '1.25rem', fontWeight: '700' }}>💰 Cost Breakdown</h4>
                   <div className="cost-breakdown">
                     <div className="cost-item">
                       <span>Ingredients Cost:</span>

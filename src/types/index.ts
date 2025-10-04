@@ -37,6 +37,7 @@ export interface Recipe {
   totalCostWithQFactor?: number; // Total cost including Q Factor
   costPerServingWithQFactor?: number; // Cost per serving including Q Factor
   costBreakdown?: CostBreakdown; // Detailed cost breakdown
+  image?: string; // URL to recipe image from Airtable
   notes?: string;
 }
 
@@ -50,6 +51,11 @@ export interface Ingredient {
   totalCost?: number;
   fromOdoo?: boolean;
   odooProductName?: string;
+  // Recipe as ingredient support
+  isRecipe?: boolean; // true if this ingredient is actually a recipe
+  recipeId?: string; // ID of the recipe when isRecipe is true
+  recipeServings?: number; // how many servings of the recipe to use
+  recipeCostPerServing?: number; // cost per serving of the sub-recipe
 }
 
 export interface OdooProduct {
@@ -66,4 +72,41 @@ export interface OdooConnection {
   database: string;
   username: string;
   password: string;
+}
+
+// Cost Management Types
+export interface SalesData {
+  recipeId: string;
+  recipeName: string;
+  quantitySold: number;
+  revenue: number;
+  period: string;
+  date: Date;
+}
+
+export interface CostAnalysis {
+  recipeId: string;
+  recipeName: string;
+  totalCost: number;
+  quantitySold: number;
+  revenue: number;
+  profit: number;
+  profitMargin: number;
+  period: string;
+}
+
+export interface ToasthubCredentials {
+  apiKey: string;
+  baseUrl: string;
+  restaurantId?: string;
+}
+
+export interface ToasthubSalesItem {
+  id: string;
+  name: string;
+  quantity: number;
+  price: number;
+  total: number;
+  timestamp: Date;
+  orderId: string;
 }
