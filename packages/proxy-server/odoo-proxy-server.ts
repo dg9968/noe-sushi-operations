@@ -6,9 +6,6 @@ const cors = require('cors');
 const app = express();
 const PORT = 3001;
 
-// Import recipe routes
-const recipeRoutes = require('../server/routes/recipes');
-
 // Enable CORS for all routes
 app.use(cors({
   origin: 'http://localhost:3000',
@@ -113,8 +110,8 @@ app.get('/api/products/search/:name', (req, res) => {
   });
 });
 
-// Mount recipe routes
-app.use('/api/recipes', recipeRoutes);
+// Note: Recipe routes are now served by the main server (port 5000)
+// This proxy server only handles Odoo proxying
 
 // Use the proxy for all /api/odoo routes
 app.use('/api/odoo', odooProxy);

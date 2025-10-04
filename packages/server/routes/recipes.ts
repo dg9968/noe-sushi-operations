@@ -1,20 +1,128 @@
-const express = require('express');
-const Airtable = require('airtable');
-const router = express.Router();
+import express, { Router, Request, Response } from 'express';
+import Airtable from 'airtable';
 
-// Configure Airtable with API key
-Airtable.configure({
-  apiKey: process.env.AIRTABLE_API_KEY
-});
-const base = Airtable.base(process.env.AIRTABLE_BASE_ID);
+const router: Router = express.Router();
+
+// Lazy-loaded Airtable base instance
+let baseInstance: ReturnType<typeof Airtable.base> | null = null;
+
+// Helper function to get Airtable base (lazy initialization)
+function getBase(): ReturnType<typeof Airtable.base> {
+  if (!baseInstance) {
+    if (!process.env.AIRTABLE_API_KEY || !process.env.AIRTABLE_BASE_ID) {
+      throw new Error('Airtable credentials not configured. Please set AIRTABLE_API_KEY and AIRTABLE_BASE_ID environment variables.');
+    }
+
+    Airtable.configure({
+      apiKey: process.env.AIRTABLE_API_KEY
+    });
+
+    baseInstance = Airtable.base(process.env.AIRTABLE_BASE_ID);
+  }
+
+  return baseInstance;
+}
+
+// Type definitions
+interface Ingredient {
+  id: string;
+  name: string;
+  unitCost: number;
+  fromOdoo: boolean;
+}
+
+interface RecipeIngredient {
+  id: string;
+  name: string;
+  quantity: number;
+  unit: string;
+  cost: number;
+  totalCost: number;
+  fromOdoo?: boolean;
+  odooProductName?: string;
+  isRecipe: boolean;
+  recipeId?: string;
+}
+
+interface CostCalculation {
+  baseCost: number;
+  qFactor: number;
+  qFactorAmount: number;
+  totalCost: number;
+  costPerServing: number;
+  breakdown: {
+    baseCost: number;
+    qFactorPercentage: number;
+    qFactorAmount: number;
+    totalWithQFactor: number;
+  };
+}
+
+interface Recipe {
+  id: string;
+  name: string;
+  description: string;
+  servings: number;
+  ingredients: RecipeIngredient[];
+  instructions: string;
+  totalCost: number;
+  costPerServing: number;
+  category: string;
+  prepTime: number;
+  cookTime: number;
+  image?: string;
+  qFactorPercentage: number;
+  qFactorCost: number;
+  totalCostWithQFactor: number;
+  costPerServingWithQFactor: number;
+  costBreakdown: CostCalculation['breakdown'];
+}
+
+interface RecipesByCategory {
+  [category: string]: Array<{
+    id: string;
+    name: string;
+    description: string;
+    servings: number;
+  }>;
+}
+
+interface DuplicateRecipe {
+  id: string;
+  name: string;
+  category?: string;
+  description?: string;
+}
+
+interface DuplicateGroup {
+  name: string;
+  count: number;
+  recipes: DuplicateRecipe[];
+}
+
+interface RecipeIngredientsMap {
+  [recipeId: string]: RecipeIngredient[];
+}
+
+interface CreateRecipeData {
+  name: string;
+  description?: string;
+  servings?: number;
+  ingredients?: RecipeIngredient[];
+  instructions?: string;
+  category?: string;
+  prepTime?: number;
+  cookTime?: number;
+  qFactorPercentage?: number;
+}
 
 // Cache for ingredients to avoid repeated API calls
-let ingredientsCache = null;
-let ingredientsCacheTime = null;
+let ingredientsCache: Ingredient[] | null = null;
+let ingredientsCacheTime: number | null = null;
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
 // Helper function to get ingredients with caching
-async function getCachedIngredients() {
+async function getCachedIngredients(): Promise<Ingredient[]> {
   const now = Date.now();
 
   if (ingredientsCache && ingredientsCacheTime && (now - ingredientsCacheTime < CACHE_DURATION)) {
@@ -22,12 +130,12 @@ async function getCachedIngredients() {
   }
 
   try {
-    const records = await base('Ingredients').select().all();
+    const records = await getBase()('Ingredients').select().all();
     ingredientsCache = records.map(record => ({
       id: record.id,
-      name: record.fields['Ingredient Name'],
-      unitCost: record.fields['Unit Cost'] || 0,
-      fromOdoo: record.fields['From Odoo'] || false
+      name: record.fields['Ingredient Name'] as string,
+      unitCost: (record.fields['Unit Cost'] as number) || 0,
+      fromOdoo: (record.fields['From Odoo'] as boolean) || false
     }));
     ingredientsCacheTime = now;
     return ingredientsCache;
@@ -38,11 +146,11 @@ async function getCachedIngredients() {
 }
 
 // Cache for junction records to reduce API calls
-let junctionRecordsCache = null;
-let junctionCacheTime = null;
+let junctionRecordsCache: Airtable.Records<Airtable.FieldSet> | null = null;
+let junctionCacheTime: number | null = null;
 
 // Helper function to get junction records with caching
-async function getCachedJunctionRecords() {
+async function getCachedJunctionRecords(): Promise<Airtable.Records<Airtable.FieldSet>> {
   const now = Date.now();
 
   if (junctionRecordsCache && junctionCacheTime && (now - junctionCacheTime < CACHE_DURATION)) {
@@ -50,7 +158,7 @@ async function getCachedJunctionRecords() {
   }
 
   try {
-    const records = await base('Recipe Ingredients').select().all();
+    const records = await getBase()('Recipe Ingredients').select().all();
     junctionRecordsCache = records;
     junctionCacheTime = now;
     return junctionRecordsCache;
@@ -61,7 +169,7 @@ async function getCachedJunctionRecords() {
 }
 
 // Optimized: batch fetch ingredients for multiple recipes
-async function getRecipeIngredientsBatch(recipeIds, depth = 0, maxDepth = 3) {
+async function getRecipeIngredientsBatch(recipeIds: string[], depth: number = 0, maxDepth: number = 3): Promise<RecipeIngredientsMap> {
   // Prevent infinite recursion for circular recipe dependencies
   if (depth > maxDepth) {
     console.warn(`⚠️ Max recursion depth ${maxDepth} reached, stopping sub-recipe loading`);
@@ -71,17 +179,17 @@ async function getRecipeIngredientsBatch(recipeIds, depth = 0, maxDepth = 3) {
   try {
     const allJunctionRecords = await getCachedJunctionRecords();
     const cachedIngredients = await getCachedIngredients();
-    const recipeIngredientsMap = {};
+    const recipeIngredientsMap: RecipeIngredientsMap = {};
 
     // Create ingredient lookup map
-    const ingredientMap = {};
+    const ingredientMap: { [key: string]: Ingredient } = {};
     cachedIngredients.forEach(ing => {
       ingredientMap[ing.id] = ing;
     });
 
     // Group junction records by recipe
     allJunctionRecords.forEach(record => {
-      const recipes = record.fields['Recipe'] || [];
+      const recipes = (record.fields['Recipe'] as string[]) || [];
       recipes.forEach(recipeId => {
         if (recipeIds.includes(recipeId)) {
           if (!recipeIngredientsMap[recipeId]) {
@@ -89,9 +197,9 @@ async function getRecipeIngredientsBatch(recipeIds, depth = 0, maxDepth = 3) {
           }
 
           // Check for regular ingredient
-          const ingredientId = record.fields['Ingredient']?.[0];
+          const ingredientId = (record.fields['Ingredient'] as string[])?.[0];
           if (ingredientId && ingredientMap[ingredientId]) {
-            const recipeQuantity = record.fields['Quantity'] || 0;
+            const recipeQuantity = (record.fields['Quantity'] as number) || 0;
             const unitCost = ingredientMap[ingredientId].unitCost || 0;
             const totalCost = recipeQuantity * unitCost;
 
@@ -99,7 +207,7 @@ async function getRecipeIngredientsBatch(recipeIds, depth = 0, maxDepth = 3) {
               id: ingredientId,
               name: ingredientMap[ingredientId].name,
               quantity: recipeQuantity,
-              unit: record.fields['Unit'] || 'oz',
+              unit: (record.fields['Unit'] as string) || 'oz',
               cost: unitCost,
               totalCost: totalCost,
               fromOdoo: ingredientMap[ingredientId].fromOdoo || false,
@@ -109,16 +217,16 @@ async function getRecipeIngredientsBatch(recipeIds, depth = 0, maxDepth = 3) {
           }
 
           // Check for sub-recipe
-          const subRecipeId = record.fields['Sub Recipe']?.[0];
+          const subRecipeId = (record.fields['Sub Recipe'] as string[])?.[0];
           if (subRecipeId) {
             // Sub-recipes will need to be loaded separately to get their costs
-            const recipeQuantity = record.fields['Quantity'] || 1;
+            const recipeQuantity = (record.fields['Quantity'] as number) || 1;
 
             recipeIngredientsMap[recipeId].push({
               id: subRecipeId,
               name: '[Recipe] Loading...', // Placeholder, will be replaced
               quantity: recipeQuantity,
-              unit: record.fields['Unit'] || 'servings',
+              unit: (record.fields['Unit'] as string) || 'servings',
               cost: 0, // Will be calculated
               totalCost: 0, // Will be calculated
               isRecipe: true,
@@ -132,21 +240,21 @@ async function getRecipeIngredientsBatch(recipeIds, depth = 0, maxDepth = 3) {
     // CRITICAL: Deduplicate ingredients by ID for each recipe to handle duplicate junction records
     Object.keys(recipeIngredientsMap).forEach(recipeId => {
       const ingredients = recipeIngredientsMap[recipeId];
-      const ingredientMap = new Map();
+      const ingredientMapLocal = new Map<string, RecipeIngredient>();
 
       ingredients.forEach(ingredient => {
         const key = ingredient.id;
-        if (!ingredientMap.has(key)) {
-          ingredientMap.set(key, ingredient);
+        if (!ingredientMapLocal.has(key)) {
+          ingredientMapLocal.set(key, ingredient);
         } else {
           // If duplicate, sum the quantities and costs
-          const existing = ingredientMap.get(key);
+          const existing = ingredientMapLocal.get(key)!;
           existing.quantity += ingredient.quantity;
           existing.totalCost += ingredient.totalCost;
         }
       });
 
-      recipeIngredientsMap[recipeId] = Array.from(ingredientMap.values());
+      recipeIngredientsMap[recipeId] = Array.from(ingredientMapLocal.values());
 
       if (ingredients.length !== recipeIngredientsMap[recipeId].length) {
         console.log(`🔧 DEDUPLICATION: Recipe ${recipeId} had ${ingredients.length} duplicate ingredients, reduced to ${recipeIngredientsMap[recipeId].length}`);
@@ -163,9 +271,9 @@ async function getRecipeIngredientsBatch(recipeIds, depth = 0, maxDepth = 3) {
         if (ingredient.isRecipe && ingredient.recipeId) {
           try {
             // Fetch the sub-recipe details from Airtable
-            const subRecipeRecord = await base('Recipes').find(ingredient.recipeId);
-            const subRecipeName = subRecipeRecord.fields.Name;
-            const subRecipeServings = subRecipeRecord.fields.Servings || 1;
+            const subRecipeRecord = await getBase()('Recipes').find(ingredient.recipeId);
+            const subRecipeName = subRecipeRecord.fields.Name as string;
+            const subRecipeServings = (subRecipeRecord.fields.Servings as number) || 1;
 
             // Get the sub-recipe's ingredients to calculate its cost (with depth tracking)
             const subRecipeBatch = await getRecipeIngredientsBatch([ingredient.recipeId], depth + 1, maxDepth);
@@ -183,7 +291,8 @@ async function getRecipeIngredientsBatch(recipeIds, depth = 0, maxDepth = 3) {
 
             console.log(`📦 Loaded sub-recipe: ${subRecipeName} (cost per serving: $${subRecipeCostPerServing.toFixed(4)})`);
           } catch (error) {
-            console.error(`❌ Failed to load sub-recipe ${ingredient.recipeId}:`, error.message);
+            const err = error as Error;
+            console.error(`❌ Failed to load sub-recipe ${ingredient.recipeId}:`, err.message);
             // Keep the placeholder if loading fails
           }
         }
@@ -198,18 +307,18 @@ async function getRecipeIngredientsBatch(recipeIds, depth = 0, maxDepth = 3) {
 }
 
 // Helper function to get recipe ingredients from junction table (single recipe)
-async function getRecipeIngredients(recipeId) {
+async function getRecipeIngredients(recipeId: string): Promise<RecipeIngredient[]> {
   const batchResult = await getRecipeIngredientsBatch([recipeId]);
   return batchResult[recipeId] || [];
 }
 
 // GET /api/recipes/list - Get lightweight recipe list by category (FAST)
-router.get('/list', async (req, res) => {
+router.get('/list', async (req: Request, res: Response) => {
   try {
     const { q } = req.query; // Get search query parameter
     console.log(`Recipe list request - Query: "${q || 'none'}"`);
 
-    const records = await base('Recipes').select({
+    const records = await getBase()('Recipes').select({
       view: 'Grid view',
       fields: ['Name', 'Category', 'Description', 'Servings', 'Image'], // Only fetch essential fields
       sort: [{ field: 'Name', direction: 'asc' }]
@@ -217,7 +326,7 @@ router.get('/list', async (req, res) => {
 
     // Filter records based on search query if provided
     let filteredRecords = records;
-    if (q && q.trim().length > 0) {
+    if (q && typeof q === 'string' && q.trim().length > 0) {
       const searchTerm = q.toLowerCase().trim();
       filteredRecords = records.filter(record => {
         const name = String(record.fields.Name || '').toLowerCase();
@@ -231,10 +340,10 @@ router.get('/list', async (req, res) => {
     }
 
     // Group recipes by category
-    const recipesByCategory = {};
+    const recipesByCategory: RecipesByCategory = {};
 
     filteredRecords.forEach(record => {
-      const category = record.fields.Category || 'Uncategorized';
+      const category = (record.fields.Category as string) || 'Uncategorized';
 
       if (!recipesByCategory[category]) {
         recipesByCategory[category] = [];
@@ -242,9 +351,9 @@ router.get('/list', async (req, res) => {
 
       recipesByCategory[category].push({
         id: record.id,
-        name: record.fields.Name,
-        description: record.fields.Description || '',
-        servings: record.fields.Servings || 1
+        name: record.fields.Name as string,
+        description: (record.fields.Description as string) || '',
+        servings: (record.fields.Servings as number) || 1
       });
     });
 
@@ -257,23 +366,24 @@ router.get('/list', async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Error fetching recipe list:', error);
+    const err = error as Error;
+    console.error('Error fetching recipe list:', err);
     res.status(500).json({
       success: false,
       error: 'Failed to fetch recipe list',
-      message: error.message
+      message: err.message
     });
   }
 });
 
 // GET /api/recipes - Get all recipes with optimized loading (HEAVY - use sparingly)
-router.get('/', async (req, res) => {
+router.get('/', async (req: Request, res: Response) => {
   try {
-    const { qFactor = 10, limit = 10 } = req.query; // Default 10% Q Factor, limit 10 recipes
-    const qFactorNum = parseFloat(qFactor) || 10;
-    const limitNum = parseInt(limit) || 10;
+    const { qFactor = '10', limit = '10' } = req.query; // Default 10% Q Factor, limit 10 recipes
+    const qFactorNum = parseFloat(qFactor as string) || 10;
+    const limitNum = parseInt(limit as string) || 10;
 
-    const records = await base('Recipes').select({
+    const records = await getBase()('Recipes').select({
       view: 'Grid view',
       sort: [{ field: 'Created Date', direction: 'desc' }],
       maxRecords: limitNum // Limit records for performance
@@ -285,12 +395,12 @@ router.get('/', async (req, res) => {
     // Batch load all ingredients for all recipes at once
     const allRecipeIngredients = await getRecipeIngredientsBatch(recipeIds);
 
-    const recipes = records.map((record) => {
+    const recipes: Recipe[] = records.map((record) => {
       const ingredients = allRecipeIngredients[record.id] || [];
-      const servings = record.fields.Servings || 1;
+      const servings = (record.fields.Servings as number) || 1;
 
       // Use stored Q Factor from record, fallback to query parameter, then default
-      const storedQFactor = record.fields['Q Factor %'];
+      const storedQFactor = record.fields['Q Factor %'] as number | undefined;
       const recipeQFactor = storedQFactor !== undefined ? storedQFactor : qFactorNum;
 
       // Calculate costs with Q Factor
@@ -298,18 +408,18 @@ router.get('/', async (req, res) => {
 
       return {
         id: record.id,
-        name: record.fields.Name,
-        description: record.fields.Description || '',
+        name: record.fields.Name as string,
+        description: (record.fields.Description as string) || '',
         servings: servings,
         ingredients: ingredients,
-        instructions: record.fields.Instructions || '',
+        instructions: (record.fields.Instructions as string) || '',
         totalCost: costCalculation.totalCost,
         costPerServing: costCalculation.costPerServing,
-        category: record.fields.Category || 'Uncategorized',
-        prepTime: record.fields['Prep Time'] || 0,
-        cookTime: record.fields['Cook Time'] || 0,
-        image: record.fields.Image && record.fields.Image.length > 0
-          ? record.fields.Image[0].url
+        category: (record.fields.Category as string) || 'Uncategorized',
+        prepTime: (record.fields['Prep Time'] as number) || 0,
+        cookTime: (record.fields['Cook Time'] as number) || 0,
+        image: record.fields.Image && Array.isArray(record.fields.Image) && record.fields.Image.length > 0
+          ? (record.fields.Image[0] as any).url
           : undefined,
         // Map Q Factor data to interface fields
         qFactorPercentage: costCalculation.qFactor,
@@ -331,17 +441,18 @@ router.get('/', async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Error fetching recipes:', error);
+    const err = error as Error;
+    console.error('Error fetching recipes:', err);
     res.status(500).json({
       success: false,
       error: 'Failed to fetch recipes',
-      message: error.message
+      message: err.message
     });
   }
 });
 
 // GET /api/recipes/clear-cache - Clear all caches (for browser access)
-router.get('/clear-cache', (req, res) => {
+router.get('/clear-cache', (req: Request, res: Response) => {
   junctionRecordsCache = null;
   junctionCacheTime = null;
   ingredientsCache = null;
@@ -354,16 +465,16 @@ router.get('/clear-cache', (req, res) => {
 });
 
 // GET /api/recipes/duplicates - Find duplicate recipe names
-router.get('/duplicates', async (req, res) => {
+router.get('/duplicates', async (req: Request, res: Response) => {
   try {
     console.log(`🔍 DUPLICATE CHECK: Searching for duplicate recipe names`);
 
-    const allRecipes = await base('Recipes').select({
+    const allRecipes = await getBase()('Recipes').select({
       fields: ['Name', 'Category', 'Description']
     }).all();
 
     // Group recipes by name (case-insensitive)
-    const recipeGroups = {};
+    const recipeGroups: { [key: string]: DuplicateRecipe[] } = {};
     allRecipes.forEach(recipe => {
       const name = String(recipe.fields.Name || '').toLowerCase().trim();
       if (name) {
@@ -372,15 +483,15 @@ router.get('/duplicates', async (req, res) => {
         }
         recipeGroups[name].push({
           id: recipe.id,
-          name: recipe.fields.Name,
-          category: recipe.fields.Category,
-          description: recipe.fields.Description
+          name: recipe.fields.Name as string,
+          category: recipe.fields.Category as string | undefined,
+          description: recipe.fields.Description as string | undefined
         });
       }
     });
 
     // Find groups with more than one recipe (duplicates)
-    const duplicates = [];
+    const duplicates: DuplicateGroup[] = [];
     Object.entries(recipeGroups).forEach(([name, recipes]) => {
       if (recipes.length > 1) {
         duplicates.push({
@@ -404,47 +515,48 @@ router.get('/duplicates', async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Error finding duplicate recipes:', error);
+    const err = error as Error;
+    console.error('Error finding duplicate recipes:', err);
     res.status(500).json({
       success: false,
       error: 'Failed to find duplicate recipes',
-      message: error.message
+      message: err.message
     });
   }
 });
 
 // GET /api/recipes/:id - Get single recipe
-router.get('/:id', async (req, res) => {
+router.get('/:id', async (req: Request, res: Response) => {
   try {
-    const record = await base('Recipes').find(req.params.id);
+    const record = await getBase()('Recipes').find(req.params.id);
     const ingredients = await getRecipeIngredients(req.params.id);
-    const servings = record.fields.Servings || 1;
+    const servings = (record.fields.Servings as number) || 1;
 
     // Use stored Q Factor from record, fallback to query parameter, then default
-    const storedQFactor = record.fields['Q Factor %'];
+    const storedQFactor = record.fields['Q Factor %'] as number | undefined;
     const { qFactor } = req.query;
     const qFactorNum = storedQFactor !== undefined ? storedQFactor :
-                      (qFactor ? parseFloat(qFactor) : 10);
+                      (qFactor ? parseFloat(qFactor as string) : 10);
 
     console.log(`📊 Using Q Factor: ${qFactorNum}% (stored: ${storedQFactor}, query: ${qFactor})`);
 
     // Calculate costs with Q Factor
     const costCalculation = calculateRecipeCostsWithQFactor(ingredients, servings, qFactorNum);
 
-    const recipe = {
+    const recipe: Recipe = {
       id: record.id,
-      name: record.fields.Name,
-      description: record.fields.Description || '',
+      name: record.fields.Name as string,
+      description: (record.fields.Description as string) || '',
       servings: servings,
       ingredients: ingredients,
-      instructions: record.fields.Instructions || '',
+      instructions: (record.fields.Instructions as string) || '',
       totalCost: costCalculation.totalCost,
       costPerServing: costCalculation.costPerServing,
-      category: record.fields.Category || 'Uncategorized',
-      prepTime: record.fields['Prep Time'] || 0,
-      cookTime: record.fields['Cook Time'] || 0,
-      image: record.fields.Image && record.fields.Image.length > 0
-        ? record.fields.Image[0].url
+      category: (record.fields.Category as string) || 'Uncategorized',
+      prepTime: (record.fields['Prep Time'] as number) || 0,
+      cookTime: (record.fields['Cook Time'] as number) || 0,
+      image: record.fields.Image && Array.isArray(record.fields.Image) && record.fields.Image.length > 0
+        ? (record.fields.Image[0] as any).url
         : undefined,
       // Map Q Factor data to interface fields
       qFactorPercentage: costCalculation.qFactor,
@@ -462,22 +574,23 @@ router.get('/:id', async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Error fetching recipe:', error);
+    const err = error as Error;
+    console.error('Error fetching recipe:', err);
     res.status(500).json({
       success: false,
       error: 'Failed to fetch recipe',
-      message: error.message
+      message: err.message
     });
   }
 });
 
 // Helper function to apply Q Factor to costs
-function applyQFactor(baseCost, qFactor = 10) {
+function applyQFactor(baseCost: number, qFactor: number = 10): number {
   return baseCost * (1 + qFactor / 100);
 }
 
 // Helper function to calculate recipe costs with Q Factor
-function calculateRecipeCostsWithQFactor(ingredients, servings = 1, qFactor = 10) {
+function calculateRecipeCostsWithQFactor(ingredients: RecipeIngredient[], servings: number = 1, qFactor: number = 10): CostCalculation {
   const baseCost = ingredients.reduce((sum, ingredient) => sum + (ingredient.totalCost || 0), 0);
   const totalCostWithQFactor = applyQFactor(baseCost, qFactor);
   const costPerServing = servings > 0 ? totalCostWithQFactor / servings : 0;
@@ -499,14 +612,14 @@ function calculateRecipeCostsWithQFactor(ingredients, servings = 1, qFactor = 10
 }
 
 // GET /api/recipes/ingredients/search - Search ingredients
-router.get('/ingredients/search', async (req, res) => {
+router.get('/ingredients/search', async (req: Request, res: Response) => {
   try {
     const { q } = req.query;
     const ingredients = await getCachedIngredients();
 
     let filteredIngredients = ingredients;
 
-    if (q && q.length > 0) {
+    if (q && typeof q === 'string' && q.length > 0) {
       filteredIngredients = ingredients.filter(ing =>
         ing.name && String(ing.name).toLowerCase().includes(q.toLowerCase())
       );
@@ -520,22 +633,23 @@ router.get('/ingredients/search', async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Error searching ingredients:', error);
+    const err = error as Error;
+    console.error('Error searching ingredients:', err);
     res.status(500).json({
       success: false,
       error: 'Failed to search ingredients',
-      message: error.message
+      message: err.message
     });
   }
 });
 
 // POST /api/recipes - Create new recipe
-router.post('/', async (req, res) => {
+router.post('/', async (req: Request, res: Response) => {
   try {
-    const recipeData = req.body;
+    const recipeData: CreateRecipeData = req.body;
 
     // Check for duplicate recipe names
-    const existingRecipes = await base('Recipes').select({
+    const existingRecipes = await getBase()('Recipes').select({
       filterByFormula: `{Name} = "${recipeData.name}"`
     }).all();
 
@@ -552,7 +666,7 @@ router.post('/', async (req, res) => {
     }
 
     // Create basic recipe record - only send fields with valid values
-    const createFields = {
+    const createFields: Airtable.FieldSet = {
       Name: recipeData.name,
       Servings: recipeData.servings || 1,
       'Q Factor %': recipeData.qFactorPercentage || 10
@@ -573,7 +687,7 @@ router.post('/', async (req, res) => {
       createFields['Cook Time'] = recipeData.cookTime;
     }
 
-    const recipeRecord = await base('Recipes').create(createFields);
+    const recipeRecord = await getBase()('Recipes').create(createFields);
 
     // If ingredients are provided, create junction table entries
     if (recipeData.ingredients && recipeData.ingredients.length > 0) {
@@ -581,7 +695,7 @@ router.post('/', async (req, res) => {
         // Check if this is a sub-recipe or regular ingredient
         const isSubRecipe = ingredient.isRecipe || (ingredient.name && ingredient.name.startsWith('[Recipe]'));
 
-        const junctionRecord = {
+        const junctionRecord: Airtable.FieldSet = {
           'Recipe': [recipeRecord.id],
           'Quantity': ingredient.quantity || 1,
           'Unit': ingredient.unit || (isSubRecipe ? 'servings' : 'oz')
@@ -594,7 +708,7 @@ router.post('/', async (req, res) => {
           junctionRecord['Ingredient'] = [ingredient.id];
         }
 
-        return base('Recipe Ingredients').create(junctionRecord);
+        return getBase()('Recipe Ingredients').create(junctionRecord);
       });
 
       await Promise.all(junctionPromises);
@@ -629,27 +743,28 @@ router.post('/', async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Error creating recipe:', error);
+    const err = error as Error;
+    console.error('Error creating recipe:', err);
     res.status(500).json({
       success: false,
       error: 'Failed to create recipe',
-      message: error.message
+      message: err.message
     });
   }
 });
 
 // PUT /api/recipes/:id - Update existing recipe
-router.put('/:id', async (req, res) => {
+router.put('/:id', async (req: Request, res: Response) => {
   try {
     const recipeId = req.params.id;
-    const recipeData = req.body;
+    const recipeData: CreateRecipeData = req.body;
 
     console.log(`🔄 PUT /recipes/${recipeId} - Updating recipe: ${recipeData.name}`);
     console.log(`📦 Received ${recipeData.ingredients?.length || 0} ingredients:`,
       recipeData.ingredients?.map(i => `${i.name} (id: ${i.id})`));
 
     // Update basic recipe record - only send fields with valid values
-    const updateFields = {
+    const updateFields: Airtable.FieldSet = {
       Name: recipeData.name,
       Servings: recipeData.servings,
       'Q Factor %': recipeData.qFactorPercentage || 10
@@ -670,13 +785,13 @@ router.put('/:id', async (req, res) => {
       updateFields['Cook Time'] = recipeData.cookTime;
     }
 
-    const recipeRecord = await base('Recipes').update(recipeId, updateFields);
+    const recipeRecord = await getBase()('Recipes').update(recipeId, updateFields);
 
     // Handle ingredient updates - first get existing junction records
     console.log(`🔍 Searching for junction records with Recipe ID: ${recipeId}`);
 
     // Fetch all junction records and filter in JavaScript (since Airtable filters aren't working)
-    const allJunctionRecords = await base('Recipe Ingredients').select().all();
+    const allJunctionRecords = await getBase()('Recipe Ingredients').select().all();
     const existingJunctionRecords = allJunctionRecords.filter(record => {
       const recipeField = record.fields['Recipe'];
       if (Array.isArray(recipeField)) {
@@ -707,7 +822,7 @@ router.put('/:id', async (req, res) => {
     console.log(`🔍 DEBUG: Found ${debugRecords.length} records that should match our recipe ID ${recipeId}`);
 
     // Also try a direct search to see if our records exist at all
-    const directSearch = await base('Recipe Ingredients').select({
+    const directSearch = await getBase()('Recipe Ingredients').select({
       filterByFormula: `{Recipe} = "${recipeId}"`
     }).all();
     console.log(`🔍 DIRECT SEARCH: Found ${directSearch.length} records with exact match {Recipe} = "${recipeId}"`);
@@ -724,7 +839,7 @@ router.put('/:id', async (req, res) => {
     console.log(`🗑️ Found ${existingJunctionRecords.length} existing junction records to delete`);
     if (existingJunctionRecords.length > 0) {
       const deletePromises = existingJunctionRecords.map(record =>
-        base('Recipe Ingredients').destroy(record.id)
+        getBase()('Recipe Ingredients').destroy(record.id)
       );
       await Promise.all(deletePromises);
       console.log(`✅ Deleted ${existingJunctionRecords.length} junction records`);
@@ -738,7 +853,7 @@ router.put('/:id', async (req, res) => {
       // CRITICAL: Deduplicate ingredients by ID to prevent massive duplication
       console.log(`🔍 RAW INGREDIENTS RECEIVED:`, validIngredients.map(i => `${i.name} (${i.id}) - Qty: ${i.quantity}`));
 
-      const ingredientMap = new Map();
+      const ingredientMap = new Map<string, RecipeIngredient>();
       validIngredients.forEach((ingredient, index) => {
         const key = ingredient.id;
         if (!ingredientMap.has(key)) {
@@ -746,7 +861,7 @@ router.put('/:id', async (req, res) => {
           ingredientMap.set(key, ingredient);
         } else {
           // If duplicate, sum the quantities
-          const existing = ingredientMap.get(key);
+          const existing = ingredientMap.get(key)!;
           const oldQty = existing.quantity || 0;
           const newQty = ingredient.quantity || 0;
           existing.quantity = oldQty + newQty;
@@ -764,7 +879,7 @@ router.put('/:id', async (req, res) => {
         // Check if this is a sub-recipe or regular ingredient
         const isSubRecipe = ingredient.isRecipe || (ingredient.name && ingredient.name.startsWith('[Recipe]'));
 
-        const junctionRecord = {
+        const junctionRecord: Airtable.FieldSet = {
           'Recipe': [recipeId],
           'Quantity': ingredient.quantity || 1,
           'Unit': ingredient.unit || (isSubRecipe ? 'servings' : 'oz')
@@ -778,7 +893,7 @@ router.put('/:id', async (req, res) => {
           junctionRecord['Ingredient'] = [ingredient.id];
         }
 
-        return base('Recipe Ingredients').create(junctionRecord);
+        return getBase()('Recipe Ingredients').create(junctionRecord);
       });
 
       await Promise.all(junctionPromises);
@@ -803,7 +918,7 @@ router.put('/:id', async (req, res) => {
     // Calculate costs with Q Factor
     const costCalculation = calculateRecipeCostsWithQFactor(ingredients, servings, qFactor);
 
-    const recipe = {
+    const recipe: Recipe = {
       id: recipeId,
       name: recipeData.name,
       description: recipeData.description || '',
@@ -828,17 +943,18 @@ router.put('/:id', async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Error updating recipe:', error);
+    const err = error as Error;
+    console.error('Error updating recipe:', err);
     res.status(500).json({
       success: false,
       error: 'Failed to update recipe',
-      message: error.message
+      message: err.message
     });
   }
 });
 
 // DELETE /api/recipes/:id - Delete recipe
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', async (req: Request, res: Response) => {
   try {
     const recipeId = req.params.id;
 
@@ -848,7 +964,7 @@ router.delete('/:id', async (req, res) => {
     console.log(`🔍 Searching for junction records with Recipe ID: ${recipeId}`);
 
     // Use JavaScript filtering since Airtable filters aren't working reliably
-    const allJunctionRecords = await base('Recipe Ingredients').select().all();
+    const allJunctionRecords = await getBase()('Recipe Ingredients').select().all();
     const existingJunctionRecords = allJunctionRecords.filter(record => {
       const recipeField = record.fields['Recipe'];
       if (Array.isArray(recipeField)) {
@@ -860,7 +976,7 @@ router.delete('/:id', async (req, res) => {
     console.log(`🗑️ Found ${existingJunctionRecords.length} junction records to delete`);
     if (existingJunctionRecords.length > 0) {
       const deletePromises = existingJunctionRecords.map(record =>
-        base('Recipe Ingredients').destroy(record.id)
+        getBase()('Recipe Ingredients').destroy(record.id)
       );
       await Promise.all(deletePromises);
       console.log(`✅ Deleted ${existingJunctionRecords.length} junction records`);
@@ -873,7 +989,7 @@ router.delete('/:id', async (req, res) => {
     ingredientsCacheTime = null;
 
     // Then delete the recipe record
-    await base('Recipes').destroy(recipeId);
+    await getBase()('Recipes').destroy(recipeId);
     console.log(`✅ Recipe ${recipeId} deleted successfully`);
 
     res.json({
@@ -882,24 +998,25 @@ router.delete('/:id', async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Error deleting recipe:', error);
+    const err = error as Error;
+    console.error('Error deleting recipe:', err);
     res.status(500).json({
       success: false,
       error: 'Failed to delete recipe',
-      message: error.message
+      message: err.message
     });
   }
 });
 
 // POST /api/recipes/:id/cleanup - Clean up duplicate junction records for a recipe
-router.post('/:id/cleanup', async (req, res) => {
+router.post('/:id/cleanup', async (req: Request, res: Response) => {
   try {
     const recipeId = req.params.id;
 
     console.log(`🧹 CLEANUP: Starting cleanup for recipe ${recipeId}`);
 
     // Get all junction records for this recipe using JavaScript filtering
-    const allRecords = await base('Recipe Ingredients').select().all();
+    const allRecords = await getBase()('Recipe Ingredients').select().all();
     const existingJunctionRecords = allRecords.filter(record => {
       const recipeField = record.fields['Recipe'];
       if (Array.isArray(recipeField)) {
@@ -911,9 +1028,9 @@ router.post('/:id/cleanup', async (req, res) => {
     console.log(`🔍 Found ${existingJunctionRecords.length} junction records`);
 
     // Group by ingredient ID to find duplicates
-    const ingredientGroups = {};
+    const ingredientGroups: { [key: string]: Airtable.Record<Airtable.FieldSet>[] } = {};
     existingJunctionRecords.forEach(record => {
-      const ingredientId = record.fields['Ingredient']?.[0];
+      const ingredientId = (record.fields['Ingredient'] as string[])?.[0];
       if (ingredientId) {
         if (!ingredientGroups[ingredientId]) {
           ingredientGroups[ingredientId] = [];
@@ -933,7 +1050,7 @@ router.post('/:id/cleanup', async (req, res) => {
         // Keep the first record, delete the rest
         const recordsToDelete = records.slice(1);
         const deletePromises = recordsToDelete.map(record =>
-          base('Recipe Ingredients').destroy(record.id)
+          getBase()('Recipe Ingredients').destroy(record.id)
         );
 
         await Promise.all(deletePromises);
@@ -966,13 +1083,14 @@ router.post('/:id/cleanup', async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Error cleaning up recipe:', error);
+    const err = error as Error;
+    console.error('Error cleaning up recipe:', err);
     res.status(500).json({
       success: false,
       error: 'Failed to cleanup recipe',
-      message: error.message
+      message: err.message
     });
   }
 });
 
-module.exports = router;
+export default router;

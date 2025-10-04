@@ -1,6 +1,7 @@
-const express = require('express');
-const fetch = require('node-fetch');
-const router = express.Router();
+import express, { Router, Request, Response } from 'express';
+import fetch from 'node-fetch';
+
+const router: Router = express.Router();
 
 // Toast POS API configuration
 const TOAST_API_BASE = 'https://ws-api.toasttab.com';
@@ -12,9 +13,55 @@ const TOAST_CLIENT_ID = process.env.TOAST_CLIENT_ID || process.env.REACT_APP_TOA
 const TOAST_CLIENT_SECRET = process.env.TOAST_CLIENT_SECRET || process.env.REACT_APP_TOAST_CLIENT_SECRET;
 const TOAST_RESTAURANT_GUID = process.env.TOAST_RESTAURANT_GUID || process.env.REACT_APP_TOAST_RESTAURANT_GUID;
 
+// Type definitions
+interface ToastAuthRequest {
+  clientId: string;
+  clientSecret: string;
+  userAccessType: string;
+}
+
+interface ToastToken {
+  accessToken: string;
+  expiresIn: number;
+}
+
+interface ToastAuthResponse {
+  token: ToastToken;
+}
+
+interface OrderSelection {
+  displayName: string;
+  quantity: number;
+  price: number;
+}
+
+interface ToastOrder {
+  selections?: OrderSelection[];
+  paidDate?: string;
+}
+
+interface SalesData {
+  recipeId: string;
+  recipeName: string;
+  quantitySold: number;
+  revenue: number;
+  period: string;
+  date: Date;
+}
+
+interface SalesMeta {
+  ordersCount: number;
+  itemsCount: number;
+  period: string;
+  dateRange: {
+    startDate: string;
+    endDate: string;
+  };
+}
+
 // In-memory token storage (in production, use Redis or database)
-let cachedToken = null;
-let tokenExpiry = null;
+let cachedToken: string | null = null;
+let tokenExpiry: Date | null = null;
 
 console.log('🍞 Toast POS API Configuration:', {
   clientId: TOAST_CLIENT_ID ? `${TOAST_CLIENT_ID.substring(0, 8)}...` : 'NOT CONFIGURED',
@@ -23,9 +70,9 @@ console.log('🍞 Toast POS API Configuration:', {
 });
 
 // Helper function to get valid access token
-async function getValidAccessToken() {
+async function getValidAccessToken(): Promise<string> {
   // Check if we have a valid cached token
-  if (cachedToken && tokenExpiry && new Date() < new Date(tokenExpiry - 5 * 60 * 1000)) {
+  if (cachedToken && tokenExpiry && new Date() < new Date(tokenExpiry.getTime() - 5 * 60 * 1000)) {
     console.log('✅ Using cached Toast POS token');
     return cachedToken;
   }
@@ -37,23 +84,25 @@ async function getValidAccessToken() {
   }
 
   try {
+    const authRequest: ToastAuthRequest = {
+      clientId: TOAST_CLIENT_ID,
+      clientSecret: TOAST_CLIENT_SECRET,
+      userAccessType: 'TOAST_MACHINE_CLIENT'
+    };
+
     const response = await fetch(`${TOAST_API_BASE}${TOAST_AUTH_ENDPOINT}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        clientId: TOAST_CLIENT_ID,
-        clientSecret: TOAST_CLIENT_SECRET,
-        userAccessType: 'TOAST_MACHINE_CLIENT'
-      })
+      body: JSON.stringify(authRequest)
     });
 
     if (!response.ok) {
       throw new Error(`Toast authentication failed: ${response.status} ${response.statusText}`);
     }
 
-    const authData = await response.json();
+    const authData = await response.json() as ToastAuthResponse;
 
     if (!authData.token || !authData.token.accessToken) {
       throw new Error('Invalid authentication response from Toast POS');
@@ -67,13 +116,14 @@ async function getValidAccessToken() {
 
     return cachedToken;
   } catch (error) {
-    console.error('❌ Error getting Toast POS access token:', error.message);
+    const err = error as Error;
+    console.error('❌ Error getting Toast POS access token:', err.message);
     throw error;
   }
 }
 
 // Test Toast POS connection
-router.get('/test', async (req, res) => {
+router.get('/test', async (req: Request, res: Response) => {
   try {
     const accessToken = await getValidAccessToken();
 
@@ -88,19 +138,20 @@ router.get('/test', async (req, res) => {
       }
     });
   } catch (error) {
+    const err = error as Error;
     res.status(500).json({
       success: false,
       connected: false,
       message: 'Failed to connect to Toast POS',
-      error: error.message
+      error: err.message
     });
   }
 });
 
 // Get sales data from Toast POS
-router.get('/sales', async (req, res) => {
+router.get('/sales', async (req: Request, res: Response) => {
   try {
-    const { startDate, endDate, pageSize = 100 } = req.query;
+    const { startDate, endDate, pageSize = '100' } = req.query;
 
     if (!startDate || !endDate) {
       return res.status(400).json({
@@ -110,9 +161,9 @@ router.get('/sales', async (req, res) => {
     }
 
     // Validate date range (Toast API has 1-hour limit for single requests)
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-    const diffHours = (end - start) / (1000 * 60 * 60);
+    const start = new Date(startDate as string);
+    const end = new Date(endDate as string);
+    const diffHours = (end.getTime() - start.getTime()) / (1000 * 60 * 60);
 
     if (diffHours > 1) {
       return res.status(400).json({
@@ -138,7 +189,7 @@ router.get('/sales', async (req, res) => {
       headers: {
         'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
-        'Toast-Restaurant-External-ID': TOAST_RESTAURANT_GUID
+        'Toast-Restaurant-External-ID': TOAST_RESTAURANT_GUID || ''
       }
     });
 
@@ -146,10 +197,10 @@ router.get('/sales', async (req, res) => {
       throw new Error(`Toast orders API failed: ${ordersResponse.status} ${ordersResponse.statusText}`);
     }
 
-    const ordersData = await ordersResponse.json();
+    const ordersData = await ordersResponse.json() as ToastOrder[];
 
     // Process and aggregate sales data
-    const salesMap = new Map();
+    const salesMap = new Map<string, SalesData>();
 
     if (Array.isArray(ordersData)) {
       ordersData.forEach(order => {
@@ -160,7 +211,7 @@ router.get('/sales', async (req, res) => {
               const revenue = selection.quantity * selection.price;
 
               if (salesMap.has(key)) {
-                const existing = salesMap.get(key);
+                const existing = salesMap.get(key)!;
                 existing.quantitySold += selection.quantity;
                 existing.revenue += revenue;
               } else {
@@ -187,29 +238,35 @@ router.get('/sales', async (req, res) => {
       totalRevenue: salesData.reduce((sum, item) => sum + item.revenue, 0)
     });
 
+    const meta: SalesMeta = {
+      ordersCount: Array.isArray(ordersData) ? ordersData.length : 0,
+      itemsCount: salesData.length,
+      period: getPeriodString(start, end),
+      dateRange: {
+        startDate: startDate as string,
+        endDate: endDate as string
+      }
+    };
+
     res.json({
       success: true,
       data: salesData,
-      meta: {
-        ordersCount: Array.isArray(ordersData) ? ordersData.length : 0,
-        itemsCount: salesData.length,
-        period: getPeriodString(start, end),
-        dateRange: { startDate, endDate }
-      }
+      meta: meta
     });
 
   } catch (error) {
-    console.error('❌ Error fetching Toast POS sales data:', error.message);
+    const err = error as Error;
+    console.error('❌ Error fetching Toast POS sales data:', err.message);
     res.status(500).json({
       success: false,
       error: 'Failed to fetch sales data',
-      message: error.message
+      message: err.message
     });
   }
 });
 
 // Get restaurant information
-router.get('/restaurant', async (req, res) => {
+router.get('/restaurant', async (req: Request, res: Response) => {
   try {
     const accessToken = await getValidAccessToken();
 
@@ -217,7 +274,7 @@ router.get('/restaurant', async (req, res) => {
       headers: {
         'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
-        'Toast-Restaurant-External-ID': TOAST_RESTAURANT_GUID
+        'Toast-Restaurant-External-ID': TOAST_RESTAURANT_GUID || ''
       }
     });
 
@@ -233,21 +290,22 @@ router.get('/restaurant', async (req, res) => {
     });
 
   } catch (error) {
-    console.error('❌ Error fetching restaurant info:', error.message);
+    const err = error as Error;
+    console.error('❌ Error fetching restaurant info:', err.message);
     res.status(500).json({
       success: false,
       error: 'Failed to fetch restaurant information',
-      message: error.message
+      message: err.message
     });
   }
 });
 
 // Helper function to map menu item names to recipe IDs
-function mapMenuItemToRecipeId(menuItemName) {
+function mapMenuItemToRecipeId(menuItemName: string): string {
   // Basic mapping - in production, this should be configurable
   const itemNameLower = menuItemName.toLowerCase();
 
-  const mappings = {
+  const mappings: { [key: string]: string } = {
     'salmon teriyaki': 'rec123',
     'chicken ramen': 'rec456',
     'beef teriyaki': 'rec789',
@@ -260,7 +318,7 @@ function mapMenuItemToRecipeId(menuItemName) {
 }
 
 // Helper function to determine period string
-function getPeriodString(startDate, endDate) {
+function getPeriodString(startDate: Date, endDate: Date): string {
   const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
@@ -270,4 +328,4 @@ function getPeriodString(startDate, endDate) {
   return 'custom';
 }
 
-module.exports = router;
+export default router;

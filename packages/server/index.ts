@@ -1,7 +1,9 @@
-const express = require('express');
-const cors = require('cors');
-const dotenv = require('dotenv');
-const Airtable = require('airtable');
+import express, { Request, Response, NextFunction, ErrorRequestHandler } from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import Airtable from 'airtable';
+import recipesRouter from './routes/recipes';
+import toastRouter from './routes/toast';
 
 // Load environment variables from current directory
 dotenv.config();
@@ -35,13 +37,13 @@ app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // Request logging middleware
-app.use((req, res, next) => {
+app.use((req: Request, res: Response, next: NextFunction) => {
   console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
   next();
 });
 
 // Health check endpoint
-app.get('/health', (req, res) => {
+app.get('/health', (req: Request, res: Response) => {
   res.json({
     status: 'healthy',
     timestamp: new Date().toISOString(),
@@ -50,7 +52,7 @@ app.get('/health', (req, res) => {
 });
 
 // Auth endpoint for Odoo service
-app.post('/api/auth', (req, res) => {
+app.post('/api/auth', (req: Request, res: Response) => {
   // Since we're using server-side Airtable integration,
   // we don't need actual Odoo authentication on the frontend
   // Return a mock session for compatibility
@@ -64,23 +66,23 @@ app.post('/api/auth', (req, res) => {
 });
 
 // Routes
-const recipesRouter = require('./routes/recipes');
-const toastRouter = require('./routes/toast');
 app.use('/api/recipes', recipesRouter);
 app.use('/api/toast', toastRouter);
 
 // Error handling middleware
-app.use((error, req, res, next) => {
+const errorHandler: ErrorRequestHandler = (error, req, res, next) => {
   console.error('API Error:', error);
   res.status(500).json({
     success: false,
     error: 'Internal server error',
     message: process.env.NODE_ENV === 'development' ? error.message : 'Something went wrong'
   });
-});
+};
+
+app.use(errorHandler);
 
 // 404 handler
-app.use('*', (req, res) => {
+app.use('*', (req: Request, res: Response) => {
   res.status(404).json({
     success: false,
     error: 'Route not found',
@@ -89,7 +91,7 @@ app.use('*', (req, res) => {
 });
 
 // Start server - bind to 0.0.0.0 to accept connections from network
-app.listen(PORT, '0.0.0.0', () => {
+app.listen(PORT, () => {
   console.log(`🚀 API Server running on http://0.0.0.0:${PORT}`);
   console.log(`📋 Health check: http://192.168.1.141:${PORT}/health`);
   console.log(`🍳 Recipes API: http://192.168.1.141:${PORT}/api/recipes`);
