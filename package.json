@@ -5,7 +5,7 @@
   "main": "packages/proxy-server/odoo-proxy-server.ts",
   "scripts": {
     "start": "bun run packages/proxy-server/odoo-proxy-server.ts",
-    "dev": "bun --watch packages/proxy-server/odoo-proxy-server.ts"
+    "dev": "bun run index.ts"
   },
   "dependencies": {
     "airtable": "^0.12.2",
@@ -21,9 +21,15 @@
     "@types/express": "^5.0.3",
     "@types/node": "^24.6.2",
     "bun-types": "^1.2.23",
-    "nodemon": "^3.0.1"
+    "concurrently": "^9.2.1",
+    "nodemon": "^3.0.1",
+    "@types/bun": "latest"
   },
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "private": true,
+  "peerDependencies": {
+    "typescript": "^5"
+  }
 }
