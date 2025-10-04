@@ -7,7 +7,7 @@ const app = express();
 const PORT = 3001;
 
 // Import recipe routes
-const recipeRoutes = require('./api/routes/recipes');
+const recipeRoutes = require('../api/routes/recipes');
 
 // Enable CORS for all routes
 app.use(cors({
