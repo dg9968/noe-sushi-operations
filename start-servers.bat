@@ -13,7 +13,7 @@ REM Wait a moment for processes to fully terminate
 timeout /t 2 /nobreak >nul
 
 echo Starting API Server (Port 5000)...
-start "API Server" cmd /k "cd /d api && npm start"
+start "API Server" cmd /k "cd /d packages\server && npm start"
 
 echo Waiting for API server to start...
 timeout /t 3 /nobreak >nul
@@ -25,7 +25,7 @@ echo Waiting for proxy server to start...
 timeout /t 3 /nobreak >nul
 
 echo Starting React Frontend (Port 3000)...
-start "React Frontend" cmd /k "cd /d noe-sushi-operations && npm start"
+start "React Frontend" cmd /k "cd /d packages\client && npm start"
 
 echo.
 echo ✅ All servers starting up!

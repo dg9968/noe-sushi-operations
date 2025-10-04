@@ -3,8 +3,8 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const Airtable = require('airtable');
 
-// Load environment variables from parent directory
-dotenv.config({ path: '../.env' });
+// Load environment variables from current directory
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || process.env.API_PORT || 5000;
