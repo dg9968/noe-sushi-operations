@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import Airtable from 'airtable';
 import recipesRouter from './routes/recipes';
 import toastRouter from './routes/toast';
+import cogsRouter from './routes/cogs';
 
 // Load environment variables from current directory
 dotenv.config();
@@ -68,6 +69,7 @@ app.post('/api/auth', (req: Request, res: Response) => {
 // Routes
 app.use('/api/recipes', recipesRouter);
 app.use('/api/toast', toastRouter);
+app.use('/api/cogs', cogsRouter);
 
 // Error handling middleware
 const errorHandler: ErrorRequestHandler = (error, req, res, next) => {
@@ -98,4 +100,5 @@ app.listen(PORT, () => {
   console.log(`🔍 Ingredient search: http://192.168.1.141:${PORT}/api/recipes/ingredients/search`);
   console.log(`🍞 Toast POS API: http://192.168.1.141:${PORT}/api/toast`);
   console.log(`📊 Toast POS sales: http://192.168.1.141:${PORT}/api/toast/sales`);
+  console.log(`💰 COGS Calculator: http://192.168.1.141:${PORT}/api/cogs/sessions`);
 });
