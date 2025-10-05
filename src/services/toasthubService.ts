@@ -29,7 +29,7 @@ class ToasthubService {
   private async initialize() {
     try {
       // Toast POS API uses backend proxy to avoid CORS restrictions
-      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
       this.credentials = {
         clientId: 'proxy', // Not needed for backend proxy
         clientSecret: 'proxy', // Not needed for backend proxy
@@ -85,7 +85,7 @@ class ToasthubService {
     });
 
     // Use real Toast POS API through backend proxy
-    const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
     try {
       // Since Toast API has 1-hour limit, break longer periods into chunks

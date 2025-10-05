@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Recipe, Ingredient } from '../../types';
 import { productionOdooService as odooService } from '../../services/productionOdooService';
+import { Badge } from '../ui/badge';
 import './RecipeManager.css';
 
 const RecipeManager: React.FC = () => {
@@ -379,7 +380,7 @@ const RecipeEditor: React.FC<RecipeEditorProps> = ({
 
       <div className="recipe-details">
         <div className="recipe-meta">
-          <span className="category-badge">{recipe.category}</span>
+          <Badge variant="secondary">{recipe.category}</Badge>
           <span>Prep Time: {recipe.prepTime} minutes</span>
           <span>Serves: {recipe.servings}</span>
           {recipe.cost && <span className="cost">Cost: ${recipe.cost.toFixed(2)}</span>}

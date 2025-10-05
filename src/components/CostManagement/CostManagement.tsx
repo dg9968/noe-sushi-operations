@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Recipe } from '../../types';
-import { airtableService, COGSCalculatorEntry } from '../../services/airtableService';
+import { apiService } from '../../services/apiService';
+import { COGSCalculatorEntry } from '../../services/airtableService';
+import { Button } from '../ui/button';
 import './CostManagement.css';
 
 interface RecipeRow {
@@ -40,17 +42,14 @@ const CostManagement: React.FC = () => {
   const loadRecipes = async () => {
     setIsLoading(true);
     try {
-      console.log('📋 Cost Management: Loading recipes via Airtable service...');
-      if (airtableService.isEnabled()) {
-        const recipeData = await airtableService.getRecipes();
-        setRecipes(recipeData);
-        console.log('📋 Cost Management: Loaded recipes:', recipeData.length);
-      } else {
-        throw new Error('Airtable service is not enabled');
-      }
+      console.log('📋 Cost Management: Loading recipes via API service...');
+      // Request all recipes (limit=1000 should be more than enough)
+      const recipeData = await apiService.getRecipes(1000);
+      setRecipes(recipeData);
+      console.log('📋 Cost Management: Loaded recipes:', recipeData.length);
     } catch (err) {
       console.error('❌ Cost Management: Error loading recipes:', err);
-      setError('Failed to load recipes from Airtable');
+      setError('Failed to load recipes from server');
     } finally {
       setIsLoading(false);
     }
@@ -111,7 +110,7 @@ const CostManagement: React.FC = () => {
   const loadSavedSessions = async () => {
     try {
       setIsLoadingSessions(true);
-      const sessions = await airtableService.getCOGSCalculatorSessions();
+      const sessions = await apiService.getCOGSSessionList();
       setSavedSessions(sessions);
       console.log('📂 Loaded saved sessions:', sessions.length);
     } catch (err) {
@@ -146,16 +145,11 @@ const CostManagement: React.FC = () => {
         totalCost: row.totalCost
       }));
 
-      const success = await airtableService.saveCOGSCalculatorSession(newSessionName.trim(), entries);
-
-      if (success) {
-        console.log('💾 Session saved successfully:', newSessionName);
-        setShowSaveDialog(false);
-        setNewSessionName('');
-        loadSavedSessions(); // Refresh the list
-      } else {
-        setError('Failed to save session');
-      }
+      await apiService.saveCOGSSession(newSessionName.trim(), entries);
+      console.log('💾 Session saved successfully:', newSessionName);
+      setShowSaveDialog(false);
+      setNewSessionName('');
+      loadSavedSessions(); // Refresh the list
     } catch (err) {
       console.error('❌ Error saving session:', err);
       setError('Failed to save session');
@@ -174,7 +168,7 @@ const CostManagement: React.FC = () => {
       setIsLoading(true);
       setError(null);
 
-      const sessionData = await airtableService.loadCOGSCalculatorSession(selectedSession);
+      const sessionData = await apiService.getCOGSSession(selectedSession);
 
       if (sessionData && sessionData.length > 0) {
         // Create a map of recipe ID to loaded quantity
@@ -379,27 +373,27 @@ const CostManagement: React.FC = () => {
                 />
                 {isUploadingCSV ? 'Uploading...' : '📤 Upload CSV'}
               </label>
-              <button
+              <Button
                 onClick={() => setShowSaveDialog(true)}
-                className="save-btn"
+                variant="default"
                 disabled={totalQuantity === 0 || isSaving}
               >
                 {isSaving ? 'Saving...' : '💾 Save Session'}
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={() => setShowLoadDialog(true)}
-                className="load-btn"
+                variant="secondary"
                 disabled={savedSessions.length === 0 || isLoadingSessions}
               >
                 📂 Load Session
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={clearAllQuantities}
-                className="clear-btn"
+                variant="outline"
                 disabled={totalQuantity === 0}
               >
                 Clear All
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -480,12 +474,13 @@ const CostManagement: React.FC = () => {
               <div className="dialog">
                 <div className="dialog-header">
                   <h3>💾 Save Calculator Session</h3>
-                  <button
+                  <Button
                     onClick={() => setShowSaveDialog(false)}
-                    className="close-btn"
+                    variant="ghost"
+                    size="icon-sm"
                   >
                     ×
-                  </button>
+                  </Button>
                 </div>
                 <div className="dialog-content">
                   <p>Save your current calculator state with a custom name:</p>
@@ -498,20 +493,20 @@ const CostManagement: React.FC = () => {
                     disabled={isSaving}
                   />
                   <div className="dialog-actions">
-                    <button
+                    <Button
                       onClick={() => setShowSaveDialog(false)}
-                      className="cancel-btn"
+                      variant="outline"
                       disabled={isSaving}
                     >
                       Cancel
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                       onClick={handleSaveSession}
-                      className="confirm-btn"
+                      variant="default"
                       disabled={!newSessionName.trim() || isSaving}
                     >
                       {isSaving ? 'Saving...' : 'Save'}
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -524,12 +519,13 @@ const CostManagement: React.FC = () => {
               <div className="dialog">
                 <div className="dialog-header">
                   <h3>📂 Load Calculator Session</h3>
-                  <button
+                  <Button
                     onClick={() => setShowLoadDialog(false)}
-                    className="close-btn"
+                    variant="ghost"
+                    size="icon-sm"
                   >
                     ×
-                  </button>
+                  </Button>
                 </div>
                 <div className="dialog-content">
                   <p>Select a saved session to restore:</p>
@@ -551,20 +547,20 @@ const CostManagement: React.FC = () => {
                     <p className="no-sessions">No saved sessions found</p>
                   )}
                   <div className="dialog-actions">
-                    <button
+                    <Button
                       onClick={() => setShowLoadDialog(false)}
-                      className="cancel-btn"
+                      variant="outline"
                       disabled={isLoading}
                     >
                       Cancel
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                       onClick={handleLoadSession}
-                      className="confirm-btn"
+                      variant="default"
                       disabled={!selectedSession || isLoading}
                     >
                       {isLoading ? 'Loading...' : 'Load'}
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { OdooConnection, OdooProduct } from '../../types';
 import { productionOdooService as odooService } from '../../services/productionOdooService';
 import config, { isProduction, isDemoMode } from '../../config/environment';
+import { Button } from '../ui/button';
 import './OdooIntegration.css';
 
 const OdooIntegration: React.FC = () => {
@@ -162,21 +163,21 @@ const OdooIntegration: React.FC = () => {
                 )}
 
                 <div className="button-group">
-                  <button
+                  <Button
                     onClick={connectToBackend}
                     disabled={isConnecting}
-                    className="connect-btn"
+                    variant="default"
                   >
                     {isConnecting ? 'Connecting...' : 'Connect to Odoo'}
-                  </button>
-                  
-                  <button
+                  </Button>
+
+                  <Button
                     onClick={enableDemoMode}
                     disabled={isConnecting}
-                    className="demo-btn"
+                    variant="secondary"
                   >
                     {isConnecting ? 'Loading...' : 'Try Demo Mode'}
-                  </button>
+                  </Button>
                 </div>
               </>
             ) : (
@@ -193,21 +194,21 @@ const OdooIntegration: React.FC = () => {
                 )}
 
                 <div className="button-group">
-                  <button
+                  <Button
                     onClick={enableDemoMode}
                     disabled={isConnecting}
-                    className="demo-btn"
+                    variant="secondary"
                   >
                     {isConnecting ? 'Loading...' : 'Use Demo Mode'}
-                  </button>
-                  
-                  <button
+                  </Button>
+
+                  <Button
                     onClick={connectToBackend}
                     disabled={isConnecting}
-                    className="connect-btn"
+                    variant="default"
                   >
                     {isConnecting ? 'Connecting...' : 'Connect to Backend API'}
-                  </button>
+                  </Button>
                 </div>
               </>
             )}
@@ -235,17 +236,17 @@ const OdooIntegration: React.FC = () => {
               <span className="status-dot connected"></span>
               <span>{isDemoMode ? 'Demo Mode Active' : `Connected to ${connection.url}`}</span>
             </div>
-            <button onClick={disconnect} className="disconnect-btn">
+            <Button onClick={disconnect} variant="outline">
               Disconnect
-            </button>
+            </Button>
           </div>
 
           <div className="products-section">
             <div className="products-header">
               <h3>Product Catalog</h3>
-              <button onClick={loadProducts} disabled={isLoadingProducts} className="refresh-btn">
+              <Button onClick={loadProducts} disabled={isLoadingProducts} variant="secondary">
                 {isLoadingProducts ? 'Loading...' : 'Refresh Products'}
-              </button>
+              </Button>
             </div>
 
             <div className="search-section">
@@ -257,9 +258,9 @@ const OdooIntegration: React.FC = () => {
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="search-input"
                 />
-                <button onClick={searchProducts} className="search-btn">
+                <Button onClick={searchProducts} variant="default">
                   Search
-                </button>
+                </Button>
               </div>
             </div>
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Button } from '../ui/button';
 import './ToastIntegration.css';
 
 interface RestaurantData {
@@ -50,7 +51,7 @@ const ToastIntegration: React.FC = () => {
     new Date().toISOString().split('T')[0]
   );
 
-  const apiBaseUrl = process.env.REACT_APP_API_URL?.replace('/api', '') || 'http://localhost:5000';
+  const apiBaseUrl = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
 
   useEffect(() => {
     testConnection();
@@ -202,13 +203,13 @@ const ToastIntegration: React.FC = () => {
     <div className="toast-section">
       <div className="section-header">
         <h3>🔗 Connection Status</h3>
-        <button
+        <Button
           onClick={testConnection}
           disabled={loading.connection}
-          className="action-btn"
+          variant="default"
         >
           {loading.connection ? 'Testing...' : 'Test Connection'}
-        </button>
+        </Button>
       </div>
 
       {connectionStatus && (
@@ -240,13 +241,13 @@ const ToastIntegration: React.FC = () => {
     <div className="toast-section">
       <div className="section-header">
         <h3>🏪 Restaurant Information</h3>
-        <button
+        <Button
           onClick={fetchRestaurantData}
           disabled={loading.restaurant}
-          className="action-btn"
+          variant="default"
         >
           {loading.restaurant ? 'Loading...' : 'Fetch Restaurant Data'}
-        </button>
+        </Button>
       </div>
 
       {restaurantData && (
@@ -299,13 +300,13 @@ const ToastIntegration: React.FC = () => {
     <div className="toast-section">
       <div className="section-header">
         <h3>🍽️ Menu Configuration</h3>
-        <button
+        <Button
           onClick={fetchMenuData}
           disabled={loading.menu}
-          className="action-btn"
+          variant="default"
         >
           {loading.menu ? 'Loading...' : 'Fetch Menu Data'}
-        </button>
+        </Button>
       </div>
 
       {menuData && (
@@ -367,13 +368,13 @@ const ToastIntegration: React.FC = () => {
     <div className="toast-section">
       <div className="section-header">
         <h3>🗺️ Menu Item Mappings</h3>
-        <button
+        <Button
           onClick={fetchMappings}
           disabled={loading.mappings}
-          className="action-btn"
+          variant="default"
         >
           {loading.mappings ? 'Loading...' : 'Fetch Mappings'}
-        </button>
+        </Button>
       </div>
 
       {Object.keys(mappings).length > 0 && (
@@ -414,13 +415,13 @@ const ToastIntegration: React.FC = () => {
             onChange={(e) => setBusinessDate(e.target.value)}
             className="date-input"
           />
-          <button
+          <Button
             onClick={fetchSalesData}
             disabled={loading.sales}
-            className="action-btn"
+            variant="default"
           >
             {loading.sales ? 'Loading...' : 'Fetch Sales Data'}
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -496,7 +497,7 @@ const ToastIntegration: React.FC = () => {
       {error && (
         <div className="error-message">
           {error}
-          <button onClick={() => setError(null)} className="close-btn">×</button>
+          <Button onClick={() => setError(null)} variant="ghost" size="icon-sm">×</Button>
         </div>
       )}
 
@@ -509,13 +510,13 @@ const ToastIntegration: React.FC = () => {
             { key: 'mappings', label: '🗺️ Mappings', icon: '🗺️' },
             { key: 'sales', label: '📊 Sales', icon: '📊' }
           ].map(tab => (
-            <button
+            <Button
               key={tab.key}
-              className={`tab-btn ${activeTab === tab.key ? 'active' : ''}`}
+              variant={activeTab === tab.key ? 'default' : 'secondary'}
               onClick={() => setActiveTab(tab.key)}
             >
               {tab.label}
-            </button>
+            </Button>
           ))}
         </div>
 

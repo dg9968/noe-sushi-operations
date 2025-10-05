@@ -77,9 +77,9 @@ class AirtableService {
   }
 
   private initialize() {
-    const apiKey = process.env.REACT_APP_AIRTABLE_API_KEY;
-    const baseId = process.env.REACT_APP_AIRTABLE_BASE_ID;
-    const isEnabled = process.env.REACT_APP_ENABLE_AIRTABLE === 'true';
+    const apiKey = import.meta.env.VITE_AIRTABLE_API_KEY;
+    const baseId = import.meta.env.VITE_AIRTABLE_BASE_ID;
+    const isEnabled = import.meta.env.VITE_ENABLE_AIRTABLE === 'true';
 
     if (!isEnabled) {
       console.log('Airtable integration is disabled');

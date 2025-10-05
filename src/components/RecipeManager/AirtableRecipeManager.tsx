@@ -4,6 +4,7 @@ import { airtableService } from '../../services/airtableService';
 import { apiService } from '../../services/apiService';
 import { productionOdooService as odooService } from '../../services/productionOdooService';
 import { initializeSampleData } from '../../data/sampleRecipes';
+import { Badge } from '../ui/badge';
 import './RecipeManager.css';
 
 const AirtableRecipeManager: React.FC = () => {
@@ -510,10 +511,10 @@ const AirtableRecipeManager: React.FC = () => {
                   <h4>{recipe.name}</h4>
                   <p className="recipe-category">{recipe.category}</p>
                   <div className="recipe-cost-display">
-                    <span className="total-cost-badge">Total Cost: ${recipe.totalCost?.toFixed(2) || '0.00'}</span>
+                    <Badge variant="outline">Total Cost: ${recipe.totalCost?.toFixed(2) || '0.00'}</Badge>
                   </div>
                   {recipe.ingredients.some(ing => ing.fromOdoo) && (
-                    <div className="odoo-badge">Odoo Synced</div>
+                    <Badge variant="default">Odoo Synced</Badge>
                   )}
                 </div>
               ))}
@@ -899,9 +900,9 @@ const AirtableRecipeManager: React.FC = () => {
                         <span className="ingredient-amount">{ingredient.quantity} {ingredient.unit}</span>
                         <span className="ingredient-cost">${ingredient.totalCost?.toFixed(2) || '0.00'}</span>
                         {ingredient.fromOdoo ? (
-                          <span className="odoo-badge-small">Odoo</span>
+                          <Badge variant="default">Odoo</Badge>
                         ) : (
-                          <span className="est-badge-small">ESTIM</span>
+                          <Badge variant="secondary">ESTIM</Badge>
                         )}
                       </div>
                     ))

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Document } from '../../types';
+import { Button } from '../ui/button';
 import './DocumentManager.css';
 
 const DocumentManager: React.FC = () => {
@@ -171,27 +172,30 @@ const DocumentManager: React.FC = () => {
             <div className="document-header">
               <h3>{doc.name}</h3>
               <div className="document-actions">
-                <button
+                <Button
                   onClick={() => viewDocument(doc)}
-                  className="action-button view-button"
+                  variant="ghost"
+                  size="icon-sm"
                   title="View document"
                 >
                   👁️
-                </button>
-                <button
+                </Button>
+                <Button
                   onClick={() => downloadDocument(doc)}
-                  className="action-button download-button"
+                  variant="ghost"
+                  size="icon-sm"
                   title="Download document"
                 >
                   📥
-                </button>
-                <button
+                </Button>
+                <Button
                   onClick={() => deleteDocument(doc.id)}
-                  className="action-button delete-button"
+                  variant="ghost"
+                  size="icon-sm"
                   title="Delete document"
                 >
                   🗑️
-                </button>
+                </Button>
               </div>
             </div>
             
@@ -229,20 +233,22 @@ const DocumentManager: React.FC = () => {
             <div className="viewer-header">
               <h3>{viewingDocument.name}</h3>
               <div className="viewer-actions">
-                <button
+                <Button
                   onClick={() => downloadDocument(viewingDocument)}
-                  className="action-button download-button"
+                  variant="secondary"
+                  size="sm"
                   title="Download document"
                 >
                   📥 Download
-                </button>
-                <button
+                </Button>
+                <Button
                   onClick={() => setViewingDocument(null)}
-                  className="action-button close-button"
+                  variant="ghost"
+                  size="icon-sm"
                   title="Close viewer"
                 >
                   ✕
-                </button>
+                </Button>
               </div>
             </div>
             <div className="viewer-content">

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Recipe } from '../../types';
 import { airtableService } from '../../services/airtableService';
 import { toasthubService } from '../../services/toasthubService';
+import { Button } from '../ui/button';
 import './COGSCalculationToast.css';
 
 interface SalesData {
@@ -199,16 +200,16 @@ const COGSCalculationToast: React.FC = () => {
         <h3>Analysis Period</h3>
         <div className="period-selection">
           {(['daily', 'weekly', 'monthly', 'custom'] as TimePeriod[]).map(period => (
-            <button
+            <Button
               key={period}
-              className={`period-btn ${selectedPeriod === period ? 'active' : ''}`}
+              variant={selectedPeriod === period ? 'default' : 'secondary'}
               onClick={() => {
                 console.log(`🔄 COGSCalculationToast: Period button clicked - changing from '${selectedPeriod}' to '${period}'`);
                 setSelectedPeriod(period);
               }}
             >
               {period.charAt(0).toUpperCase() + period.slice(1)}
-            </button>
+            </Button>
           ))}
         </div>
 

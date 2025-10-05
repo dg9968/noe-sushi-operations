@@ -1,6 +1,6 @@
 import { Recipe, Ingredient } from '../types';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 interface ApiResponse<T> {
   success: boolean;
@@ -136,6 +136,45 @@ class ApiService {
   // Get all ingredients (with empty query)
   async getAllIngredients(): Promise<Array<{id: string, name: string, unitCost?: number}>> {
     return this.searchIngredients('');
+  }
+
+  // COGS Calculator Session methods
+  async getCOGSSessionList(): Promise<string[]> {
+    const response = await this.fetchApi<string[]>('/cogs/sessions');
+    return response;
+  }
+
+  async getCOGSSession(sessionName: string): Promise<Array<{
+    sessionName: string;
+    recipeName: string;
+    recipeId: string;
+    unitCost: number;
+    quantitySold: number;
+    totalCost: number;
+    notes?: string;
+  }>> {
+    return this.fetchApi(`/cogs/sessions/${encodeURIComponent(sessionName)}`);
+  }
+
+  async saveCOGSSession(sessionName: string, entries: Array<{
+    sessionName: string;
+    recipeName: string;
+    recipeId: string;
+    unitCost: number;
+    quantitySold: number;
+    totalCost: number;
+    notes?: string;
+  }>): Promise<{sessionName: string; entriesCount: number}> {
+    return this.fetchApi('/cogs/sessions', {
+      method: 'POST',
+      body: JSON.stringify({ sessionName, entries }),
+    });
+  }
+
+  async deleteCOGSSession(sessionName: string): Promise<{deletedCount: number}> {
+    return this.fetchApi(`/cogs/sessions/${encodeURIComponent(sessionName)}`, {
+      method: 'DELETE',
+    });
   }
 }
 
