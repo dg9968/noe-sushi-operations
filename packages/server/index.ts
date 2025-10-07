@@ -5,6 +5,8 @@ import Airtable from 'airtable';
 import recipesRouter from './routes/recipes';
 import toastRouter from './routes/toast';
 import cogsRouter from './routes/cogs';
+import odooRouter from './routes/odoo';
+import odooSyncRouter from './routes/odoo-sync';
 
 // Load environment variables from current directory
 dotenv.config();
@@ -70,6 +72,8 @@ app.post('/api/auth', (req: Request, res: Response) => {
 app.use('/api/recipes', recipesRouter);
 app.use('/api/toast', toastRouter);
 app.use('/api/cogs', cogsRouter);
+app.use('/api', odooRouter);
+app.use('/api/odoo-sync', odooSyncRouter);
 
 // Error handling middleware
 const errorHandler: ErrorRequestHandler = (error, req, res, next) => {
@@ -101,4 +105,6 @@ app.listen(PORT, () => {
   console.log(`🍞 Toast POS API: http://192.168.1.141:${PORT}/api/toast`);
   console.log(`📊 Toast POS sales: http://192.168.1.141:${PORT}/api/toast/sales`);
   console.log(`💰 COGS Calculator: http://192.168.1.141:${PORT}/api/cogs/sessions`);
+  console.log(`🏪 Odoo Products API: http://192.168.1.141:${PORT}/api/products`);
+  console.log(`🔄 Odoo Sync API: http://192.168.1.141:${PORT}/api/odoo-sync/ingredients`);
 });

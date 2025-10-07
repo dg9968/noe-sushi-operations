@@ -451,6 +451,19 @@ router.get('/', async (req: Request, res: Response) => {
   }
 });
 
+// POST /api/recipes/clear-cache - Clear all caches
+router.post('/clear-cache', (req: Request, res: Response) => {
+  junctionRecordsCache = null;
+  junctionCacheTime = null;
+  ingredientsCache = null;
+  ingredientsCacheTime = null;
+
+  res.json({
+    success: true,
+    message: 'All caches cleared successfully - recipes will now show fresh data from Airtable'
+  });
+});
+
 // GET /api/recipes/clear-cache - Clear all caches (for browser access)
 router.get('/clear-cache', (req: Request, res: Response) => {
   junctionRecordsCache = null;
