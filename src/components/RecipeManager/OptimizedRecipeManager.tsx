@@ -71,6 +71,7 @@ const OptimizedRecipeManager: React.FC = () => {
     category: "",
     notes: "",
   });
+  const [isSyncingOdoo, setIsSyncingOdoo] = useState(false);
 
   useEffect(() => {
     const initializeServices = async () => {
@@ -540,6 +541,47 @@ const OptimizedRecipeManager: React.FC = () => {
     }
   };
 
+  const syncOdooPrices = async () => {
+    setIsSyncingOdoo(true);
+    setError(null);
+    try {
+      const response = await fetch(
+        `${
+          import.meta.env.VITE_API_URL || "http://localhost:5000"
+        }/api/odoo-sync/ingredients`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const result = await response.json();
+
+      if (result.success) {
+        console.log("✅ Odoo sync complete:", result.data);
+
+        // Clear cache and refresh data after sync
+        await refreshData();
+
+        alert(
+          `Successfully synced ${result.data.updated} ingredient prices from Odoo!\n\n` +
+          `Matched: ${result.data.matched} ingredients\n` +
+          `Updated: ${result.data.updated} prices`
+        );
+      } else {
+        setError(result.message || "Failed to sync with Odoo");
+      }
+    } catch (err) {
+      const errorMsg = err instanceof Error ? err.message : "Failed to sync with Odoo";
+      setError(errorMsg);
+      console.error("Odoo sync error:", err);
+    } finally {
+      setIsSyncingOdoo(false);
+    }
+  };
+
   const addIngredientToRecipe = (
     ingredient: { id: string; name: string; unitCost?: number },
     index: number
@@ -698,11 +740,19 @@ const OptimizedRecipeManager: React.FC = () => {
           <div className="action-buttons">
             <Button
               onClick={refreshData}
-              disabled={isLoadingList}
+              disabled={isLoadingList || isSyncingOdoo}
               variant="secondary"
               title="Refresh data from Airtable"
             >
               {isLoadingList ? "Refreshing..." : "🔄 Refresh"}
+            </Button>
+            <Button
+              onClick={syncOdooPrices}
+              disabled={isLoadingList || isSyncingOdoo}
+              variant="default"
+              title="Sync ingredient prices from Odoo"
+            >
+              {isSyncingOdoo ? "🔄 Syncing..." : "🏪 Sync Odoo Prices"}
             </Button>
             <Button
               onClick={() => setShowAddIngredientDialog(true)}

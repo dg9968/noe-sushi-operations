@@ -7,9 +7,9 @@ export const config = {
     timeout: 30000, // 30 seconds
   },
 
-  // Odoo Configuration
+  // Odoo Configuration (uses the main API server)
   odoo: {
-    baseURL: import.meta.env.VITE_ODOO_URL || 'http://localhost:3001',
+    baseURL: import.meta.env.VITE_ODOO_URL || 'http://localhost:5000',
     timeout: 30000, // 30 seconds
   },
 
